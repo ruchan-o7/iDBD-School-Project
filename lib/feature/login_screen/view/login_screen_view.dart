@@ -1,11 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/feature/blankview/blankview.dart';
-import 'package:school_project_ibdb/feature/login_screen/model/user_request_model.dart';
+import '../../../core/network/NetworkManager.dart';
+import '../../blankview/blankview.dart';
+import '../model/user_request_model.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../../core/custom/input_dec_custom.dart';
 
 import '../../../core/custom/login_button_custom.dart';
+import '../service/i_user_service.dart';
 import '../view_model/login_screen_view_model.dart';
 
 class LoginScreenView extends StatelessWidget {
@@ -24,6 +27,7 @@ class LoginScreenView extends StatelessWidget {
   final TextEditingController passController = TextEditingController();
   final FocusNode nodeMail = FocusNode();
   final FocusNode nodePass = FocusNode();
+  final baseUrl = "https://reqres.in/api/";
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +36,10 @@ class LoginScreenView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => LoginScreenCubit(
-        fromKey: formKey,
-        mailController: mailController,
-        passController: passController,
-      ),
+          fromKey: formKey,
+          mailController: mailController,
+          passController: passController,
+          service: UserLoginService(Dio(BaseOptions(baseUrl: baseUrl)))),
       child: BlocConsumer<LoginScreenCubit, LoginScreenState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -43,6 +47,8 @@ class LoginScreenView extends StatelessWidget {
         builder: (context, state) {
           if (state is LoginSucces) {
             return BlankView();
+          } else if (state is LoginLoadingState) {
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else {
             return ScaffoldMethod(
                 _width, _height, context, mailController, passController);
@@ -108,8 +114,7 @@ class LoginScreenView extends StatelessWidget {
     //asdasd
     return ElevatedButton(
         onPressed: () {
-          context.read<LoginScreenCubit>().sendRequest(
-              UserRequestModel(email: mail, password: password), context);
+          context.read<LoginScreenCubit>().sendRequest();
         },
         child: Text(_signIn, style: const TextStyle(fontSize: 20)),
         style: LoginBtnCustomStyle(context, ColorConstants.secondaryColor));
