@@ -48,7 +48,7 @@ class LoginScreenView extends StatelessWidget {
               builder: (context) => BlankView(model: state.model),
             ));
           } else if (state is LoginValidateState) {
-            if (state.isValidate == false) {
+            if (state.isValidate == true) {
               showDialog(
                   context: context,
                   builder: (context) {

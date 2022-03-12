@@ -33,17 +33,23 @@ class LoginScreenCubit extends Cubit<LoginScreenState> {
   }
 
   Future<void> sendRequest() async {
-    if (formKey.currentState != null && formKey.currentState!.validate()) {
-      emit(LoginLoadingState());
-      final responseModel = await service.postUserLogin(UserRequestModel(
-          email: mailController.text, password: passController.text));
-      if (responseModel is UserResponseModel) {
-        emit(LoginSucces(responseModel));
-      } else if (responseModel == null) {
-        isLoginFail = true;
-        emit(LoginValidateState(isLoginFail));
+    try {
+      if (formKey.currentState != null && formKey.currentState!.validate()) {
+        emit(LoginLoadingState());
+        final responseModel = await service.postUserLogin(UserRequestModel(
+            email: mailController.text, password: passController.text));
+        if (responseModel is UserResponseModel) {
+          emit(LoginSucces(responseModel));
+        } else if (responseModel == null) {
+          isLoginFail = true;
+          emit(LoginValidateState(isLoginFail));
+        }
+        emit(LoginScreenInitial());
       }
-      emit(LoginScreenInitial());
+    } catch (e) {
+      isLoginFail = true;
+
+      emit(LoginValidateState(isLoginFail));
     }
   }
 }

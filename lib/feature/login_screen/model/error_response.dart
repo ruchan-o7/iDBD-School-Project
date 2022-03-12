@@ -8,8 +8,8 @@ class ErrorResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['error'] = this.error;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['error'] = error;
     return data;
   }
 }
