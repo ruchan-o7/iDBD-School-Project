@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/feature/blankview/blankview.dart';
+import 'package:school_project_ibdb/feature/login_screen/model/user_request_model.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../../core/custom/input_dec_custom.dart';
 
@@ -30,16 +32,21 @@ class LoginScreenView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => LoginScreenCubit(
-          fromKey: formKey,
-          mailController: mailController,
-          passController: passController),
+        fromKey: formKey,
+        mailController: mailController,
+        passController: passController,
+      ),
       child: BlocConsumer<LoginScreenCubit, LoginScreenState>(
         listener: (context, state) {
           // TODO: implement listener
         },
         builder: (context, state) {
-          return ScaffoldMethod(
-              _width, _height, context, mailController, passController);
+          if (state is LoginSucces) {
+            return BlankView();
+          } else {
+            return ScaffoldMethod(
+                _width, _height, context, mailController, passController);
+          }
         },
       ),
     );
@@ -72,7 +79,8 @@ class LoginScreenView extends StatelessWidget {
                       SizedBox(height: _height * 0.05),
                       optionsRow(context),
                       SizedBox(height: _height * 0.05),
-                      signInBtn(context),
+                      signInBtn(
+                          context, mailController.text, passController.text),
                       SizedBox(height: _height * 0.05),
                       signUpBtn()
                     ],
@@ -96,9 +104,13 @@ class LoginScreenView extends StatelessWidget {
 
   TextButton signUpBtn() => TextButton(onPressed: () {}, child: Text(_signUp));
 
-  ElevatedButton signInBtn(BuildContext context) {
+  ElevatedButton signInBtn(BuildContext context, String mail, String password) {
+    //asdasd
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<LoginScreenCubit>().sendRequest(
+              UserRequestModel(email: mail, password: password), context);
+        },
         child: Text(_signIn, style: const TextStyle(fontSize: 20)),
         style: LoginBtnCustomStyle(context, ColorConstants.secondaryColor));
   }
@@ -142,7 +154,7 @@ class LoginScreenView extends StatelessWidget {
         controller: mailController,
         validator: ((value) => (value ?? "").contains("@") == false
             ? "Please enter valid mail"
-            : ((value ?? "").contains(".com") == false)
+            : ((value ?? "").contains(".") == false)
                 ? "Please enter valid mail"
                 : null),
         decoration: InputDecCustom(_e_postHint));
