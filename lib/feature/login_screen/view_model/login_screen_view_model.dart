@@ -6,20 +6,21 @@ import '../service/i_user_service.dart';
 
 class LoginScreenCubit extends Cubit<LoginScreenState> {
   LoginScreenCubit({
-    required this.fromKey,
+    required this.formKey,
     required this.mailController,
     required this.passController,
     required this.service,
   }) : super(LoginScreenInitial());
   bool isChecked = false;
   bool isObsecure = true;
+  bool isLoginFail = false;
 
   final IUserLoginService service;
   UserResponseModel? responseModel;
 
   final TextEditingController mailController;
   final TextEditingController passController;
-  final GlobalKey<FormState> fromKey;
+  final GlobalKey<FormState> formKey;
 
   void changeChecker(bool? value) {
     isChecked = value!;
@@ -32,13 +33,17 @@ class LoginScreenCubit extends Cubit<LoginScreenState> {
   }
 
   Future<void> sendRequest() async {
-    emit(LoginLoadingState());
-    final responseModel = await service.postUserLogin(UserRequestModel(
-        email: mailController.text, password: passController.text));
-    if (responseModel == null) {
-      emit(LoginFailedState());
-    } else {
-      emit(LoginSucces());
+    if (formKey.currentState != null && formKey.currentState!.validate()) {
+      emit(LoginLoadingState());
+      final responseModel = await service.postUserLogin(UserRequestModel(
+          email: mailController.text, password: passController.text));
+      if (responseModel is UserResponseModel) {
+        emit(LoginSucces(responseModel));
+      } else if (responseModel == null) {
+        isLoginFail = true;
+        emit(LoginValidateState(isLoginFail));
+      }
+      emit(LoginScreenInitial());
     }
   }
 }
@@ -47,8 +52,16 @@ abstract class LoginScreenState {}
 
 class LoginScreenInitial extends LoginScreenState {}
 
-class LoginFailedState extends LoginScreenState {}
+class LoginValidateState extends LoginScreenState {
+  final bool isValidate;
 
-class LoginSucces extends LoginScreenState {}
+  LoginValidateState(this.isValidate);
+}
+
+class LoginSucces extends LoginScreenState {
+  final UserResponseModel model;
+
+  LoginSucces(this.model);
+}
 
 class LoginLoadingState extends LoginScreenState {}

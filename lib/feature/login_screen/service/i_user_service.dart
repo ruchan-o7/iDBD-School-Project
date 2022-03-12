@@ -15,8 +15,6 @@ class UserLoginService extends IUserLoginService {
 
   @override
   Future<UserResponseModel?> postUserLogin(UserRequestModel model) async {
-    UserResponseModel? resModel;
-
     final response = await dio.post("register", data: model);
     if (response.statusCode == 200) {
       return UserResponseModel.fromJson(response.data);

@@ -36,18 +36,31 @@ class LoginScreenView extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => LoginScreenCubit(
-          fromKey: formKey,
-          mailController: mailController,
-          passController: passController,
-          service: UserLoginService(Dio(BaseOptions(baseUrl: baseUrl)))),
+        formKey: formKey,
+        mailController: mailController,
+        passController: passController,
+        service: UserLoginService(Dio(BaseOptions(baseUrl: baseUrl))),
+      ),
       child: BlocConsumer<LoginScreenCubit, LoginScreenState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is LoginSucces) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BlankView(model: state.model),
+            ));
+          } else if (state is LoginValidateState) {
+            if (state.isValidate == false) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Card(
+                      child: Text("failed"),
+                    );
+                  });
+            }
+          }
         },
         builder: (context, state) {
-          if (state is LoginSucces) {
-            return BlankView();
-          } else if (state is LoginLoadingState) {
+          if (state is LoginLoadingState) {
             return Scaffold(body: Center(child: CircularProgressIndicator()));
           } else {
             return ScaffoldMethod(
@@ -72,30 +85,34 @@ class LoginScreenView extends StatelessWidget {
             children: [
               SizedBox(height: _height * 0.2),
               Text(_ibdbText, style: Theme.of(context).textTheme.headline1),
-              Form(
-                  key: formKey,
-                  autovalidateMode: AutovalidateMode
-                      .onUserInteraction, //TODO: REFACTOR WITH STATE CONTROL
-                  child: Column(
-                    children: [
-                      SizedBox(height: _height * 0.05),
-                      mailFormField(mailController, context),
-                      SizedBox(height: _height * 0.05),
-                      passFormField(passController, context),
-                      SizedBox(height: _height * 0.05),
-                      optionsRow(context),
-                      SizedBox(height: _height * 0.05),
-                      signInBtn(
-                          context, mailController.text, passController.text),
-                      SizedBox(height: _height * 0.05),
-                      signUpBtn()
-                    ],
-                  ))
+              FormBuild(_height, mailController, context, passController)
             ],
           ),
         ),
       ),
     );
+  }
+
+  Form FormBuild(
+      double _height, mailController, BuildContext context, passController) {
+    return Form(
+        key: formKey,
+        autovalidateMode: AutovalidateMode
+            .onUserInteraction, //TODO: REFACTOR WITH STATE CONTROL
+        child: Column(
+          children: [
+            SizedBox(height: _height * 0.05),
+            mailFormField(mailController, context),
+            SizedBox(height: _height * 0.05),
+            passFormField(passController, context),
+            SizedBox(height: _height * 0.05),
+            optionsRow(context),
+            SizedBox(height: _height * 0.05),
+            signInBtn(context, mailController.text, passController.text),
+            SizedBox(height: _height * 0.05),
+            signUpBtn()
+          ],
+        ));
   }
 
   Row optionsRow(BuildContext context) {
