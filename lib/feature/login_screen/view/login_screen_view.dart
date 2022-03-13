@@ -45,7 +45,7 @@ class LoginScreenView extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSucces) {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => BlankView(model: state.model),
+              builder: (context) => BlankView(),
             ));
           } else if (state is LoginValidateState) {
             if (state.isValidate == true) {
