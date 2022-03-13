@@ -1,31 +1,35 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/core/network/NetworkManager.dart';
 import 'package:school_project_ibdb/feature/blankview/model/searched_book_model.dart';
 import 'package:school_project_ibdb/feature/blankview/service/search_book_service.dart';
 
-class BlankView extends StatefulWidget {
-  const BlankView({
+class SearchView extends StatefulWidget {
+  const SearchView({
     Key? key,
   }) : super(key: key);
-  // final UserResponseModel model;
 
   @override
-  State<BlankView> createState() => _BlankViewState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _BlankViewState extends State<BlankView> {
+class _SearchViewState extends State<SearchView> {
   SearchBookModel? model2;
-  VolumeInfo? tempModel;
   late ISearchBookService service;
+  var controller = TextEditingController();
   @override
   void initState() {
-    service = SearchBookService(Dio());
-    init();
+    service = SearchBookService(NetworkManager.instance);
     super.initState();
   }
 
-  void init() async {
-    model2 = await service.searchByName("intibah");
+  void init(String val) async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (val.isEmpty) {
+      model2 = null;
+    } else {
+      model2 = await service.searchByName(val);
+    }
+
     setState(() {});
   }
 
@@ -33,29 +37,42 @@ class _BlankViewState extends State<BlankView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: model2 == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemBuilder: (context, index) {
-                  tempModel = model2?.items?[index].volumeInfo;
-                  return Card(
-                    child: ListTile(
-                      title: Text(tempModel?.title ?? "null"),
-                      subtitle: Text("${tempModel?.authors}"),
-                      leading: tempModel?.imageLinks == null
-                          ? null
-                          : Image.network(
-                              tempModel?.imageLinks?.thumbnail ?? "",
-                            ),
-                      trailing: Text("${tempModel?.categories}"),
+      body: Column(
+        children: [
+          TextField(
+            controller: controller,
+            onChanged: (val) async {
+              init(val);
+            },
+          ),
+          Expanded(
+            child: Center(
+              child: model2 == null
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      itemBuilder: (context, index) {
+                        VolumeInfo? tempModel =
+                            model2?.items?[index].volumeInfo;
+                        return Card(
+                          child: ListTile(
+                            title: Text(tempModel?.title ?? "null"),
+                            subtitle: Text("${tempModel?.authors}"),
+                            leading: tempModel?.imageLinks == null
+                                ? null
+                                : Image.network(
+                                    tempModel?.imageLinks?.thumbnail ?? "",
+                                  ),
+                            trailing: Text("${tempModel?.categories}"),
+                          ),
+                        );
+                      },
+                      itemCount: model2?.items?.length,
                     ),
-                  );
-                },
-                itemCount: model2?.items?.length,
-              ),
+            ),
+          ),
+        ],
       ),
     );
   }

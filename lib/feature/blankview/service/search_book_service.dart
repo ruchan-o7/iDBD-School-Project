@@ -1,24 +1,24 @@
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
+import 'package:school_project_ibdb/core/network/NetworkManager.dart';
 
 import '../model/searched_book_model.dart';
 
 abstract class ISearchBookService {
-  final Dio dio;
+  NetworkManager manager;
 
-  ISearchBookService(this.dio);
+  ISearchBookService(this.manager);
 
   Future<SearchBookModel?> searchByName(String nameofBook);
 }
 
 class SearchBookService extends ISearchBookService {
-  SearchBookService(Dio dio) : super(dio);
+  SearchBookService(NetworkManager manager) : super(manager);
 
   @override
   Future<SearchBookModel?> searchByName(String nameofBook) async {
-    final response = await dio.get(
-        "https://www.googleapis.com/books/v1/volumes?q=intibah:keyes&key=AIzaSyBLexVuCT5dQxJY8tMz9hleQ3st5w4nstY");
+    final response =
+        await manager.dio.get("volumes?q=${nameofBook}:${manager.apiKey}");
     inspect(response.data);
 
     if (response.statusCode == 200) {
