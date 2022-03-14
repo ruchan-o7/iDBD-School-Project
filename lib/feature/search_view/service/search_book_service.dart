@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:school_project_ibdb/core/enum/service_path.dart';
 
 import '../../../core/network/NetworkManager.dart';
