@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:school_project_ibdb/core/enum/service_path.dart';
 
 class NetworkManager {
   static NetworkManager? _instace;
@@ -8,10 +9,8 @@ class NetworkManager {
   }
 
   late final Dio dio;
-  final String _baseLoginUrl = "https://reqres.in/api";
-  final String _baseUrl = "https://www.googleapis.com/books/v1/";
-  final String apiKey = "keyes&key=AIzaSyBLexVuCT5dQxJY8tMz9hleQ3st5w4nstY";
+  // final String _baseLoginUrl = "https://reqres.in/api";
   NetworkManager._init() {
-    dio = Dio(BaseOptions(baseUrl: _baseUrl));
+    dio = Dio(BaseOptions(baseUrl: ServicePath.baseUrl.rawValue));
   }
 }

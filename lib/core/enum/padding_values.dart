@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../constants/color_constants.dart';
+enum PaddingValues {
+  min,
+  medium,
+  max,
+  ultra,
+  ultra_pro_max,
+}
 
 extension PaddingValuesExtension on PaddingValues {
   EdgeInsets rawVerticalValues(context) {

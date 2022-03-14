@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/color_constants.dart';
+import '../constants/color_constants.dart';
 
 class InputDecCustom extends InputDecoration {
   final Widget? iconButton;

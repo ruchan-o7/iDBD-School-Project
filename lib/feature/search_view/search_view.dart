@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/network/NetworkManager.dart';
-import 'package:school_project_ibdb/feature/blankview/model/searched_book_model.dart';
-import 'package:school_project_ibdb/feature/blankview/service/search_book_service.dart';
+import '../../core/network/NetworkManager.dart';
+import 'model/searched_book_model.dart';
+import 'service/search_book_service.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({

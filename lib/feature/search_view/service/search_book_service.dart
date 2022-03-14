@@ -1,7 +1,8 @@
 import 'dart:developer';
 
-import 'package:school_project_ibdb/core/network/NetworkManager.dart';
+import 'package:school_project_ibdb/core/enum/service_path.dart';
 
+import '../../../core/network/NetworkManager.dart';
 import '../model/searched_book_model.dart';
 
 abstract class ISearchBookService {
@@ -17,9 +18,8 @@ class SearchBookService extends ISearchBookService {
 
   @override
   Future<SearchBookModel?> searchByName(String nameofBook) async {
-    final response =
-        await manager.dio.get("volumes?q=${nameofBook}:${manager.apiKey}");
-    inspect(response.data);
+    final response = await manager.dio
+        .get("volumes?q=$nameofBook:${ServicePath.apiKey.rawValue}");
 
     if (response.statusCode == 200) {
       return SearchBookModel.fromJson(response.data);

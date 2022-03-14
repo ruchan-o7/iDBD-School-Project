@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/network/NetworkManager.dart';
-import '../../blankview/blankview.dart';
-import '../model/user_request_model.dart';
+import '../../../core/enum/padding_values.dart';
+import '../../search_view/search_view.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../../core/custom/input_dec_custom.dart';
 
@@ -44,8 +43,8 @@ class LoginScreenView extends StatelessWidget {
       child: BlocConsumer<LoginScreenCubit, LoginScreenState>(
         listener: (context, state) {
           if (state is LoginSucces) {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => BlankView(),
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const SearchView(),
             ));
           } else if (state is LoginValidateState) {
             if (state.isValidate == true) {
@@ -75,8 +74,7 @@ class LoginScreenView extends StatelessWidget {
       mailController, passController) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.05),
+        padding: PaddingValues.min.rawHorizontalValues(context),
         child: SingleChildScrollView(
           physics: (nodeMail.hasFocus || nodePass.hasFocus)
               ? AlwaysScrollableScrollPhysics()
