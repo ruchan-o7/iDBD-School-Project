@@ -1,73 +1,86 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../model/user_request_model.dart';
-import '../model/user_response_model.dart';
-import '../service/i_user_service.dart';
+import 'package:school_project_ibdb/product/utils/firebase/firebase_auth.dart';
 
-class LoginScreenCubit extends Cubit<LoginScreenState> {
-  LoginScreenCubit({
+class SignInScreenCubit extends Cubit<SignInScreenState> {
+  SignInScreenCubit({
+    required this.emailController,
+    required this.passwordController,
+    required this.focusEmail,
+    required this.focusPassword,
     required this.formKey,
-    required this.mailController,
-    required this.passController,
-    required this.service,
-  }) : super(LoginScreenInitial());
+  }) : super(SignInScreenInitial());
   bool isChecked = false;
   bool isObsecure = true;
   bool isLoginFail = false;
-
-  final IUserLoginService service;
-  UserResponseModel? responseModel;
-
-  final TextEditingController mailController;
-  final TextEditingController passController;
   final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final FocusNode focusEmail;
+  final FocusNode focusPassword;
+  bool _isCircular = false;
+
+  void changeIsCircular() {
+    _isCircular = !_isCircular;
+  }
+
+  Future<User?> sendRequest(
+      String eMail, String password, BuildContext context) async {
+    looseFocus();
+    User? user = await Authentication()
+        .eMailSignIn(eMail: eMail, password: password, context: context);
+    if (user != null) {
+      emit(SignInSucces(user));
+
+      return user;
+    } else {
+      emit(SignInScreenInitial());
+    }
+  }
+
+  void goToPage(BuildContext context, Widget destination) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => destination,
+    ));
+  }
+
+  void looseFocusWithEmit() {
+    focusEmail.unfocus();
+    focusPassword.unfocus();
+    emit(SignInScreenInitial());
+  }
+
+  void looseFocus() {
+    focusEmail.unfocus();
+    focusPassword.unfocus();
+  }
 
   void changeChecker(bool? value) {
     isChecked = value!;
-    emit(LoginScreenInitial());
+    emit(SignInScreenInitial());
   }
 
   void changeObsecure() {
     isObsecure = !isObsecure;
-    emit(LoginScreenInitial());
-  }
-
-  Future<void> sendRequest() async {
-    try {
-      if (formKey.currentState != null && formKey.currentState!.validate()) {
-        emit(LoginLoadingState());
-        final responseModel = await service.postUserLogin(UserRequestModel(
-            email: mailController.text, password: passController.text));
-        if (responseModel is UserResponseModel) {
-          emit(LoginSucces(responseModel));
-        } else if (responseModel == null) {
-          isLoginFail = true;
-          emit(LoginValidateState(isLoginFail));
-        }
-        emit(LoginScreenInitial());
-      }
-    } catch (e) {
-      isLoginFail = true;
-
-      emit(LoginValidateState(isLoginFail));
-    }
+    emit(SignInScreenInitial());
   }
 }
 
-abstract class LoginScreenState {}
+abstract class SignInScreenState {}
 
-class LoginScreenInitial extends LoginScreenState {}
+class SignInScreenInitial extends SignInScreenState {}
 
-class LoginValidateState extends LoginScreenState {
+class SignInValidateState extends SignInScreenState {
   final bool isValidate;
 
-  LoginValidateState(this.isValidate);
+  SignInValidateState(this.isValidate);
 }
 
-class LoginSucces extends LoginScreenState {
-  final UserResponseModel model;
+class SignInSucces extends SignInScreenState {
+  final User model;
 
-  LoginSucces(this.model);
+  SignInSucces(this.model);
 }
 
-class LoginLoadingState extends LoginScreenState {}
+class SignInLoadingState extends SignInScreenState {}

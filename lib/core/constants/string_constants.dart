@@ -8,6 +8,8 @@ class StringConstants {
   String get signUp => "Sign Up";
   String get appName => "İBDb";
   String get enterValidMail => "Please enter valid mail adress";
+  String get validatorCanNotEmpty => "This field can't be empty";
+  String get enterProperMail => "Please enter proper mail";
 }
 
 class percentageConstants {

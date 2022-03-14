@@ -3,9 +3,11 @@ import 'package:school_project_ibdb/core/constants/string_constants.dart';
 import 'package:school_project_ibdb/core/custom/custom_btn.dart';
 import 'package:school_project_ibdb/core/custom/custom_sized_box.dart';
 import 'package:school_project_ibdb/core/enum/padding_values.dart';
+import 'package:school_project_ibdb/product/utils/firebase/firebase_auth.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/custom/input_dec_custom.dart';
+import '../../product/utils/firebase/firebase_auth.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
@@ -29,13 +31,6 @@ class SignUpView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(constants.appName),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(constants.signIn)),
-        ],
         backgroundColor: ColorConstants.secondaryColor,
       ),
       body: Padding(
@@ -45,15 +40,19 @@ class SignUpView extends StatelessWidget {
                   nodePass.hasFocus ||
                   nodePassSecond.hasFocus ||
                   nodeUserNameSecond.hasFocus)
-              ? NeverScrollableScrollPhysics()
-              : AlwaysScrollableScrollPhysics(),
+              ? const NeverScrollableScrollPhysics()
+              : const AlwaysScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextFieldsMethod(context),
               Padding(
                 padding: PaddingValues.medium.rawVerticalValues(context),
-                child: CustomBtn(constants.signIn, () {}, context),
+                child: CustomBtn(constants.signIn, () async {
+                  await Authentication().signUp(
+                      mailController.text, passController.text, context);
+                  Navigator.of(context).pop();
+                }, context),
               ),
             ],
           ),
