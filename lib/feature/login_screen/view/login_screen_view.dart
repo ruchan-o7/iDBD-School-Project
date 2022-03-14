@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/core/constants/string_constants.dart';
+import 'package:school_project_ibdb/core/custom/custom_btn.dart';
+import 'package:school_project_ibdb/core/custom/custom_sized_box.dart';
+import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';
 import '../../../core/enum/padding_values.dart';
 import '../../search_view/search_view.dart';
 import '../../../core/constants/color_constants.dart';
@@ -12,13 +16,6 @@ import '../view_model/login_screen_view_model.dart';
 
 class LoginScreenView extends StatelessWidget {
   LoginScreenView({Key? key}) : super(key: key);
-  final String _ibdbText = "İBDb";
-  final String _e_postHint = "E-posta";
-  final String _passHint = "Parola";
-  final String _stayLog = "Stay Logged in";
-  final String _forgotPass = "Forgot Your Password";
-  final String _signIn = "Sign in";
-  final String _signUp = "Still not member Sign up";
   bool isChecked = false;
 
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -26,7 +23,7 @@ class LoginScreenView extends StatelessWidget {
   final TextEditingController passController = TextEditingController();
   final FocusNode nodeMail = FocusNode();
   final FocusNode nodePass = FocusNode();
-  final baseUrl = "https://reqres.in/api/";
+  StringConstants constants = StringConstants();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,7 @@ class LoginScreenView extends StatelessWidget {
         formKey: formKey,
         mailController: mailController,
         passController: passController,
-        service: UserLoginService(Dio(BaseOptions(baseUrl: baseUrl))),
+        service: UserLoginService(Dio(BaseOptions(baseUrl: "GONNA CHANGE"))),
       ),
       child: BlocConsumer<LoginScreenCubit, LoginScreenState>(
         listener: (context, state) {
@@ -51,16 +48,15 @@ class LoginScreenView extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return Card(
-                      child: Text("failed"),
-                    );
+                    return Text("failed");
                   });
             }
           }
         },
         builder: (context, state) {
           if (state is LoginLoadingState) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
           } else {
             return ScaffoldMethod(
                 _width, _height, context, mailController, passController);
@@ -74,15 +70,16 @@ class LoginScreenView extends StatelessWidget {
       mailController, passController) {
     return Scaffold(
       body: Padding(
-        padding: PaddingValues.min.rawHorizontalValues(context),
+        padding: PaddingValues.min.rawValues(context),
         child: SingleChildScrollView(
           physics: (nodeMail.hasFocus || nodePass.hasFocus)
               ? AlwaysScrollableScrollPhysics()
               : NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              SizedBox(height: _height * 0.2),
-              Text(_ibdbText, style: Theme.of(context).textTheme.headline1),
+              customSizedBox(context, 10),
+              Text(constants.appName,
+                  style: Theme.of(context).textTheme.headline1),
               FormBuild(_height, mailController, context, passController)
             ],
           ),
@@ -106,9 +103,11 @@ class LoginScreenView extends StatelessWidget {
             SizedBox(height: _height * 0.05),
             optionsRow(context),
             SizedBox(height: _height * 0.05),
-            signInBtn(context, mailController.text, passController.text),
+            CustomBtn(constants.signIn, () {
+              context.read<LoginScreenCubit>().sendRequest();
+            }, context),
             SizedBox(height: _height * 0.05),
-            signUpBtn()
+            signUpBtn(context)
           ],
         ));
   }
@@ -117,13 +116,21 @@ class LoginScreenView extends StatelessWidget {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Row(children: [
         checkBox(context),
-        Text(_stayLog),
+        Text(constants.stayLogged),
       ]),
       forgotPassBtn(),
     ]);
   }
 
-  TextButton signUpBtn() => TextButton(onPressed: () {}, child: Text(_signUp));
+  TextButton signUpBtn(context) {
+    return TextButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SignUpView(),
+          ));
+        },
+        child: Text(constants.signUp));
+  }
 
   ElevatedButton signInBtn(BuildContext context, String mail, String password) {
     //asdasd
@@ -131,12 +138,12 @@ class LoginScreenView extends StatelessWidget {
         onPressed: () {
           context.read<LoginScreenCubit>().sendRequest();
         },
-        child: Text(_signIn, style: const TextStyle(fontSize: 20)),
+        child: Text(constants.signIn, style: const TextStyle(fontSize: 20)),
         style: LoginBtnCustomStyle(context, ColorConstants.secondaryColor));
   }
 
   TextButton forgotPassBtn() {
-    return TextButton(child: Text(_forgotPass), onPressed: () {});
+    return TextButton(child: Text(constants.forgetPassword), onPressed: () {});
   }
 
   Checkbox checkBox(BuildContext context) {
@@ -156,7 +163,7 @@ class LoginScreenView extends StatelessWidget {
       controller: passController,
       focusNode: nodePass,
       obscureText: val,
-      decoration: InputDecCustom(_passHint,
+      decoration: InputDecCustom(constants.passwordHint,
           iconButton: IconButton(
               icon: Icon(
                   val ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
@@ -177,6 +184,6 @@ class LoginScreenView extends StatelessWidget {
             : ((value ?? "").contains(".") == false)
                 ? "Please enter valid mail"
                 : null),
-        decoration: InputDecCustom(_e_postHint));
+        decoration: InputDecCustom(constants.eMailHint));
   }
 }
