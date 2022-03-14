@@ -31,6 +31,7 @@
 .pub/
 /build/
 /core/enum
+lib/core/enum
 
 # Web related
 lib/generated_plugin_registrant.dart
