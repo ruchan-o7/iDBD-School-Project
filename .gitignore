@@ -32,6 +32,7 @@
 /build/
 /core/enum
 lib/core/enum
+android\app
 
 # Web related
 lib/generated_plugin_registrant.dart
