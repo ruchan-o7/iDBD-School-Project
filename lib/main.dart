@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'core/constants/color_constants.dart';
 
+import 'core/constants/color_constants.dart';
 import 'feature/login_screen/view/sign_in_view.dart';
 
 void main() => runApp(MyApp());

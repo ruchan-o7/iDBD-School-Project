@@ -1,17 +1,15 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/core/custom/custom_btn.dart';
-import 'package:school_project_ibdb/core/custom/custom_sized_box.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
-import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';
+import '../../../core/constants/string_constants.dart';
+import '../../../core/custom/custom_btn.dart';
+import '../../../core/custom/custom_sized_box.dart';
+import '../../../core/enum/padding_values.dart';
+import '../../search_view/search_view.dart';
+import '../../sign_up/sign_up_view.dart';
+import '../../../product/utils/validator/validator.dart';
 import '../../../core/custom/input_dec_custom.dart';
 
-import '../../../product/utils/firebase/firebase_auth.dart';
-import '../view_model/login_screen_view_model.dart';
+import '../view_model/sign_in_screen_view_model.dart';
 
 class SignInView extends StatelessWidget {
   SignInView({Key? key}) : super(key: key);
@@ -36,74 +34,82 @@ class SignInView extends StatelessWidget {
           if (state is SignInSucces) {}
         },
         builder: (context, state) {
-          return BlocConsumer<SignInScreenCubit, SignInScreenState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            builder: (context, state) {
-              return GestureDetector(
-                onTap: () {
-                  context.read<SignInScreenCubit>().looseFocus();
-                },
-                child: Scaffold(
-                  body: FutureBuilder(
-                    future:
-                        Authentication().initializeFirebase(context: context),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        return Padding(
-                          padding: PaddingValues.min.rawValues(context),
-                          child: Column(
-                            children: [
-                              customSizedBox(context, 10),
-                              Text(StringConstants().appName,
-                                  style: Theme.of(context).textTheme.headline1),
-                              Form(
-                                key: formkey,
-                                child: Column(
-                                  children: [
-                                    mailTextField(),
-                                    customSizedBox(
-                                        context, percentageConstants().small),
-                                    passwordTextfield(),
-                                  ],
-                                ),
-                              ),
-                              forgetPassText(context),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: percentageConstants().medium),
-                                child: CustomBtn(StringConstants().signIn,
-                                    () async {
-                                  context
-                                      .read<SignInScreenCubit>()
-                                      .looseFocus();
-                                  User? user = await context
-                                      .read<SignInScreenCubit>()
-                                      .sendRequest(emailController.text,
-                                          passwordController.text, context);
-                                  if (user != null) {
-                                    inspect(user);
-                                  }
-                                }, context),
-                              ),
-                            ],
+          if (state is LoadingFirebaseState) {
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+          } else if (state is LoadedFirebaseState) {
+            return Scaffold(
+              body: SingleChildScrollView(
+                physics: (focusEmail.hasFocus || focusPassword.hasFocus)
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                child: Padding(
+                  padding: PaddingValues.min.rawValues(context),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          customSizedBox(context, 10),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              "assets/sign_in/IBDb-logos.jpeg",
+                              height: MediaQuery.of(context).size.height * 0.3,
+                            ),
                           ),
-                        );
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else {
-                        return Container();
-                      }
-                    },
+                          customSizedBox(context, 2),
+                          Form(
+                            key: formkey,
+                            child: Column(
+                              children: [
+                                mailTextField(),
+                                customSizedBox(
+                                    context, percentageConstants().small),
+                                passwordTextfield(),
+                              ],
+                            ),
+                          ),
+                          forgetPassText(context),
+                          signInBtn(
+                              context), //await silindi belki lazım olabilir
+                        ],
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            context
+                                .read<SignInScreenCubit>()
+                                .goToPage(context, SignUpView());
+                          },
+                          child: Text(StringConstants().joinUs))
+                    ],
                   ),
                 ),
-              );
-            },
-          );
+              ),
+            );
+          } else if (state is SignInSucces) {
+            return SearchView();
+          } else {
+            return Scaffold();
+          }
         },
       ),
+    );
+  }
+
+  Padding signInBtn(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: percentageConstants().medium),
+      child: CustomBtn(StringConstants().signIn, () async {
+        context.read<SignInScreenCubit>().looseFocus();
+        if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Alanlar boş bırakılamaz")));
+        } else {
+          context.read<SignInScreenCubit>().sendRequest(
+              emailController.text, passwordController.text, context);
+        }
+      }, context),
     );
   }
 
@@ -112,18 +118,17 @@ class SignInView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-            onPressed: () {
-              context.read<SignInScreenCubit>().goToPage(context, SignUpView());
-            },
-            child: Text(StringConstants().forgetPassword))
+            onPressed: () {}, child: Text(StringConstants().forgetPassword))
       ],
     );
   }
 
   TextFormField mailTextField() {
     return TextFormField(
+      keyboardType: TextInputType.emailAddress,
       controller: emailController,
       focusNode: focusEmail,
+      validator: (v) => Validator().validateEmail(email: v),
       decoration: InputDecCustom(StringConstants().eMailHint),
     );
   }
@@ -132,6 +137,8 @@ class SignInView extends StatelessWidget {
     return TextFormField(
       controller: passwordController,
       focusNode: focusPassword,
+      obscureText: true,
+      validator: (v) => Validator().validatePassword(password: v),
       decoration: InputDecCustom(StringConstants().passwordHint),
     );
   }

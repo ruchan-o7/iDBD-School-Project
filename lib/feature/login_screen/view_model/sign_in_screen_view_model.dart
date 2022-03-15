@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firebase_auth.dart';
+import '../../../product/utils/firebase/firebase_auth.dart';
 
 class SignInScreenCubit extends Cubit<SignInScreenState> {
   SignInScreenCubit({
@@ -10,7 +11,9 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     required this.focusEmail,
     required this.focusPassword,
     required this.formKey,
-  }) : super(SignInScreenInitial());
+  }) : super(SignInScreenInitial()) {
+    init();
+  }
   bool isChecked = false;
   bool isObsecure = true;
   bool isLoginFail = false;
@@ -25,6 +28,12 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     _isCircular = !_isCircular;
   }
 
+  Future<void> init() async {
+    emit(LoadingFirebaseState());
+    FirebaseApp firebaseApp = await Authentication().initializeFirebase();
+    emit(LoadedFirebaseState(firebaseApp));
+  }
+
   Future<User?> sendRequest(
       String eMail, String password, BuildContext context) async {
     looseFocus();
@@ -35,7 +44,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
 
       return user;
     } else {
-      emit(SignInScreenInitial());
+      init();
     }
   }
 
@@ -84,3 +93,11 @@ class SignInSucces extends SignInScreenState {
 }
 
 class SignInLoadingState extends SignInScreenState {}
+
+class LoadingFirebaseState extends SignInScreenState {}
+
+class LoadedFirebaseState extends SignInScreenState {
+  final FirebaseApp app;
+
+  LoadedFirebaseState(this.app);
+}

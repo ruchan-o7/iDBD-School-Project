@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/core/custom/custom_btn.dart';
-import 'package:school_project_ibdb/core/custom/custom_sized_box.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/constants/string_constants.dart';
+import '../../core/custom/custom_btn.dart';
+import '../../core/custom/custom_sized_box.dart';
+import '../../core/enum/padding_values.dart';
+import 'sign_up_view_model.dart';
+import '../../product/utils/firebase/firebase_auth.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/custom/input_dec_custom.dart';
 import '../../product/utils/firebase/firebase_auth.dart';
+import '../../product/utils/firebase/firestore_func.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
@@ -28,6 +31,47 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SignUpCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(StringConstants().appName),
+          backgroundColor: ColorConstants.secondaryColor,
+        ),
+        body: Padding(
+          padding: PaddingValues.min.rawValues(context),
+          child: SingleChildScrollView(
+            physics: (nodeMail.hasFocus ||
+                    nodePass.hasFocus ||
+                    nodePassSecond.hasFocus ||
+                    nodeUserNameSecond.hasFocus)
+                ? const NeverScrollableScrollPhysics()
+                : const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextFieldsMethod(context),
+                Padding(
+                  padding: PaddingValues.medium.rawVerticalValues(context),
+                  child: CustomBtn(StringConstants().signIn, () async {
+                    await FirestoreFunctions().addUserWithSet(
+                        userNameController.text,
+                        mailController.text,
+                        passController.text);
+                    await Authentication().signUp(
+                        mailController.text, passController.text, context);
+                    Navigator.of(context).pop();
+                  }, context),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<Scaffold> scaffoldBuilder(BuildContext context) async {
     return Scaffold(
       appBar: AppBar(
         title: Text(constants.appName),

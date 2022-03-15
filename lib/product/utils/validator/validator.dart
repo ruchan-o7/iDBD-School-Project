@@ -1,4 +1,4 @@
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
+import '../../../core/constants/string_constants.dart';
 
 class Validator {
   String? validateName({required String? name}) {

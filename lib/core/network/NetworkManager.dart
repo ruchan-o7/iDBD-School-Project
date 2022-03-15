@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:school_project_ibdb/core/enum/service_path.dart';
+import '../enum/service_path.dart';
 
 class NetworkManager {
   static NetworkManager? _instace;

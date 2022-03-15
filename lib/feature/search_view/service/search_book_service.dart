@@ -1,4 +1,4 @@
-import 'package:school_project_ibdb/core/enum/service_path.dart';
+import '../../../core/enum/service_path.dart';
 
 import '../../../core/network/NetworkManager.dart';
 import '../model/searched_book_model.dart';

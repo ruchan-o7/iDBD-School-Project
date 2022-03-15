@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/color_constants.dart';
 
 class InputDecCustom extends InputDecoration {
@@ -7,10 +8,10 @@ class InputDecCustom extends InputDecoration {
   InputDecCustom(this.hintText, {this.iconButton})
       : super(
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(color: ColorConstants.secondaryColor)),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(color: ColorConstants.secondaryColor)),
           label: Text(hintText),
           suffixIcon: iconButton == null ? null : iconButton,

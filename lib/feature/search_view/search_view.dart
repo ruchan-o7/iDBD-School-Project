@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/custom/custom_btn.dart';
-import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';
+import 'package:school_project_ibdb/core/constants/string_constants.dart';
+import '../../core/custom/custom_btn.dart';
+import '../login_screen/view/sign_in_view.dart';
 import '../../core/network/NetworkManager.dart';
 import 'model/searched_book_model.dart';
 import 'service/search_book_service.dart';
@@ -39,15 +40,23 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                print("${FirebaseAuth.instance.currentUser}");
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => SignInView()));
+              },
+              child: Text(
+                "Sign out",
+                style: TextStyle(color: Colors.white),
+              )),
+        ],
+      ),
       body: Column(
         children: [
-          CustomBtn("signout", () async {
-            await FirebaseAuth.instance.signOut();
-            print("${FirebaseAuth.instance.currentUser}");
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => SignUpView()));
-          }, context),
           TextField(
             controller: controller,
             onChanged: (val) async {

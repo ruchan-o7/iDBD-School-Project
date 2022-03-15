@@ -10,6 +10,7 @@ class StringConstants {
   String get enterValidMail => "Please enter valid mail adress";
   String get validatorCanNotEmpty => "This field can't be empty";
   String get enterProperMail => "Please enter proper mail";
+  String get joinUs => "Don't you have account. Let's join us";
 }
 
 class percentageConstants {

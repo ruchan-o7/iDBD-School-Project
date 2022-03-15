@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/feature/search_view/search_view.dart';
+import '../../../feature/search_view/search_view.dart';
 
 class Authentication {
   Future<User?> eMailSignIn(
@@ -44,16 +44,8 @@ class Authentication {
     }
   }
 
-  Future<FirebaseApp> initializeFirebase(
-      {required BuildContext context}) async {
+  Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
-
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SearchView(),
-      ));
-    }
     return firebaseApp;
   }
 }
