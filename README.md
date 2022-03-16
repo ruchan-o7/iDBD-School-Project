@@ -5,7 +5,7 @@ Features:
   <li>Sign Out</li>
   <li>Create user</li>
 </ol>
-## Screenshots
+Screenshots
 
 
 <img src="https://user-images.githubusercontent.com/44341663/158367103-77b47af0-ba11-4ba1-9675-666f796a0874.png" width=250>
