@@ -9,7 +9,6 @@ import '../../product/utils/firebase/firebase_auth.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/custom/input_dec_custom.dart';
-import '../../product/utils/firebase/firebase_auth.dart';
 import '../../product/utils/firebase/firestore_func.dart';
 
 class SignUpView extends StatelessWidget {
@@ -26,78 +25,43 @@ class SignUpView extends StatelessWidget {
   final FocusNode nodePassSecond = FocusNode();
   final FocusNode nodeUserNameSecond = FocusNode();
 
-  StringConstants constants = StringConstants();
-  percentageConstants perconstants = percentageConstants();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpCubit(),
+      create: (context) => SignUpCubit(
+          formKey: formKey,
+          mailController: mailController,
+          nodeMail: nodeMail,
+          nodePass: nodePass,
+          nodePassSecond: nodePassSecond,
+          nodeUserNameSecond: nodeUserNameSecond,
+          passController: passController,
+          passwordSecondController: passwordSecondController,
+          userNameController: userNameController),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(StringConstants().appName),
-          backgroundColor: ColorConstants.secondaryColor,
+          title: Text(StringConstants().signUp),
         ),
-        body: Padding(
-          padding: PaddingValues.min.rawValues(context),
-          child: SingleChildScrollView(
-            physics: (nodeMail.hasFocus ||
-                    nodePass.hasFocus ||
-                    nodePassSecond.hasFocus ||
-                    nodeUserNameSecond.hasFocus)
-                ? const NeverScrollableScrollPhysics()
-                : const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextFieldsMethod(context),
-                Padding(
-                  padding: PaddingValues.medium.rawVerticalValues(context),
-                  child: CustomBtn(StringConstants().signIn, () async {
-                    await FirestoreFunctions().addUserWithSet(
-                        userNameController.text,
-                        mailController.text,
-                        passController.text);
-                    await Authentication().signUp(
-                        mailController.text, passController.text, context);
-                    Navigator.of(context).pop();
-                  }, context),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<Scaffold> scaffoldBuilder(BuildContext context) async {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(constants.appName),
-        backgroundColor: ColorConstants.secondaryColor,
-      ),
-      body: Padding(
-        padding: PaddingValues.min.rawValues(context),
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           physics: (nodeMail.hasFocus ||
                   nodePass.hasFocus ||
                   nodePassSecond.hasFocus ||
                   nodeUserNameSecond.hasFocus)
               ? const NeverScrollableScrollPhysics()
               : const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.only(left: 12, right: 12, top: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextFieldsMethod(context),
               Padding(
                 padding: PaddingValues.medium.rawVerticalValues(context),
-                child: CustomBtn(constants.signIn, () async {
-                  await Authentication().signUp(
+                child: CustomBtn(StringConstants().signIn, () async {
+                  context.read<SignUpCubit>().saveUser(userNameController.text,
                       mailController.text, passController.text, context);
                   Navigator.of(context).pop();
                 }, context),
-              ),
+              )
             ],
           ),
         ),
@@ -109,11 +73,11 @@ class SignUpView extends StatelessWidget {
     return Column(
       children: [
         userNameMethod(),
-        customSizedBox(context, perconstants.small),
+        customSizedBox(context, percentageConstants().small),
         mailMethod(),
-        customSizedBox(context, perconstants.small),
+        customSizedBox(context, percentageConstants().small),
         passwordMethod(),
-        customSizedBox(context, perconstants.small),
+        customSizedBox(context, percentageConstants().small),
         passwordAgainMethod()
       ],
     );
@@ -126,11 +90,11 @@ class SignUpView extends StatelessWidget {
         focusNode: nodeUserNameSecond,
         controller: userNameController,
         validator: ((value) => (value ?? "").contains("@") == false
-            ? constants.enterValidMail
+            ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
-                ? constants.enterValidMail
+                ? StringConstants().enterValidMail
                 : null),
-        decoration: InputDecCustom(constants.userNameHint));
+        decoration: InputDecCustom(StringConstants().userNameHint));
   }
 
   TextFormField mailMethod() {
@@ -140,11 +104,11 @@ class SignUpView extends StatelessWidget {
         focusNode: nodeMail,
         controller: mailController,
         validator: ((value) => (value ?? "").contains("@") == false
-            ? constants.enterValidMail
+            ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
-                ? constants.enterValidMail
+                ? StringConstants().enterValidMail
                 : null),
-        decoration: InputDecCustom(constants.eMailHint));
+        decoration: InputDecCustom(StringConstants().eMailHint));
   }
 
   TextFormField passwordMethod() {
@@ -154,11 +118,11 @@ class SignUpView extends StatelessWidget {
         focusNode: nodePass,
         controller: passController,
         validator: ((value) => (value ?? "").contains("@") == false
-            ? constants.enterValidMail
+            ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
-                ? constants.enterValidMail
+                ? StringConstants().enterValidMail
                 : null),
-        decoration: InputDecCustom(constants.passwordHint));
+        decoration: InputDecCustom(StringConstants().passwordHint));
   }
 
   TextFormField passwordAgainMethod() {
@@ -168,10 +132,10 @@ class SignUpView extends StatelessWidget {
         focusNode: nodePassSecond,
         controller: passwordSecondController,
         validator: ((value) => (value ?? "").contains("@") == false
-            ? constants.enterValidMail
+            ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
-                ? constants.enterValidMail
+                ? StringConstants().enterValidMail
                 : null),
-        decoration: InputDecCustom("${constants.passwordHint} again"));
+        decoration: InputDecCustom("${StringConstants().passwordHint} again"));
   }
 }

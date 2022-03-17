@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../core/custom/custom_btn.dart';
 import '../../../core/custom/custom_sized_box.dart';
@@ -31,62 +32,19 @@ class SignInView extends StatelessWidget {
           passwordController: passwordController),
       child: BlocConsumer<SignInScreenCubit, SignInScreenState>(
         listener: (context, state) {
-          if (state is SignInSucces) {}
+          if (state is SignInLoadingState) {
+            AlertDialog(
+              title: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           if (state is LoadingFirebaseState) {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
+            return progressBuilder();
           } else if (state is LoadedFirebaseState) {
-            return Scaffold(
-              body: SingleChildScrollView(
-                physics: (focusEmail.hasFocus || focusPassword.hasFocus)
-                    ? const AlwaysScrollableScrollPhysics()
-                    : const NeverScrollableScrollPhysics(),
-                child: Padding(
-                  padding: PaddingValues.min.rawValues(context),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          customSizedBox(context, 10),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              "assets/sign_in/IBDb-logos.jpeg",
-                              height: MediaQuery.of(context).size.height * 0.3,
-                            ),
-                          ),
-                          customSizedBox(context, 2),
-                          Form(
-                            key: formkey,
-                            child: Column(
-                              children: [
-                                mailTextField(),
-                                customSizedBox(
-                                    context, percentageConstants().small),
-                                passwordTextfield(),
-                              ],
-                            ),
-                          ),
-                          forgetPassText(context),
-                          signInBtn(
-                              context), //await silindi belki lazım olabilir
-                        ],
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            context
-                                .read<SignInScreenCubit>()
-                                .goToPage(context, SignUpView());
-                          },
-                          child: Text(StringConstants().joinUs))
-                    ],
-                  ),
-                ),
-              ),
-            );
+            return generalStrucyBuilder(context);
           } else if (state is SignInSucces) {
             return SearchView();
           } else {
@@ -95,6 +53,71 @@ class SignInView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Scaffold generalStrucyBuilder(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: (focusEmail.hasFocus || focusPassword.hasFocus)
+            ? const AlwaysScrollableScrollPhysics()
+            : const NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: PaddingValues.min.rawValues(context),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [structBuilder(context), joinUsBuilder(context)],
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextButton joinUsBuilder(BuildContext context) {
+    return TextButton(
+        onPressed: () {
+          context.read<SignInScreenCubit>().goToPage(context, SignUpView());
+        },
+        child: Text(StringConstants().joinUs));
+  }
+
+  Column structBuilder(BuildContext context) {
+    return Column(
+      children: [
+        customSizedBox(context, 10),
+        logoBuilder(context),
+        customSizedBox(context, 2),
+        formBuilder(context),
+        forgetPassText(context),
+        signInBtn(context), //await silindi belki lazım olabilir
+      ],
+    );
+  }
+
+  ClipRRect logoBuilder(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image.asset(
+        LogoPaths.normal,
+        height: MediaQuery.of(context).size.height * 0.3,
+      ),
+    );
+  }
+
+  Form formBuilder(BuildContext context) {
+    return Form(
+      key: formkey,
+      child: Column(
+        children: [
+          mailTextField(),
+          customSizedBox(context, percentageConstants().small),
+          passwordTextfield(),
+        ],
+      ),
+    );
+  }
+
+  Scaffold progressBuilder() {
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
   Padding signInBtn(BuildContext context) {

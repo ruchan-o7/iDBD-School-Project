@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/color_constants.dart';
 import 'login_button_custom.dart';
 
 class CustomBtn extends ElevatedButton {
@@ -21,5 +20,5 @@ class CustomBtn extends ElevatedButton {
                     .textTheme
                     .headline6!
                     .copyWith(color: Colors.white)),
-            style: LoginBtnCustomStyle(context, ColorConstants.secondaryColor));
+            style: LoginBtnCustomStyle(context));
 }

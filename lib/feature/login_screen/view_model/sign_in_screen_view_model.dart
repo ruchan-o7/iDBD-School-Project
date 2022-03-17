@@ -37,6 +37,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
   Future<User?> sendRequest(
       String eMail, String password, BuildContext context) async {
     looseFocus();
+    emit(SignInLoadingState());
     User? user = await Authentication()
         .eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-
-import '../constants/color_constants.dart';
+import 'package:school_project_ibdb/core/theme/app_theme.dart';
 
 class InputDecCustom extends InputDecoration {
   final Widget? iconButton;
+  final String hintTextstring;
 
-  InputDecCustom(this.hintText, {this.iconButton})
+  InputDecCustom(this.hintTextstring, {this.iconButton})
       : super(
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: ColorConstants.secondaryColor)),
+            borderRadius: BorderRadius.circular(20),
+            // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(color: ColorConstants.secondaryColor)),
-          label: Text(hintText),
+            borderRadius: BorderRadius.circular(20),
+            // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
+          ),
+          label: Text(hintTextstring),
           suffixIcon: iconButton == null ? null : iconButton,
         );
-  final String hintText;
 }
