@@ -3,7 +3,7 @@ class StringConstants {
   String get passwordHint => "Password";
   String get userNameHint => "User Name";
   String get stayLogged => "Stay Logged in";
-  String get forgetPassword => "Forgot Password?";
+  String get forgetPassword => "Şifreni mi Unuttun?";
   String get signIn => "Sign in";
   String get signUp => "Sign Up";
   String get appName => "İBDb";
@@ -11,6 +11,8 @@ class StringConstants {
   String get validatorCanNotEmpty => "This field can't be empty";
   String get enterProperMail => "Please enter proper mail";
   String get joinUs => "Don't you have account. Let's join us";
+  String get howCanISignUp => "Nasıl kayıt olabilirim";
+  String get changeEMail => "E-postamı değiştirmek istiyorum";
 }
 
 class percentageConstants {

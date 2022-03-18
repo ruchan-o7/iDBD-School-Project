@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/core/constants/string_constants.dart';
 import 'package:school_project_ibdb/core/enum/padding_values.dart';
 
 import '../about_view/about_view.dart';
@@ -28,18 +29,19 @@ class HelpView extends StatelessWidget {
                 children: [
                   ElevatedButton(
                       onPressed: () {},
-                      child: const Text("Nasıl kayıt olabilirim")),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {}, child: const Text("Şifremi Unuttum")),
+                      child: Text(StringConstants().howCanISignUp)),
                   const Divider(
                     thickness: 2,
                   ),
                   ElevatedButton(
                       onPressed: () {},
-                      child: const Text("E-posta değiştirmek istiyorum")),
+                      child: Text(StringConstants().forgetPassword)),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {},
+                      child: Text(StringConstants().changeEMail)),
                   const Divider(
                     thickness: 2,
                   ),
