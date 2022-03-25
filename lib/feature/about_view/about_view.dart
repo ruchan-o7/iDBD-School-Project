@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
-import 'package:school_project_ibdb/core/theme/app_theme.dart';
+import '../../core/enum/padding_values.dart';
+import '../../core/theme/app_theme.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
+import '../../core/constants/string_constants.dart';
+import '../../core/enum/padding_values.dart';
 
 import '../about_view/about_view.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
+import '../../../core/constants/logo_path.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../core/custom/custom_btn.dart';
 import '../../../core/custom/custom_sized_box.dart';

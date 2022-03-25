@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
+import '../../core/constants/logo_path.dart';
+import '../../core/enum/padding_values.dart';
 
 class MenuView extends StatelessWidget {
   const MenuView({Key? key}) : super(key: key);
