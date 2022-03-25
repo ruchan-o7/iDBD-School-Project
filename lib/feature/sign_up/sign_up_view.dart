@@ -5,48 +5,26 @@ import '../../core/custom/custom_btn.dart';
 import '../../core/custom/custom_sized_box.dart';
 import '../../core/enum/padding_values.dart';
 import 'sign_up_view_model.dart';
-import '../../product/utils/firebase/firebase_auth.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/custom/input_dec_custom.dart';
-import '../../product/utils/firebase/firestore_func.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
-  final GlobalKey<FormState> formKey = GlobalKey();
-  final TextEditingController mailController = TextEditingController();
-  final TextEditingController passwordSecondController =
-      TextEditingController();
-  final TextEditingController passController = TextEditingController();
-  final TextEditingController userNameController = TextEditingController();
-
-  final FocusNode nodeMail = FocusNode();
-  final FocusNode nodePass = FocusNode();
-  final FocusNode nodePassSecond = FocusNode();
-  final FocusNode nodeUserNameSecond = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignUpCubit(
-          formKey: formKey,
-          mailController: mailController,
-          nodeMail: nodeMail,
-          nodePass: nodePass,
-          nodePassSecond: nodePassSecond,
-          nodeUserNameSecond: nodeUserNameSecond,
-          passController: passController,
-          passwordSecondController: passwordSecondController,
-          userNameController: userNameController),
+      create: (context) => SignUpCubit(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(StringConstants().signUp),
         ),
         body: SingleChildScrollView(
-          physics: (nodeMail.hasFocus ||
-                  nodePass.hasFocus ||
-                  nodePassSecond.hasFocus ||
-                  nodeUserNameSecond.hasFocus)
+          physics: (context.read<SignUpCubit>().nodeMail.hasFocus ||
+                  context.read<SignUpCubit>().nodePass.hasFocus ||
+                  context.read<SignUpCubit>().nodePassSecond.hasFocus ||
+                  context.read<SignUpCubit>().nodeUserNameSecond.hasFocus)
               ? const NeverScrollableScrollPhysics()
               : const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.only(left: 12, right: 12, top: 15),
@@ -57,8 +35,11 @@ class SignUpView extends StatelessWidget {
               Padding(
                 padding: PaddingValues.medium.rawVerticalValues(context),
                 child: CustomBtn(StringConstants().signIn, () async {
-                  context.read<SignUpCubit>().saveUser(userNameController.text,
-                      mailController.text, passController.text, context);
+                  context.read<SignUpCubit>().saveUser(
+                      context.read<SignUpCubit>().userNameController.text,
+                      context.read<SignUpCubit>().mailController.text,
+                      context.read<SignUpCubit>().passController.text,
+                      context);
                   Navigator.of(context).pop();
                 }, context),
               )
@@ -72,23 +53,23 @@ class SignUpView extends StatelessWidget {
   Column TextFieldsMethod(BuildContext context) {
     return Column(
       children: [
-        userNameMethod(),
+        userNameMethod(context),
         customSizedBox(context, percentageConstants().small),
-        mailMethod(),
+        mailMethod(context),
         customSizedBox(context, percentageConstants().small),
-        passwordMethod(),
+        passwordMethod(context),
         customSizedBox(context, percentageConstants().small),
-        passwordAgainMethod()
+        passwordAgainMethod(context)
       ],
     );
   }
 
-  TextFormField userNameMethod() {
+  TextFormField userNameMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: ColorConstants.secondaryColor,
-        focusNode: nodeUserNameSecond,
-        controller: userNameController,
+        focusNode: context.read<SignUpCubit>().nodeUserNameSecond,
+        controller: context.read<SignUpCubit>().userNameController,
         validator: ((value) => (value ?? "").contains("@") == false
             ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
@@ -97,12 +78,12 @@ class SignUpView extends StatelessWidget {
         decoration: InputDecCustom(StringConstants().userNameHint));
   }
 
-  TextFormField mailMethod() {
+  TextFormField mailMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: ColorConstants.secondaryColor,
-        focusNode: nodeMail,
-        controller: mailController,
+        focusNode: context.read<SignUpCubit>().nodeMail,
+        controller: context.read<SignUpCubit>().mailController,
         validator: ((value) => (value ?? "").contains("@") == false
             ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
@@ -111,12 +92,12 @@ class SignUpView extends StatelessWidget {
         decoration: InputDecCustom(StringConstants().eMailHint));
   }
 
-  TextFormField passwordMethod() {
+  TextFormField passwordMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: ColorConstants.secondaryColor,
-        focusNode: nodePass,
-        controller: passController,
+        focusNode: context.read<SignUpCubit>().nodePass,
+        controller: context.read<SignUpCubit>().passController,
         validator: ((value) => (value ?? "").contains("@") == false
             ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)
@@ -125,12 +106,12 @@ class SignUpView extends StatelessWidget {
         decoration: InputDecCustom(StringConstants().passwordHint));
   }
 
-  TextFormField passwordAgainMethod() {
+  TextFormField passwordAgainMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: ColorConstants.secondaryColor,
-        focusNode: nodePassSecond,
-        controller: passwordSecondController,
+        focusNode: context.read<SignUpCubit>().nodePassSecond,
+        controller: context.read<SignUpCubit>().passwordSecondController,
         validator: ((value) => (value ?? "").contains("@") == false
             ? StringConstants().enterValidMail
             : ((value ?? "").contains(".") == false)

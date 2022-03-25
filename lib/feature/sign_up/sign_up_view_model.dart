@@ -5,26 +5,17 @@ import '../../product/utils/firebase/firebase_auth.dart';
 import '../../product/utils/firebase/firestore_func.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(
-      {required this.nodeMail,
-      required this.nodePass,
-      required this.nodePassSecond,
-      required this.nodeUserNameSecond,
-      required this.formKey,
-      required this.mailController,
-      required this.passwordSecondController,
-      required this.passController,
-      required this.userNameController})
-      : super(SignUpInitial());
-  final FocusNode nodeMail;
-  final FocusNode nodePass;
-  final FocusNode nodePassSecond;
-  final FocusNode nodeUserNameSecond;
-  final GlobalKey<FormState> formKey;
-  final TextEditingController mailController;
-  final TextEditingController passwordSecondController;
-  final TextEditingController passController;
-  final TextEditingController userNameController;
+  SignUpCubit() : super(SignUpInitial());
+  final FocusNode nodeMail = FocusNode();
+  final FocusNode nodePass = FocusNode();
+  final FocusNode nodePassSecond = FocusNode();
+  final FocusNode nodeUserNameSecond = FocusNode();
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController mailController = TextEditingController();
+  final TextEditingController passwordSecondController =
+      TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
 
   Future<void> saveUser(String username, String mail, String password,
       BuildContext context) async {
