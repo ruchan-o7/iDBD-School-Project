@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: randomColorSchemeLight(seed: 12345123)),
       title: 'Ibdb',
-      home: HelpView(),
+      home: SearchView(),
     );
   }
 }

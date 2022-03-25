@@ -47,13 +47,13 @@ class HelpView extends StatelessWidget {
                   ),
                   ElevatedButton(
                       onPressed: () {},
-                      child: const Text("Beğendiğim kitaplara nasıl bakarım?")),
+                      child: Text("Beğendiğim kitaplara nasıl bakarım?")),
                   const Divider(
                     thickness: 2,
                   ),
                   ElevatedButton(
                       onPressed: () {},
-                      child: const Text("Hesap kapatmak istiyorum")),
+                      child: Text("Hesap kapatmak istiyorum")),
                 ],
               ),
               Hero(

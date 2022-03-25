@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/enum/service_path.dart';
 
 import '../../../core/network/NetworkManager.dart';
@@ -18,7 +20,7 @@ class SearchBookService extends ISearchBookService {
   Future<SearchBookModel?> searchByName(String nameofBook) async {
     final response = await manager.dio
         .get("volumes?q=$nameofBook:${ServicePath.apiKey.rawValue}");
-
+    log("volumes?q=$nameofBook:${ServicePath.apiKey.rawValue}");
     if (response.statusCode == 200) {
       return SearchBookModel.fromJson(response.data);
     }

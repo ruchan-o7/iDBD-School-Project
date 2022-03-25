@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import '../../core/custom/custom_btn.dart';
 import '../login_screen/view/sign_in_view.dart';
 import '../../core/network/NetworkManager.dart';
 import 'model/searched_book_model.dart';
@@ -57,9 +55,9 @@ class _SearchViewState extends State<SearchView> {
       ),
       body: Column(
         children: [
-          TextField(
+          TextFormField(
             controller: controller,
-            onChanged: (val) async {
+            onFieldSubmitted: (val) async {
               init(val);
             },
           ),
