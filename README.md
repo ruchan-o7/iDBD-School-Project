@@ -5,6 +5,38 @@ Features:
   <li>Sign Out</li>
   <li>Create user</li>
 </ol>
+
+
+
+
+TODO:
+- Login - done
+- about - done
+- SignUp - done
+- menu - done
+- Send verification 
+- Account verification 
+- forget password verification
+- forget password new password
+- Help - done
+- Application menu 
+- Explore 
+- Category page
+- Category selected 
+- Book preview 
+- Book search - done
+- Profile 
+- Liked books
+- Read book
+- Statistics page
+- Admin panel
+- Editor page
+- publisher page
+- User settings
+- Change user name 
+- Change password
+- Change mail page
+- Shutdown account
 Screenshots
 
 
