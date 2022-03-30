@@ -152,7 +152,7 @@ class SignInView extends StatelessWidget {
       controller: emailController,
       focusNode: focusEmail,
       validator: (v) => Validator().validateEmail(email: v),
-      decoration: InputDecCustom(StringConstants().eMailHint),
+      decoration: InputDecCustom(StringConstants().eMailHint, isMail: true),
     );
   }
 

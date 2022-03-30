@@ -1,0 +1,21 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
+import '../color/i_color_theme.dart';
+
+abstract class ITextTheme {
+  String? fontFamily;
+  TextStyle? headline2;
+  TextStyle? headline4;
+  TextStyle? headline5;
+  TextStyle? headline6;
+  TextStyle? body1;
+  TextStyle? body2;
+  final Color? primaryColor;
+  TextStyle? button;
+
+  AppColors get getAppColors;
+
+  ITextTheme(this.primaryColor);
+}
