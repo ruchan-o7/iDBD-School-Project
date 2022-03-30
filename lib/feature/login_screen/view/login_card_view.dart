@@ -75,82 +75,85 @@ class LoginCardView extends StatelessWidget {
           Positioned(
               child: CircleShape(shapeColor: Colors.blue),
               left: context.dynamicWidth(0.3)),
-          Container(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: context.horizontalPaddingMedium,
-                    child: Card(
-                      color: Colors.green[100],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              context.dynamicWidth(0.05))),
-                      child: Padding(
-                        padding: context.horizontalPaddingNormal,
-                        child: Form(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: context.dynamicHeight(0.02),
-                              ),
-                              Text("Log in",
-                                  style: Theme.of(context).textTheme.headline3),
-                              Text("Welcome",
-                                  style: Theme.of(context).textTheme.headline5),
-                              SizedBox(
-                                height: context.dynamicHeight(0.04),
-                              ),
-                              mailTextField(context),
-                              SizedBox(
-                                height: context.dynamicHeight(0.02),
-                              ),
-                              passTextField(context),
-                              ForgetPassBTN(context),
-                              LogInBTN(),
-                              const Divider(thickness: 2),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                Colors.lightGreen[200]!),
-                                        shape: MaterialStateProperty.all(
-                                            const StadiumBorder()),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SignUpView(),
-                                            ));
-                                      },
-                                      child: const Text("Sign Up"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: context.dynamicHeight(0.02),
-                              ),
-                            ],
-                          ),
+          dataStruct(context),
+        ]),
+      ),
+    );
+  }
+
+  Container dataStruct(BuildContext context) {
+    return Container(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: context.horizontalPaddingMedium,
+              child: Card(
+                color: Colors.green[100],
+                shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(context.dynamicWidth(0.05))),
+                child: Padding(
+                  padding: context.horizontalPaddingNormal,
+                  child: Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: context.dynamicHeight(0.02),
                         ),
-                      ),
+                        Text("Log in",
+                            style: Theme.of(context).textTheme.headline3),
+                        Text("Welcome",
+                            style: Theme.of(context).textTheme.headline5),
+                        SizedBox(
+                          height: context.dynamicHeight(0.04),
+                        ),
+                        mailTextField(context),
+                        SizedBox(
+                          height: context.dynamicHeight(0.02),
+                        ),
+                        passTextField(context),
+                        ForgetPassBTN(context),
+                        LogInBTN(context),
+                        const Divider(thickness: 2),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.lightGreen[200]!),
+                                  shape: MaterialStateProperty.all(
+                                      const StadiumBorder()),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SignUpView(),
+                                      ));
+                                },
+                                child: const Text("Sign Up"),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: context.dynamicHeight(0.02),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -191,7 +194,7 @@ class LoginCardView extends StatelessWidget {
     );
   }
 
-  Row LogInBTN() {
+  Row LogInBTN(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -200,7 +203,13 @@ class LoginCardView extends StatelessWidget {
               shape: MaterialStateProperty.all(const StadiumBorder()),
             ),
             onPressed: () {},
-            child: const Text("Log in"),
+            child: Text(
+              "Log in",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  ?.copyWith(color: Colors.white),
+            ),
           ),
         ),
       ],

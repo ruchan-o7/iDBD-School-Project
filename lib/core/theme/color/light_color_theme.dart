@@ -29,11 +29,11 @@ class LightColorTheme implements IColorTheme {
     appBarColor = colors.scaffoldColor;
     colorRed = colors.red;
     backgroundColor = colors.scaffoldColor;
-    floatingButtonColor = colors.riceVine;
+    floatingButtonColor = colors.white;
     textfield = colors.textfieldColor;
     brightness = Brightness.light;
     colorScheme = const ColorScheme.light().copyWith(
-      onPrimary: colors.riceVine,
+      onPrimary: colors.green,
       onSurface: colors.prussianPlum,
       primary: colors.green,
     );

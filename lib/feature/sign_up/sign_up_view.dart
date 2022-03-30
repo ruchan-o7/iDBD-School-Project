@@ -78,7 +78,7 @@ class SignUpView extends StatelessWidget {
                     userUID: ""),
                 context);
           },
-          child: Text("Sign Up"),
+          child: Text("Sign Up", style: Theme.of(context).textTheme.headline5),
           style: ButtonStyle(
               padding: MaterialStateProperty.all(context.verticalPaddingNormal),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
