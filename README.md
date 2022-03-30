@@ -32,7 +32,7 @@ TODO:
 - Admin panel
 - Editor page
 - publisher page
-- User settings
+- User settings - done
 - Change user name 
 - Change password
 - Change mail page
