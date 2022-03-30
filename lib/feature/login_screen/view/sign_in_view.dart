@@ -12,8 +12,8 @@ import '../../../core/custom/input_dec_custom.dart';
 
 import '../view_model/sign_in_screen_view_model.dart';
 
-class SignInView extends StatelessWidget {
-  SignInView({Key? key}) : super(key: key);
+class SignInViewold extends StatelessWidget {
+  SignInViewold({Key? key}) : super(key: key);
   bool isChecked = false;
   final formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();

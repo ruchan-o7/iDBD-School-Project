@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +7,8 @@ import '../../product/utils/firebase/firestore_func.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());
+  IAuthentication authentication = Authentication(FirebaseAuth.instance);
+
   final FocusNode nodeMail = FocusNode();
   final FocusNode nodePass = FocusNode();
   final FocusNode nodePassSecond = FocusNode();
@@ -21,8 +24,8 @@ class SignUpCubit extends Cubit<SignUpState> {
       BuildContext context) async {
     await FirestoreFunctions().addUserWithSet(
         userNameController.text, mailController.text, passController.text);
-    await Authentication()
-        .signUp(mailController.text, passController.text, context);
+    await authentication.signUp(
+        mailController.text, passController.text, context);
   }
 }
 

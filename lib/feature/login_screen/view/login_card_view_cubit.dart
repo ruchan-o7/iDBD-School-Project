@@ -2,16 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../product/utils/firebase/firebase_auth.dart';
 
-class SignInScreenCubit extends Cubit<SignInScreenState> {
-  SignInScreenCubit({
+import '../../../product/utils/firebase/firebase_auth.dart';
+import '../../sign_up/sign_up_view.dart';
+
+class LoginCardCubit extends Cubit<LoginCardState> {
+  LoginCardCubit({
     required this.emailController,
     required this.passwordController,
     required this.focusEmail,
     required this.focusPassword,
     required this.formKey,
-  }) : super(SignInScreenInitial()) {
+  }) : super(LoginCardInitial()) {
     init();
   }
   bool isChecked = false;
@@ -29,6 +31,10 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     _isCircular = !_isCircular;
   }
 
+  void goToSignUpPage(BuildContext context) {
+    emit(SignUpViewState());
+  }
+
   Future<void> init() async {
     emit(LoadingFirebaseState());
     FirebaseApp firebaseApp = await authentication.initializeFirebase();
@@ -38,11 +44,11 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
   Future<User?> sendRequest(
       String eMail, String password, BuildContext context) async {
     looseFocus();
-    emit(SignInLoadingState());
+    emit(LoginLoading());
     User? user = await authentication.eMailSignIn(
         eMail: eMail, password: password, context: context);
     if (user != null) {
-      emit(SignInSucces(user));
+      emit(LoginSucces(user));
 
       return user;
     } else {
@@ -59,7 +65,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
   void looseFocusWithEmit() {
     focusEmail.unfocus();
     focusPassword.unfocus();
-    emit(SignInScreenInitial());
+    emit(LoginCardInitial());
   }
 
   void looseFocus() {
@@ -69,37 +75,33 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
 
   void changeChecker(bool? value) {
     isChecked = value!;
-    emit(SignInScreenInitial());
+    emit(LoginCardInitial());
   }
 
   void changeObsecure() {
     isObsecure = !isObsecure;
-    emit(SignInScreenInitial());
+    emit(LoginCardInitial());
   }
 }
 
-abstract class SignInScreenState {}
+class LoginCardInitial extends LoginCardState {}
 
-class SignInScreenInitial extends SignInScreenState {}
+abstract class LoginCardState {}
 
-class SignInValidateState extends SignInScreenState {
-  final bool isValidate;
-
-  SignInValidateState(this.isValidate);
-}
-
-class SignInSucces extends SignInScreenState {
+class LoginSucces extends LoginCardState {
   final User model;
 
-  SignInSucces(this.model);
+  LoginSucces(this.model);
 }
 
-class SignInLoadingState extends SignInScreenState {}
+class LoginLoading extends LoginCardState {}
 
-class LoadingFirebaseState extends SignInScreenState {}
+class LoadingFirebaseState extends LoginCardState {}
 
-class LoadedFirebaseState extends SignInScreenState {
+class LoadedFirebaseState extends LoginCardState {
   final FirebaseApp app;
 
   LoadedFirebaseState(this.app);
 }
+
+class SignUpViewState extends LoginCardState {}

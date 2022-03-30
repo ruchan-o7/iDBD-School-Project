@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/custom/custom_btn.dart';
 import '../login_screen/view/sign_in_view.dart';
@@ -47,7 +48,7 @@ class _SearchViewState extends State<SearchView> {
                 await FirebaseAuth.instance.signOut();
                 print("${FirebaseAuth.instance.currentUser}");
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignInView()));
+                    MaterialPageRoute(builder: (context) => LoginCardView()));
               },
               child: Text(
                 "Sign out",

@@ -3,12 +3,28 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../../../feature/search_view/search_view.dart';
 
-class Authentication {
+abstract class IAuthentication {
+  FirebaseAuth auth;
+
+  IAuthentication(this.auth);
+
+  Future<User?> eMailSignIn(
+      {required String eMail,
+      required String password,
+      required BuildContext context});
+  Future<void> signUp(String email, String password, BuildContext context);
+  Future<void> signOut();
+  Future<FirebaseApp> initializeFirebase();
+}
+
+class Authentication extends IAuthentication {
+  Authentication(FirebaseAuth auth) : super(auth = FirebaseAuth.instance);
+
+  @override
   Future<User?> eMailSignIn(
       {required String eMail,
       required String password,
       required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
@@ -23,11 +39,12 @@ class Authentication {
     return user;
   }
 
+  @override
   Future<void> signUp(
       String email, String password, BuildContext context) async {
     try {
-      UserCredential credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         ScaffoldMessenger.of(context)
@@ -36,14 +53,16 @@ class Authentication {
     }
   }
 
+  @override
   Future<void> signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await auth.signOut();
     } catch (e) {
       print(e);
     }
   }
 
+  @override
   Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
