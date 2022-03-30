@@ -7,23 +7,17 @@ import '../../../product/utils/firebase/firebase_auth.dart';
 import '../../sign_up/sign_up_view.dart';
 
 class LoginCardCubit extends Cubit<LoginCardState> {
-  LoginCardCubit({
-    required this.emailController,
-    required this.passwordController,
-    required this.focusEmail,
-    required this.focusPassword,
-    required this.formKey,
-  }) : super(LoginCardInitial()) {
+  LoginCardCubit() : super(LoginCardInitial()) {
     init();
   }
   bool isChecked = false;
   bool isObsecure = true;
   bool isLoginFail = false;
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final FocusNode focusEmail;
-  final FocusNode focusPassword;
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final FocusNode focusEmail = FocusNode();
+  final FocusNode focusPassword = FocusNode();
   bool _isCircular = false;
   IAuthentication authentication = Authentication(FirebaseAuth.instance);
 

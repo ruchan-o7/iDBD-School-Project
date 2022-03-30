@@ -12,6 +12,7 @@ import '../../../core/custom/input_dec_custom.dart';
 
 import '../view_model/sign_in_screen_view_model.dart';
 
+///Depreceated Widget, Use instead of LoginCardView
 class SignInViewold extends StatelessWidget {
   SignInViewold({Key? key}) : super(key: key);
   bool isChecked = false;

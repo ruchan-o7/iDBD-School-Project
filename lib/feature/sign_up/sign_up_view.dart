@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/constants/string_constants.dart';
-import '../../core/custom/custom_btn.dart';
 import '../../core/custom/custom_sized_box.dart';
-import '../../core/enum/padding_values.dart';
+import 'model/signup_model.dart';
 import 'sign_up_view_model.dart';
+import 'package:kartal/kartal.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/custom/input_dec_custom.dart';
@@ -14,53 +14,95 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<SignUpCubit>(
       create: (context) => SignUpCubit(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(StringConstants().signUp),
+      child: BlocConsumer<SignUpCubit, SignUpState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return scaffolBuild(context);
+        },
+      ),
+    );
+  }
+
+  Scaffold scaffolBuild(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          StringConstants().signUp,
+          style: Theme.of(context).textTheme.displaySmall,
         ),
-        body: SingleChildScrollView(
-          physics: (context.read<SignUpCubit>().nodeMail.hasFocus ||
-                  context.read<SignUpCubit>().nodePass.hasFocus ||
-                  context.read<SignUpCubit>().nodePassSecond.hasFocus ||
-                  context.read<SignUpCubit>().nodeUserNameSecond.hasFocus)
-              ? const NeverScrollableScrollPhysics()
-              : const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.only(left: 12, right: 12, top: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextFieldsMethod(context),
-              Padding(
-                padding: PaddingValues.medium.rawVerticalValues(context),
-                child: CustomBtn(StringConstants().signIn, () async {
-                  context.read<SignUpCubit>().saveUser(
-                      context.read<SignUpCubit>().userNameController.text,
-                      context.read<SignUpCubit>().mailController.text,
-                      context.read<SignUpCubit>().passController.text,
-                      context);
-                  Navigator.of(context).pop();
-                }, context),
-              )
-            ],
-          ),
+        elevation: 0,
+        toolbarHeight: context.dynamicHeight(0.1),
+      ),
+      body: SingleChildScrollView(
+        physics: (context.read<SignUpCubit>().nodeMail.hasFocus ||
+                context.read<SignUpCubit>().nodePass.hasFocus ||
+                context.read<SignUpCubit>().nodePassSecond.hasFocus ||
+                context.read<SignUpCubit>().nodeUserNameSecond.hasFocus)
+            ? const NeverScrollableScrollPhysics()
+            : const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(
+            vertical: context.dynamicHeight(0.05),
+            horizontal: context.dynamicWidth(0.05)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextFieldsMethod(context),
+            SizedBox(
+              height: context.dynamicHeight(0.08),
+            ),
+            signUpBTN(context)
+          ],
         ),
       ),
     );
   }
 
-  Column TextFieldsMethod(BuildContext context) {
-    return Column(
+  Row signUpBTN(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        userNameMethod(context),
-        customSizedBox(context, percentageConstants().small),
-        mailMethod(context),
-        customSizedBox(context, percentageConstants().small),
-        passwordMethod(context),
-        customSizedBox(context, percentageConstants().small),
-        passwordAgainMethod(context)
+        Expanded(
+            child: ElevatedButton(
+          onPressed: () {
+            context.read<SignUpCubit>().saveUSER(
+                UserSignUpModel(
+                    imageUrl: "",
+                    signDate: DateTime.now().toString(),
+                    userMail: context.read<SignUpCubit>().mailController.text,
+                    userName:
+                        context.read<SignUpCubit>().userNameController.text,
+                    userPassword:
+                        context.read<SignUpCubit>().passController.text,
+                    userUID: ""),
+                context);
+          },
+          child: Text("Sign Up"),
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all(context.verticalPaddingNormal),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(context.dynamicWidth(0.02))))),
+        ))
       ],
+    );
+  }
+
+  Widget TextFieldsMethod(BuildContext context) {
+    return Form(
+      key: context.read<SignUpCubit>().formKey,
+      child: Column(
+        children: [
+          userNameMethod(context),
+          customSizedBox(context, percentageConstants().small),
+          mailMethod(context),
+          customSizedBox(context, percentageConstants().small),
+          passwordMethod(context),
+          customSizedBox(context, percentageConstants().small),
+          passwordAgainMethod(context)
+        ],
+      ),
     );
   }
 
