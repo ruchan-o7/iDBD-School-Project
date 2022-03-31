@@ -22,45 +22,11 @@ class LoginCardView extends StatelessWidget {
               return progressBuilder();
             } else if (state is LoadedFirebaseState) {
               return logInStruct(context);
-            } else if (state is LoginSucces) {
-              return const SearchView();
             } else {
               return const Scaffold();
             }
           },
           listener: (context, state) {}),
-    );
-  }
-
-  Scaffold blurScaffold() {
-    return Scaffold(
-      body: ClipRRect(
-        child: Stack(
-          children: [
-            Card(
-              child: Container(
-                height: 200,
-                width: 250,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: NetworkImage("https://picsum.photos/200"))),
-              ),
-            ),
-            Container(
-              height: 220,
-              width: 150,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -120,29 +86,7 @@ class LoginCardView extends StatelessWidget {
                         ForgetPassBTN(context),
                         LogInBTN(context),
                         const Divider(thickness: 2),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.lightGreen[200]!),
-                                  shape: MaterialStateProperty.all(
-                                      const StadiumBorder()),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SignUpView(),
-                                      ));
-                                },
-                                child: const Text("Sign Up"),
-                              ),
-                            ),
-                          ],
-                        ),
+                        signUpBTN(context),
                         SizedBox(
                           height: context.dynamicHeight(0.02),
                         ),
@@ -158,8 +102,29 @@ class LoginCardView extends StatelessWidget {
     );
   }
 
+  Row signUpBTN(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.lightGreen[200]!),
+              shape: MaterialStateProperty.all(const StadiumBorder()),
+            ),
+            onPressed: () {
+              context.read<LoginCardCubit>().goToPage(context, SignUpView());
+            },
+            child: const Text("Sign Up"),
+          ),
+        ),
+      ],
+    );
+  }
+
   TextFormField mailTextField(BuildContext context) {
     return TextFormField(
+      controller: context.read<LoginCardCubit>().emailController,
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.mail_outline),
           labelText: "e-mail",
@@ -170,6 +135,7 @@ class LoginCardView extends StatelessWidget {
 
   TextFormField passTextField(BuildContext context) {
     return TextFormField(
+      controller: context.read<LoginCardCubit>().passwordController,
       obscureText: true,
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock_outline),
@@ -202,7 +168,12 @@ class LoginCardView extends StatelessWidget {
             style: ButtonStyle(
               shape: MaterialStateProperty.all(const StadiumBorder()),
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.read<LoginCardCubit>().sendRequest(
+                  context.read<LoginCardCubit>().emailController.text,
+                  context.read<LoginCardCubit>().passwordController.text,
+                  context);
+            },
             child: Text(
               "Log in",
               style: Theme.of(context)

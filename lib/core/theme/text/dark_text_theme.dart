@@ -24,6 +24,7 @@ class DarkTextTheme implements ITextTheme {
   DarkTextTheme(this.primaryColor) {
     // fontFamily = GoogleFonts.lato().fontFamily;
     headline2 = const TextStyle(fontSize: 65, fontWeight: FontWeight.w400);
+    headline3 = const TextStyle(fontWeight: FontWeight.bold);
     headline4 = const TextStyle(fontSize: 30, fontWeight: FontWeight.w300);
     headline5 = const TextStyle(fontWeight: FontWeight.w100);
     headline6 = const TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
@@ -37,4 +38,7 @@ class DarkTextTheme implements ITextTheme {
 
   @override
   TextStyle? headline5;
+
+  @override
+  TextStyle? headline3;
 }

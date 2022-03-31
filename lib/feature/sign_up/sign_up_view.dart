@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/product/utils/validator/validator.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/custom/custom_sized_box.dart';
 import 'model/signup_model.dart';
@@ -11,6 +12,10 @@ import '../../core/custom/input_dec_custom.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
+  bool _isPressed = false;
+  changeVisuality() {
+    _isPressed = !_isPressed;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,27 +38,32 @@ class SignUpView extends StatelessWidget {
           style: Theme.of(context).textTheme.displaySmall,
         ),
         elevation: 0,
-        toolbarHeight: context.dynamicHeight(0.1),
+        toolbarHeight: context.dynamicHeight(0.08),
       ),
       body: SingleChildScrollView(
         physics: (context.read<SignUpCubit>().nodeMail.hasFocus ||
                 context.read<SignUpCubit>().nodePass.hasFocus ||
                 context.read<SignUpCubit>().nodePassSecond.hasFocus ||
-                context.read<SignUpCubit>().nodeUserNameSecond.hasFocus)
+                context.read<SignUpCubit>().nodeUserName.hasFocus)
             ? const NeverScrollableScrollPhysics()
             : const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(
             vertical: context.dynamicHeight(0.05),
             horizontal: context.dynamicWidth(0.05)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextFieldsMethod(context),
-            SizedBox(
-              height: context.dynamicHeight(0.08),
-            ),
-            signUpBTN(context)
-          ],
+        child: GestureDetector(
+          onTap: () {
+            context.read<SignUpCubit>().looseFocus();
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              userInputs(context),
+              SizedBox(
+                height: context.dynamicHeight(0.08),
+              ),
+              signUpBTN(context)
+            ],
+          ),
         ),
       ),
     );
@@ -65,19 +75,11 @@ class SignUpView extends StatelessWidget {
       children: [
         Expanded(
             child: ElevatedButton(
-          onPressed: () {
-            context.read<SignUpCubit>().saveUSER(
-                UserSignUpModel(
-                    imageUrl: "",
-                    signDate: DateTime.now().toString(),
-                    userMail: context.read<SignUpCubit>().mailController.text,
-                    userName:
-                        context.read<SignUpCubit>().userNameController.text,
-                    userPassword:
-                        context.read<SignUpCubit>().passController.text,
-                    userUID: ""),
-                context);
-          },
+          onPressed: context.read<SignUpCubit>().isPressed == false
+              ? () {
+                  context.read<SignUpCubit>().saveUSER(context);
+                }
+              : null,
           child: Text("Sign Up", style: Theme.of(context).textTheme.headline5),
           style: ButtonStyle(
               padding: MaterialStateProperty.all(context.verticalPaddingNormal),
@@ -89,11 +91,33 @@ class SignUpView extends StatelessWidget {
     );
   }
 
-  Widget TextFieldsMethod(BuildContext context) {
+  Widget userInputs(BuildContext context) {
     return Form(
       key: context.read<SignUpCubit>().formKey,
+      autovalidateMode: (context.read<SignUpCubit>().nodeMail.hasFocus ||
+              context.read<SignUpCubit>().nodePass.hasFocus ||
+              context.read<SignUpCubit>().nodeUserName.hasFocus ||
+              context.read<SignUpCubit>().nodePassSecond.hasFocus)
+          ? AutovalidateMode.always
+          : AutovalidateMode.disabled,
       child: Column(
         children: [
+          // GestureDetector(
+          //   onTap: () {
+          //     //********************************************************************************************************** */
+          //     context.read<SignUpCubit>().selectImage();
+          //   },
+          //   child: CircleAvatar(
+          //     foregroundImage: context.read<SignUpCubit>().image != null
+          //         ? MemoryImage(context.read<SignUpCubit>().image!)
+          //         : null,
+          //     child: context.read<SignUpCubit>().image != null
+          //         ? null
+          //         : Image.asset("assets/icon/dummy_per.png"),
+          //     radius: 50,
+          //   ),
+          // ),
+          customSizedBox(context, percentageConstants().small),
           userNameMethod(context),
           customSizedBox(context, percentageConstants().small),
           mailMethod(context),
@@ -110,13 +134,9 @@ class SignUpView extends StatelessWidget {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
         cursorColor: ColorConstants.secondaryColor,
-        focusNode: context.read<SignUpCubit>().nodeUserNameSecond,
+        focusNode: context.read<SignUpCubit>().nodeUserName,
         controller: context.read<SignUpCubit>().userNameController,
-        validator: ((value) => (value ?? "").contains("@") == false
-            ? StringConstants().enterValidMail
-            : ((value ?? "").contains(".") == false)
-                ? StringConstants().enterValidMail
-                : null),
+        validator: ((value) => Validator().validatePassword(password: value)),
         decoration: InputDecCustom(StringConstants().userNameHint));
   }
 
@@ -126,11 +146,7 @@ class SignUpView extends StatelessWidget {
         cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodeMail,
         controller: context.read<SignUpCubit>().mailController,
-        validator: ((value) => (value ?? "").contains("@") == false
-            ? StringConstants().enterValidMail
-            : ((value ?? "").contains(".") == false)
-                ? StringConstants().enterValidMail
-                : null),
+        validator: (v) => Validator().validateEmail(email: v),
         decoration: InputDecCustom(StringConstants().eMailHint));
   }
 
@@ -140,11 +156,7 @@ class SignUpView extends StatelessWidget {
         cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodePass,
         controller: context.read<SignUpCubit>().passController,
-        validator: ((value) => (value ?? "").contains("@") == false
-            ? StringConstants().enterValidMail
-            : ((value ?? "").contains(".") == false)
-                ? StringConstants().enterValidMail
-                : null),
+        validator: (v) => Validator().validatePassword(password: v),
         decoration: InputDecCustom(StringConstants().passwordHint));
   }
 
@@ -154,11 +166,7 @@ class SignUpView extends StatelessWidget {
         cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodePassSecond,
         controller: context.read<SignUpCubit>().passwordSecondController,
-        validator: ((value) => (value ?? "").contains("@") == false
-            ? StringConstants().enterValidMail
-            : ((value ?? "").contains(".") == false)
-                ? StringConstants().enterValidMail
-                : null),
+        validator: (v) => Validator().validatePassword(password: v),
         decoration: InputDecCustom("${StringConstants().passwordHint} again"));
   }
 }

@@ -7,6 +7,8 @@ import '../color/i_color_theme.dart';
 abstract class ITextTheme {
   String? fontFamily;
   TextStyle? headline2;
+  TextStyle? headline3;
+
   TextStyle? headline4;
   TextStyle? headline5;
   TextStyle? headline6;

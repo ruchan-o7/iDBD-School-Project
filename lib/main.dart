@@ -3,7 +3,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:random_color_scheme/random_color_scheme.dart';
 import 'package:school_project_ibdb/core/theme/app_theme.dart';
 import 'package:school_project_ibdb/feature/search_view/search_view.dart';
 import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';

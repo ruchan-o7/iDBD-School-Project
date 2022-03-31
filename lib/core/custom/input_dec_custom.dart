@@ -8,10 +8,20 @@ class InputDecCustom extends InputDecoration {
 
   InputDecCustom(this.hintTextstring, {this.iconButton, this.isMail = false})
       : super(
+            focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                )),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
             ),
+            errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                )),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
