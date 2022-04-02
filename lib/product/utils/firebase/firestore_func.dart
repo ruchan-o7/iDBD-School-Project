@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
+import '../../../feature/sign_up/model/signup_model.dart';
 
 abstract class IFirestoreFuncs {
   final FirebaseFirestore instance;

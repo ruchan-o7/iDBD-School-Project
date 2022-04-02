@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import '../../../feature/search_view/search_view.dart';
+
 import '../../../feature/sign_up/model/signup_model.dart';
 
 abstract class IAuthentication {

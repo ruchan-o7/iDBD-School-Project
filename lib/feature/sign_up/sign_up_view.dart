@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
+import '../../product/utils/validator/validator.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/custom/custom_sized_box.dart';
 import 'model/signup_model.dart';

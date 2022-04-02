@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../core/constants/logo_path.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../core/custom/custom_btn.dart';
 import '../../../core/custom/custom_sized_box.dart';
+import '../../../core/custom/input_dec_custom.dart';
 import '../../../core/enum/padding_values.dart';
+import '../../../product/utils/validator/validator.dart';
 import '../../search_view/search_view.dart';
 import '../../sign_up/sign_up_view.dart';
-import '../../../product/utils/validator/validator.dart';
-import '../../../core/custom/input_dec_custom.dart';
-
 import '../view_model/sign_in_screen_view_model.dart';
 
 ///Depreceated Widget, Use instead of LoginCardView

@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/custom/circle_color_widget.dart';
-import 'package:school_project_ibdb/feature/login_screen/view/login_card_view_cubit.dart';
-import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';
+import '../../../core/custom/circle_color_widget.dart';
+import 'login_card_view_cubit.dart';
+import '../../sign_up/sign_up_view.dart';
 
 import '../../search_view/search_view.dart';
 
