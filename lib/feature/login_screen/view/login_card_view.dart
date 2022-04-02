@@ -35,6 +35,11 @@ class LoginCardView extends StatelessWidget {
       body: ClipRRect(
         child: Stack(children: [
           Positioned(
+              child: CircleShape(
+                shapeColor: Colors.teal,
+              ),
+              bottom: context.dynamicHeight(0.69)),
+          Positioned(
             bottom: context.dynamicHeight(0.15),
             child: CircleShape(shapeColor: Colors.green),
           ),
