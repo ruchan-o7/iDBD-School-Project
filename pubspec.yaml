@@ -42,9 +42,10 @@ dependencies:
 
   flutter:
     sdk: flutter
-  #utility
+  #Google
   json_annotation: ^4.4.0
   json_serializable: ^6.1.5
+  #Utility
   kartal: ^2.3.1
   image_picker: ^0.8.4+11
 
