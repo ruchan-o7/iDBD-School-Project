@@ -1,20 +1,19 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
+import 'firestore_func.dart';
 
 abstract class IAuthentication {
   FirebaseAuth auth;
 
   IAuthentication(this.auth);
 
-  Future<User?> eMailSignIn(
-      {required String eMail,
-      required String password,
-      required BuildContext context});
+  Future<User?> eMailSignIn({required String eMail, required String password, required BuildContext context});
   Future<void> signUp(UserSignUpModel model, BuildContext context);
   Future<void> signOut();
   Future<FirebaseApp> initializeFirebase();
@@ -25,13 +24,10 @@ class Authentication extends IAuthentication {
 
   @override
   Future<User?> eMailSignIn(
-      {required String eMail,
-      required String password,
-      required BuildContext context}) async {
+      {required String eMail, required String password, required BuildContext context}) async {
     User? user;
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: eMail, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: eMail, password: password);
       user = userCredential.user;
       user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
@@ -45,9 +41,11 @@ class Authentication extends IAuthentication {
   @override
   Future<void> signUp(UserSignUpModel model, BuildContext context) async {
     try {
-      UserCredential _user = await auth.createUserWithEmailAndPassword(
-          email: model.userMail!, password: model.userPassword!);
+      final _user =
+          await auth.createUserWithEmailAndPassword(email: model.userMail!, password: model.userPassword!);
       await _user.user?.updateDisplayName(model.userName);
+
+      FirestoreFunctions(FirebaseFirestore.instance).addUserWithSet(model.copyWith(userUID: _user.user?.uid));
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         _showSnackbar("Mail already using", context);

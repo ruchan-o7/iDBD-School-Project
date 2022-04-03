@@ -6,13 +6,14 @@ class UserSignUpModel {
   String? userUID;
   String? signDate;
 
-  UserSignUpModel(
-      {this.imageUrl,
-      this.userMail,
-      this.userName,
-      this.userPassword,
-      this.userUID,
-      this.signDate});
+  UserSignUpModel({
+    this.imageUrl,
+    this.userMail,
+    this.userName,
+    this.userPassword,
+    this.userUID,
+    this.signDate,
+  });
 
   UserSignUpModel.fromJson(Map<String, dynamic> json) {
     imageUrl = json['imageUrl'];
@@ -32,5 +33,23 @@ class UserSignUpModel {
     data['userUID'] = userUID;
     data['signDate'] = signDate;
     return data;
+  }
+
+  UserSignUpModel copyWith({
+    String? imageUrl,
+    String? userMail,
+    String? userName,
+    String? userPassword,
+    String? userUID,
+    String? signDate,
+  }) {
+    return UserSignUpModel(
+      imageUrl: imageUrl ?? this.imageUrl,
+      userMail: userMail ?? this.userMail,
+      userName: userName ?? this.userName,
+      userPassword: userPassword ?? this.userPassword,
+      userUID: userUID ?? this.userUID,
+      signDate: signDate ?? this.signDate,
+    );
   }
 }

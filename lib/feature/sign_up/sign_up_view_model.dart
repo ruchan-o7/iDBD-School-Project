@@ -21,12 +21,10 @@ class SignUpCubit extends Cubit<SignUpState> {
   final FocusNode nodeUserName = FocusNode();
   final GlobalKey<FormState> formKey = GlobalKey();
   final TextEditingController mailController = TextEditingController();
-  final TextEditingController passwordSecondController =
-      TextEditingController();
+  final TextEditingController passwordSecondController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
-  final IFirestoreFuncs databaseFuncs =
-      FirestoreFunctions(FirebaseFirestore.instance);
+  final IFirestoreFuncs databaseFuncs = FirestoreFunctions(FirebaseFirestore.instance);
   XFile? imagePath;
   XFile? selectedImage;
   String? imageName;
@@ -51,8 +49,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   Future saveUSER(BuildContext context) async {
     looseFocus();
     if (passController.text != passwordSecondController.text) {
-      return ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("passwords are not same")));
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("passwords are not same")));
     }
     isPressed = !isPressed;
     final _tempModel = UserSignUpModel(
@@ -72,8 +69,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void selectImage() async {
-    final XFile? selectedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? selectedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (selectedImage != null) {
       imagePath = selectedImage;
       imageName = selectedImage.name.toString();

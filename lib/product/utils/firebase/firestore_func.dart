@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,7 @@ abstract class IFirestoreFuncs {
   final FirebaseFirestore instance;
 
   IFirestoreFuncs(this.instance);
-  Future<void> addUserWithSet(String name, String e_mail, String password);
+  Future<void> addUserWithSet(UserSignUpModel model);
   Future<void> addUserWithSetModel(UserSignUpModel model);
   Future uploadFromGalleryImage(BuildContext context, User? user);
 }
@@ -23,14 +24,29 @@ class FirestoreFunctions extends IFirestoreFuncs {
   String? filePath;
 
   FirestoreFunctions(FirebaseFirestore instance) : super(instance);
+  // @override
+  //@Deprecated
+  // Future<void> addUserWithSet(String name, String e_mail, String password) async {
+  //   await instance.collection("users").doc().set({"user_name": name, "e-mail": e_mail, "password": password});
+  // }
   @override
-  Future<void> addUserWithSet(String name, String e_mail, String password) async {
-    await instance.collection("users").doc().set({"user_name": name, "e-mail": e_mail, "password": password});
+  Future<void> addUserWithSet(UserSignUpModel model) async {
+    await instance.collection("users").doc().set(model.toJson());
   }
 
   @override
   Future<void> addUserWithSetModel(UserSignUpModel model) async {
     await instance.collection("users").doc().set(model.toJson());
+  }
+
+  Future updateUserInfo(UserSignUpModel model) async {
+    CollectionReference _user = FirebaseFirestore.instance.collection(
+        "users"); //TODO: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
+    await _user
+        .doc(model.userUID)
+        .update({"imageUrl": model.imageUrl})
+        .then((value) => log("user updated"))
+        .catchError((error) => log("Failed to update user =>$error"));
   }
 
   @override
@@ -41,13 +57,18 @@ class FirestoreFunctions extends IFirestoreFuncs {
     if (_selectedImage != null) {
       File _imageFile = File(_selectedImage.path);
       final _uploadTask =
-          await _storage.ref("/${user?.displayName}_files/${user?.uid}/userImage").putFile(_imageFile);
+          await _storage.ref("/${user?.uid}->${user?.displayName}/userImage").putFile(_imageFile);
       await user?.updatePhotoURL(await _uploadTask.ref.getDownloadURL());
+      await updateUserInfo(UserSignUpModel(imageUrl: user?.photoURL));
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("failed to upload photo")));
     }
 
     return user?.photoURL;
+  }
+
+  _showSnackMessage(BuildContext context, String data) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data)));
   }
 }
