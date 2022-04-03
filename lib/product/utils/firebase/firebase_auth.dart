@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +36,7 @@ class Authentication extends IAuthentication {
       user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("No user found")));
+        _showSnackbar("User not found", context);
       }
     }
     return user;
@@ -44,14 +45,12 @@ class Authentication extends IAuthentication {
   @override
   Future<void> signUp(UserSignUpModel model, BuildContext context) async {
     try {
-      if (model != null) {
-        final UserCredential _user = await auth.createUserWithEmailAndPassword(
-            email: model.userMail!, password: model.userPassword!);
-      }
+      UserCredential _user = await auth.createUserWithEmailAndPassword(
+          email: model.userMail!, password: model.userPassword!);
+      await _user.user?.updateDisplayName(model.userName);
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Mail already using")));
+        _showSnackbar("Mail already using", context);
       }
     }
   }
@@ -61,7 +60,7 @@ class Authentication extends IAuthentication {
     try {
       await auth.signOut();
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -69,5 +68,9 @@ class Authentication extends IAuthentication {
   Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
+  }
+
+  _showSnackbar(String data, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data)));
   }
 }

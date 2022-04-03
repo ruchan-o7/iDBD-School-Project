@@ -12,7 +12,7 @@ import '../../search_view/search_view.dart';
 import '../../sign_up/sign_up_view.dart';
 import '../view_model/sign_in_screen_view_model.dart';
 
-///Depreceated Widget, Use instead of LoginCardView
+@Deprecated("This widget deprecated. Use insted of LoginCardView")
 class SignInViewold extends StatelessWidget {
   SignInViewold({Key? key}) : super(key: key);
   bool isChecked = false;

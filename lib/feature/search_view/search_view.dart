@@ -42,15 +42,15 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text("${FirebaseAuth.instance.currentUser?.displayName}"),
         actions: [
           TextButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                print("${FirebaseAuth.instance.currentUser}");
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => LoginCardView()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const LoginCardView()));
               },
-              child: Text(
+              child: const Text(
                 "Sign out",
                 style: TextStyle(color: Colors.white),
               )),

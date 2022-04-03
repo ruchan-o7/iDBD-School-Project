@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:school_project_ibdb/core/theme/app_theme.dart';
+import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
 
 import 'feature/book_detail/book_detail_view.dart';
 import 'feature/home_view/home_view.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: HomeView(),
+      home: LoginCardView(),
     );
   }
 }

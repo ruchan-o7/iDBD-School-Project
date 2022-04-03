@@ -130,6 +130,7 @@ class LoginCardView extends StatelessWidget {
   TextFormField mailTextField(BuildContext context) {
     return TextFormField(
       controller: context.read<LoginCardCubit>().emailController,
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.mail_outline),
           labelText: "e-mail",

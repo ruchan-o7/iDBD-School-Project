@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/user_settings/user_settings_view.dart';
 import 'package:school_project_ibdb/product/bottom_nav_bar/bottom_nav_bar.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,59 +20,66 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  String displayname = "Ruchan";
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backColor,
-      appBar: appBar(context),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: context.paddingNormal,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Welcome back, $displayname",
+      appBar: appBarBuild(context, currentUser),
+      body: fullBodyBuild(context),
+    );
+  }
+
+  SingleChildScrollView fullBodyBuild(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: context.paddingNormal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Welcome back, ${currentUser?.displayName}",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.w400),
+            ),
+            Text("What do yo want to read to today? ",
                 style: Theme.of(context)
                     .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.w400),
-              ),
-              Text("What do yo want to read to today? ",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              SizedBox(
-                height: context.dynamicHeight(0.02),
-              ),
-              const DefaultTabController(
-                  length: 5,
-                  child: TabBar(
-                    isScrollable: true,
-                    unselectedLabelColor: Colors.black54,
-                    indicatorColor: Colors.red,
-                    labelColor: Colors.black,
-                    tabs: [
-                      Text("Novel"),
-                      Text("Self-Love"),
-                      Text("Science"),
-                      Text("Romance"),
-                      Text("Crime"),
-                    ],
-                  )),
-              bookShelf(context),
-              Text("New Arrivals",
-                  style: Theme.of(context).textTheme.headline5),
-              bookShelf(context),
-            ],
-          ),
+                    .headline5
+                    ?.copyWith(fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: context.dynamicHeight(0.02),
+            ),
+            categoriesTab(),
+            bookShelf(context),
+            Text("New Arrivals", style: Theme.of(context).textTheme.headline5),
+            bookShelf(context),
+          ],
         ),
       ),
     );
+  }
+
+  DefaultTabController categoriesTab() {
+    return const DefaultTabController(
+        length: 5,
+        child: TabBar(
+          isScrollable: true,
+          unselectedLabelColor: Colors.black54,
+          indicatorColor: Colors.red,
+          labelColor: Colors.black,
+          tabs: [
+            Text("Novel"),
+            Text("Self-Love"),
+            Text("Science"),
+            Text("Romance"),
+            Text("Crime"),
+          ],
+        ));
   }
 
   SizedBox bookShelf(BuildContext context) {
@@ -111,7 +120,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  AppBar appBar(BuildContext context) {
+  AppBar appBarBuild(BuildContext context, User? currentUser) {
     return AppBar(
       elevation: 0,
       leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -124,10 +133,20 @@ class _HomeViewState extends State<HomeView> {
         ),
         GestureDetector(
           onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserSettingsView(),
+                ));
             //Go to profile page
           },
-          child: const CircleAvatar(
-            backgroundImage: NetworkImage("https://picsum.photos/50"),
+          child: CircleAvatar(
+            backgroundImage: currentUser?.photoURL != null
+                ? NetworkImage("${currentUser?.photoURL}")
+                : null,
+            child: currentUser?.photoURL == null
+                ? Image.asset("assets/icon/dummy_per.png")
+                : null,
           ),
         ),
         SizedBox(width: context.dynamicWidth(0.05))
