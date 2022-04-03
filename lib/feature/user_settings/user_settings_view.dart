@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
+import '../../product/utils/firebase/firestore_func.dart';
 import '../change_user_name_view/change_user_name_view.dart';
 
 class UserSettingsView extends StatefulWidget {
@@ -12,14 +14,18 @@ class UserSettingsView extends StatefulWidget {
 }
 
 class _UserSettingsViewState extends State<UserSettingsView> {
-  User? _user = FirebaseAuth.instance.currentUser;
-
   _changePage(BuildContext context, Widget Destination) {
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Destination,
         ));
+  }
+
+  _changeImage() async {
+    await FirestoreFunctions(FirebaseFirestore.instance)
+        .uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
+    setState(() {});
   }
 
   @override
@@ -49,16 +55,25 @@ class _UserSettingsViewState extends State<UserSettingsView> {
   ListTile profilePreview(BuildContext context) {
     return ListTile(
       contentPadding: context.paddingLow,
-      leading: CircleAvatar(
-        backgroundImage:
-            _user?.photoURL != null ? NetworkImage("${_user?.photoURL}") : null,
-        radius: context.dynamicHeight(0.05),
-        child: _user?.photoURL == null
-            ? Image.asset("assets/icon/dummy_per.png")
-            : null,
+      leading: GestureDetector(
+        onTap: () {
+          //FirestoreFunctions(FirebaseFirestore.instance).uploadFromGalleryImage(context);
+          // _selectImage();
+          FirestoreFunctions(FirebaseFirestore.instance)
+              .uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
+        },
+        child: CircleAvatar(
+          backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
+              ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
+              : null,
+          radius: context.dynamicHeight(0.05),
+          child: FirebaseAuth.instance.currentUser?.photoURL == null
+              ? Image.asset("assets/icon/dummy_per.png")
+              : null,
+        ),
       ),
-      title: Text(_user?.displayName ?? "Null user name"),
-      subtitle: Text(_user?.email ?? "null mail"),
+      title: Text(FirebaseAuth.instance.currentUser?.displayName ?? "Null user name"),
+      subtitle: Text(FirebaseAuth.instance.currentUser?.email ?? "null mail"),
     );
   }
 

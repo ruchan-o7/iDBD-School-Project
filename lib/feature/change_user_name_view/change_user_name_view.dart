@@ -18,8 +18,9 @@ class _ChangeUserNameState extends State<ChangeUserName> {
   }
 
   Future<void> changeName() async {
-    await FirebaseAuth.instance.currentUser
-        ?.updateDisplayName(_controller.text);
+    if (_controller.text == "") return;
+
+    await FirebaseAuth.instance.currentUser?.updateDisplayName(_controller.text);
     _controller.text = "";
     Navigator.pop(context);
   }
@@ -29,20 +30,27 @@ class _ChangeUserNameState extends State<ChangeUserName> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text("Change User Name",
-              style: Theme.of(context).textTheme.headline5),
+          title: Text("Change User Name", style: Theme.of(context).textTheme.headline5),
         ),
         body: Padding(
           padding: context.paddingMedium,
           child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
                   controller: _controller,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15))),
+                  validator: (s) {
+                    if (s == "") {
+                      return "Please type something";
+                    }
+                  },
+                  decoration:
+                      InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+                ),
+                SizedBox(
+                  height: context.dynamicHeight(0.05),
                 ),
                 Row(
                   children: [
@@ -50,7 +58,11 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                       child: Padding(
                         padding: context.horizontalPaddingHigh,
                         child: ElevatedButton(
-                            onPressed: changeName, child: const Text("Apply")),
+                            onPressed: changeName,
+                            child: Text(
+                              "Apply",
+                              style: Theme.of(context).textTheme.button,
+                            )),
                       ),
                     ),
                   ],
