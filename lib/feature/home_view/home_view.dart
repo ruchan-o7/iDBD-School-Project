@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
 import 'package:school_project_ibdb/feature/user_settings/user_settings_view.dart';
 import 'package:school_project_ibdb/product/bottom_nav_bar/bottom_nav_bar.dart';
 
@@ -123,7 +124,16 @@ class _HomeViewState extends State<HomeView> {
   AppBar appBarBuild(BuildContext context, User? currentUser) {
     return AppBar(
       elevation: 0,
-      leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+      leading: IconButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginCardView(),
+                ));
+          },
+          icon: const Icon(Icons.menu)),
       actions: [
         Switch(
           value: _switch,
@@ -138,7 +148,6 @@ class _HomeViewState extends State<HomeView> {
                 MaterialPageRoute(
                   builder: (context) => UserSettingsView(),
                 ));
-            //Go to profile page
           },
           child: CircleAvatar(
             backgroundImage: currentUser?.photoURL != null
