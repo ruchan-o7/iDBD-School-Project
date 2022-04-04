@@ -14,27 +14,27 @@ TODO:
 - about - done
 - SignUp - done
 - menu - done
-- Send verification 
-- Account verification 
+- Send verification  - done
+- Account verification  - done
 - forget password verification
 - forget password new password
 - Help - done
 - Application menu 
-- Explore 
-- Category page
+- Explore  - done
+- Category page - done
 - Category selected 
-- Book preview 
+- Book preview  - done
 - Book search - done
-- Profile 
+- Profile  - done
 - Liked books
 - Read book
-- Statistics page
-- Admin panel
-- Editor page
-- publisher page
+- Statistics page - done
+- Admin panel - done
+- Editor page - done
+- publisher page - done
 - User settings - done
-- Change user name 
-- Change password
+- Change user name  - done
+- Change password - done
 - Change mail page
 - Shutdown account
 Screenshots
