@@ -32,9 +32,11 @@ class _HomeViewState extends State<HomeView> {
                   onTap: () {
                     context.read<HomeViewCubit>().goToPage(context, UserSettingsView());
                   },
-                  child: CircleAvatar(
-                    backgroundImage: model?.photoURL != null ? NetworkImage("${model?.photoURL}") : null,
-                    child: model?.photoURL == null ? Image.asset("assets/icon/dummy_per.png") : null,
+                  child: Container(
+                    child: CircleAvatar(
+                      backgroundImage: model?.photoURL != null ? NetworkImage("${model?.photoURL}") : null,
+                      child: model?.photoURL == null ? Image.asset("assets/icon/dummy_per.png") : null,
+                    ),
                   ),
                 ),
                 SizedBox(width: context.dynamicWidth(0.05))

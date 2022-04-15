@@ -10,19 +10,18 @@ class BookDetail extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          color: Colors.black,
-          onPressed: () {},
-          icon: Icon(Icons.arrow_back),
-        ),
-        actions: [
-          IconButton(
-            color: Colors.black,
-            onPressed: () {},
-            icon: Icon(Icons.send_and_archive),
-          ),
-        ],
+        // leading: IconButton(
+        //   color: Colors.black,
+        //   onPressed: () {},
+        //   icon: Icon(Icons.arrow_back),
+        // ),
+        // actions: [
+        //   IconButton(
+        //     color: Colors.black,
+        //     onPressed: () {},
+        //     icon: Icon(Icons.send_and_archive),
+        //   ),
+        // ],
       ),
       body: Center(
         child: Column(
@@ -68,16 +67,6 @@ class BookDetail extends StatelessWidget {
                               Icon(
                                 Icons.star,
                               ),
-                              Icon(
-                                Icons.star,
-                              ),
-                              Icon(
-                                Icons.star,
-                              ),
-                              Icon(
-                                Icons.star,
-                                color: Colors.lime,
-                              ),
                               Text('4.0')
                             ],
                           ),
@@ -93,46 +82,34 @@ class BookDetail extends StatelessWidget {
                 margin: EdgeInsets.only(bottom: 10, left: 10, right: 10),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'About the author',
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
+                    Text(
+                      'About the author',
+                      style: TextStyle(
+                        fontSize: 30,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "This is a long texThis is a long teThis is a This is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long te teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long tet",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 4,
-                        softWrap: false,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black45,
-                        ),
+                    Text(
+                      "This is a long texThis is a long teThis is a This is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long te teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long teThis is a long tet",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      softWrap: false,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black45,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Overview',
-                        style: TextStyle(
-                          fontSize: 30,
-                        ),
+                    Text(
+                      'Overview',
+                      style: TextStyle(
+                        fontSize: 30,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique......',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 4,
-                        softWrap: false,
-                        style: TextStyle(fontSize: 16, color: Colors.black45),
-                      ),
+                    Text(
+                      'The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 a published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique......',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      softWrap: false,
+                      style: TextStyle(fontSize: 16, color: Colors.black45),
                     ),
                   ],
                 ),

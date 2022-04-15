@@ -19,12 +19,12 @@ class UserSettingsView extends StatelessWidget {
       child: BlocConsumer<UserSettingsCubit, UserSettingsState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final tempUser = context.read<UserSettingsCubit>().user;
+          final shortUserModel = context.read<UserSettingsCubit>().user;
           return Scaffold(
             appBar: appBar(context),
             body: Column(
               children: [
-                profileWidget(context, tempUser),
+                profileWidget(context, shortUserModel),
                 userNameBTN(context),
                 passwordBTN(context),
                 mailBTN(context),

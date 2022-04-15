@@ -12,7 +12,9 @@ import 'feature/home_view/home_view.dart';
 import 'feature/statistic_view/statistic_view.dart';
 
 Future<void> main() async {
-  init();
+  // init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -25,12 +27,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: EditorView(),
+      home: BookDetail(),
     );
   }
 }
 
-Future<void> init() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-}
+Future<void> init() async {}
