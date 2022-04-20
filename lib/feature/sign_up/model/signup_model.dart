@@ -5,6 +5,8 @@ class UserSignUpModel {
   String? userPassword;
   String? userUID;
   String? signDate;
+  List<String>? likedBooks;
+  List<String>? ownedBooks;
 
   UserSignUpModel({
     this.imageUrl,
@@ -16,6 +18,8 @@ class UserSignUpModel {
   });
 
   UserSignUpModel.fromJson(Map<String, dynamic> json) {
+    likedBooks = json['likedBooks'];
+    ownedBooks = json['ownedBooks'];
     imageUrl = json['imageUrl'];
     userMail = json['userMail'];
     userName = json['userName'];
@@ -26,6 +30,8 @@ class UserSignUpModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['likedBooks'] = likedBooks;
+    data['ownedBooks'] = ownedBooks;
     data['imageUrl'] = imageUrl;
     data['userMail'] = userMail;
     data['userName'] = userName;

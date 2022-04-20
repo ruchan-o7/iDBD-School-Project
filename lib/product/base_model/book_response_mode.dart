@@ -1,4 +1,6 @@
 //25,03,2022 - 19:16     UPTODATE MODEL --> https://www.googleapis.com/books/v1/volumes?q=intibah
+import 'dart:convert';
+
 class BookResponseModel {
   String? kind;
   List<Items>? items;
@@ -10,16 +12,16 @@ class BookResponseModel {
     if (json['items'] != null) {
       items = <Items>[];
       json['items'].forEach((v) {
-        items!.add(new Items.fromJson(v));
+        items!.add(Items.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['kind'] = this.kind;
-    if (this.items != null) {
-      data['items'] = this.items!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['kind'] = kind;
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -33,42 +35,30 @@ class Items {
   SaleInfo? saleInfo;
   AccessInfo? accessInfo;
 
-  Items(
-      {this.id,
-      this.etag,
-      this.selfLink,
-      this.volumeInfo,
-      this.saleInfo,
-      this.accessInfo});
+  Items({this.id, this.etag, this.selfLink, this.volumeInfo, this.saleInfo, this.accessInfo});
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     etag = json['etag'];
     selfLink = json['selfLink'];
-    volumeInfo = json['volumeInfo'] != null
-        ? new VolumeInfo.fromJson(json['volumeInfo'])
-        : null;
-    saleInfo = json['saleInfo'] != null
-        ? new SaleInfo.fromJson(json['saleInfo'])
-        : null;
-    accessInfo = json['accessInfo'] != null
-        ? new AccessInfo.fromJson(json['accessInfo'])
-        : null;
+    volumeInfo = json['volumeInfo'] != null ? VolumeInfo.fromJson(json['volumeInfo']) : null;
+    saleInfo = json['saleInfo'] != null ? SaleInfo.fromJson(json['saleInfo']) : null;
+    accessInfo = json['accessInfo'] != null ? AccessInfo.fromJson(json['accessInfo']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['etag'] = this.etag;
-    data['selfLink'] = this.selfLink;
-    if (this.volumeInfo != null) {
-      data['volumeInfo'] = this.volumeInfo!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['etag'] = etag;
+    data['selfLink'] = selfLink;
+    if (volumeInfo != null) {
+      data['volumeInfo'] = volumeInfo!.toJson();
     }
-    if (this.saleInfo != null) {
-      data['saleInfo'] = this.saleInfo!.toJson();
+    if (saleInfo != null) {
+      data['saleInfo'] = saleInfo!.toJson();
     }
-    if (this.accessInfo != null) {
-      data['accessInfo'] = this.accessInfo!.toJson();
+    if (accessInfo != null) {
+      data['accessInfo'] = accessInfo!.toJson();
     }
     return data;
   }
@@ -83,9 +73,16 @@ class VolumeInfo {
   int? ratingsCount;
   bool? allowAnonLogging;
   ImageLinks? imageLinks;
+  List<String>? categories;
   String? language;
+
+  ///Google play üzerinden satın alma sitesini açar
   String? previewLink;
+
+  ///Google play üzerinden satın alma sitesini açar
   String? infoLink;
+
+  ///Google play üzerinden satın alma sitesini açar
   String? canonicalVolumeLink;
 
   VolumeInfo(
@@ -99,20 +96,20 @@ class VolumeInfo {
       this.imageLinks,
       this.language,
       this.previewLink,
+      this.categories,
       this.infoLink,
       this.canonicalVolumeLink});
 
   VolumeInfo.fromJson(Map<String, dynamic> json) {
+    categories = json['categories'] == null ? null : List<String>.from(json["categories"].map((x) => x));
     title = json['title'];
     authors = json['authors'].cast<String>();
     publishedDate = json['publishedDate'];
     pageCount = json['pageCount'];
-    averageRating = json['averageRating'];
-    ratingsCount = json['ratingsCount'];
+    averageRating = json["averageRating"] == null ? null : json['averageRating'];
+    ratingsCount = json["ratingsCount"] == null ? null : json['ratingsCount'];
     allowAnonLogging = json['allowAnonLogging'];
-    imageLinks = json['imageLinks'] != null
-        ? new ImageLinks.fromJson(json['imageLinks'])
-        : null;
+    imageLinks = json['imageLinks'] != null ? ImageLinks.fromJson(json['imageLinks']) : null;
     language = json['language'];
     previewLink = json['previewLink'];
     infoLink = json['infoLink'];
@@ -120,21 +117,23 @@ class VolumeInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['authors'] = this.authors;
-    data['publishedDate'] = this.publishedDate;
-    data['pageCount'] = this.pageCount;
-    data['averageRating'] = this.averageRating;
-    data['ratingsCount'] = this.ratingsCount;
-    data['allowAnonLogging'] = this.allowAnonLogging;
-    if (this.imageLinks != null) {
-      data['imageLinks'] = this.imageLinks!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = title;
+    data['authors'] = authors;
+    data['publishedDate'] = publishedDate;
+    data['pageCount'] = pageCount;
+    data["categories"] = categories?.toList();
+    // "categories": categories ==null?null:List<dynamic>.from(categories.map((e) => e));
+    data['averageRating'] = averageRating;
+    data['ratingsCount'] = ratingsCount;
+    data['allowAnonLogging'] = allowAnonLogging;
+    if (imageLinks != null) {
+      data['imageLinks'] = imageLinks!.toJson();
     }
-    data['language'] = this.language;
-    data['previewLink'] = this.previewLink;
-    data['infoLink'] = this.infoLink;
-    data['canonicalVolumeLink'] = this.canonicalVolumeLink;
+    data['language'] = language;
+    data['previewLink'] = previewLink;
+    data['infoLink'] = infoLink;
+    data['canonicalVolumeLink'] = canonicalVolumeLink;
     return data;
   }
 }
@@ -151,9 +150,9 @@ class ImageLinks {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['smallThumbnail'] = this.smallThumbnail;
-    data['thumbnail'] = this.thumbnail;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['smallThumbnail'] = smallThumbnail;
+    data['thumbnail'] = thumbnail;
     return data;
   }
 }
@@ -172,10 +171,10 @@ class SaleInfo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country'] = this.country;
-    data['saleability'] = this.saleability;
-    data['isEbook'] = this.isEbook;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country'] = country;
+    data['saleability'] = saleability;
+    data['isEbook'] = isEbook;
     return data;
   }
 }
@@ -185,6 +184,8 @@ class AccessInfo {
   String? viewability;
   String? textToSpeechPermission;
   Pdf? pdf;
+
+  ///Google play önizleme linki
   String? webReaderLink;
   String? accessViewStatus;
   bool? quoteSharingAllowed;
@@ -202,23 +203,23 @@ class AccessInfo {
     country = json['country'];
     viewability = json['viewability'];
     textToSpeechPermission = json['textToSpeechPermission'];
-    pdf = json['pdf'] != null ? new Pdf.fromJson(json['pdf']) : null;
+    pdf = json['pdf'] != null ? Pdf.fromJson(json['pdf']) : null;
     webReaderLink = json['webReaderLink'];
     accessViewStatus = json['accessViewStatus'];
     quoteSharingAllowed = json['quoteSharingAllowed'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['country'] = this.country;
-    data['viewability'] = this.viewability;
-    data['textToSpeechPermission'] = this.textToSpeechPermission;
-    if (this.pdf != null) {
-      data['pdf'] = this.pdf!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['country'] = country;
+    data['viewability'] = viewability;
+    data['textToSpeechPermission'] = textToSpeechPermission;
+    if (pdf != null) {
+      data['pdf'] = pdf!.toJson();
     }
-    data['webReaderLink'] = this.webReaderLink;
-    data['accessViewStatus'] = this.accessViewStatus;
-    data['quoteSharingAllowed'] = this.quoteSharingAllowed;
+    data['webReaderLink'] = webReaderLink;
+    data['accessViewStatus'] = accessViewStatus;
+    data['quoteSharingAllowed'] = quoteSharingAllowed;
     return data;
   }
 }
@@ -233,8 +234,8 @@ class Pdf {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['isAvailable'] = this.isAvailable;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isAvailable'] = isAvailable;
     return data;
   }
 }

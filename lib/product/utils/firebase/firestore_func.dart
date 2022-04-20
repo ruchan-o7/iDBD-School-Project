@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
 import '../../../feature/sign_up/model/signup_model.dart';
 
 abstract class IFirestoreFuncs {
@@ -37,6 +38,10 @@ class FirestoreFunctions extends IFirestoreFuncs {
   @override
   Future<void> addUserWithSetModel(UserSignUpModel model) async {
     await instance.collection("users").doc().set(model.toJson());
+  }
+
+  Future<void> addBookWithModel(Items model) async {
+    await instance.collection("books").doc().set(model.toJson());
   }
 
   Future updateUserInfo(UserSignUpModel model) async {

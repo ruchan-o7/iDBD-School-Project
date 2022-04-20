@@ -10,6 +10,7 @@ class HomeViewCubit extends Cubit<HomeViewState> {
   HomeViewCubit({this.currentUser}) : super(HomeViewInitial());
 
   final User? currentUser;
+  final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
 
   goToPage(BuildContext context, Widget destination) {
     Navigator.push(

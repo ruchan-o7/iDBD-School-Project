@@ -9,10 +9,11 @@ import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.da
 import 'feature/book_detail/book_detail_view.dart';
 import 'feature/editor_view/editor_view.dart';
 import 'feature/home_view/home_view.dart';
+import 'feature/nav_bar/nav_bar_view.dart';
 import 'feature/statistic_view/statistic_view.dart';
+import 'product/bookingto_firebase/fire_book_view.dart';
 
 Future<void> main() async {
-  // init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: BookDetail(),
+      home: FireBookView(),
     );
   }
 }

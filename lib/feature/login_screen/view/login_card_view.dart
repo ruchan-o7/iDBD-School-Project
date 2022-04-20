@@ -33,7 +33,11 @@ class LoginCardView extends StatelessWidget {
   Scaffold logInStruct(BuildContext context) {
     return Scaffold(
       body: ClipRRect(
-        child: Stack(children: [
+        child: Stack(fit: StackFit.expand, children: [
+          // Image.asset(
+          //   "assets/sign_in/kutuphane.jpg",
+          //   fit: BoxFit.cover,
+          // ),
           Positioned(
               child: CircleShape(
                 shapeColor: Colors.teal,
@@ -43,9 +47,7 @@ class LoginCardView extends StatelessWidget {
             bottom: context.dynamicHeight(0.15),
             child: CircleShape(shapeColor: Colors.green),
           ),
-          Positioned(
-              child: CircleShape(shapeColor: Colors.blue),
-              left: context.dynamicWidth(0.3)),
+          Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.3)),
           dataStruct(context),
         ]),
       ),
@@ -63,9 +65,8 @@ class LoginCardView extends StatelessWidget {
               padding: context.horizontalPaddingMedium,
               child: Card(
                 color: Colors.green[100],
-                shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(context.dynamicWidth(0.05))),
+                shape:
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
                 child: Padding(
                   padding: context.horizontalPaddingNormal,
                   child: Form(
@@ -76,10 +77,8 @@ class LoginCardView extends StatelessWidget {
                         SizedBox(
                           height: context.dynamicHeight(0.02),
                         ),
-                        Text("Log in",
-                            style: Theme.of(context).textTheme.headline3),
-                        Text("Welcome",
-                            style: Theme.of(context).textTheme.headline5),
+                        Text("Log in", style: Theme.of(context).textTheme.headline3),
+                        Text("Welcome", style: Theme.of(context).textTheme.headline5),
                         SizedBox(
                           height: context.dynamicHeight(0.04),
                         ),
@@ -113,8 +112,7 @@ class LoginCardView extends StatelessWidget {
         Expanded(
           child: ElevatedButton(
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.lightGreen[200]!),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.lightGreen[200]!),
               shape: MaterialStateProperty.all(const StadiumBorder()),
             ),
             onPressed: () {
@@ -134,8 +132,7 @@ class LoginCardView extends StatelessWidget {
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.mail_outline),
           labelText: "e-mail",
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)))),
     );
   }
 
@@ -146,8 +143,7 @@ class LoginCardView extends StatelessWidget {
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock_outline),
           labelText: "password",
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05)))),
     );
   }
 
@@ -175,17 +171,12 @@ class LoginCardView extends StatelessWidget {
               shape: MaterialStateProperty.all(const StadiumBorder()),
             ),
             onPressed: () {
-              context.read<LoginCardCubit>().sendRequest(
-                  context.read<LoginCardCubit>().emailController.text,
-                  context.read<LoginCardCubit>().passwordController.text,
-                  context);
+              context.read<LoginCardCubit>().sendRequest(context.read<LoginCardCubit>().emailController.text,
+                  context.read<LoginCardCubit>().passwordController.text, context);
             },
             child: Text(
               "Log in",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  ?.copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.headline5?.copyWith(color: Colors.white),
             ),
           ),
         ),
