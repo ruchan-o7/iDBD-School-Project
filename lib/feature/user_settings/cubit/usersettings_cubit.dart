@@ -25,8 +25,7 @@ class UserSettingsCubit extends Cubit<UserSettingsState> {
   }
 
   changeImage(BuildContext context) async {
-    await FirestoreFunctions(FirebaseFirestore.instance)
-        .uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
+    await FirestoreFunctions().uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
     // await FirestoreFunctions(FirebaseFirestore.instance)
     //     .updateUserInfo(UserSignUpModel(imageUrl: FirebaseAuth.instance.currentUser?.photoURL));
   }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: FireBookView(),
+      home: LoginCardView(),
     );
   }
 }

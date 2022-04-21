@@ -7,8 +7,6 @@ import '../../../core/custom/circle_color_widget.dart';
 import 'login_card_view_cubit.dart';
 import '../../sign_up/sign_up_view.dart';
 
-import '../../search_view/search_view.dart';
-
 class LoginCardView extends StatelessWidget {
   const LoginCardView({Key? key}) : super(key: key);
 
@@ -18,12 +16,17 @@ class LoginCardView extends StatelessWidget {
       create: (context) => LoginCardCubit(),
       child: BlocConsumer<LoginCardCubit, LoginCardState>(
           builder: (context, state) {
-            if (state is LoadingFirebaseState) {
+            // if (state is LoadingFirebaseState) {
+            //   return progressBuilder();
+            // } else if (state is LoadedFirebaseState) {
+            //   return logInStruct(context);
+            // } else {
+            //   return const Scaffold();
+            // }
+            if (state is LoadedFirebaseState) {
               return progressBuilder();
-            } else if (state is LoadedFirebaseState) {
-              return logInStruct(context);
             } else {
-              return const Scaffold();
+              return logInStruct(context);
             }
           },
           listener: (context, state) {}),

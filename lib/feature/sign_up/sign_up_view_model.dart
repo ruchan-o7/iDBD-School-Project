@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +11,7 @@ import 'model/signup_model.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());
-  IAuthentication authentication = Authentication(FirebaseAuth.instance);
+  Authentication authentication = Authentication();
 
   final FocusNode nodeMail = FocusNode();
   final FocusNode nodePass = FocusNode();
@@ -24,27 +22,20 @@ class SignUpCubit extends Cubit<SignUpState> {
   final TextEditingController passwordSecondController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
-  final IFirestoreFuncs databaseFuncs = FirestoreFunctions(FirebaseFirestore.instance);
+  final FirestoreFunctions databaseFuncs = FirestoreFunctions();
   XFile? imagePath;
   XFile? selectedImage;
   String? imageName;
   String? uploadPath;
   Uint8List? image;
   bool isPressed = false;
+
   void looseFocus() {
     nodeMail.unfocus();
     nodePass.unfocus();
     nodePassSecond.unfocus();
     nodeUserName.unfocus();
   }
-
-  // Future<void> saveUser(String username, String mail, String password,
-  //     BuildContext context) async {
-  //   await databaseFuncs.addUserWithSet(
-  //       userNameController.text, mailController.text, passController.text);
-  //   await authentication.signUp(
-  //       mailController.text, passController.text, context);
-  // }
 
   Future saveUSER(BuildContext context) async {
     looseFocus();
@@ -60,10 +51,7 @@ class SignUpCubit extends Cubit<SignUpState> {
       userPassword: passController.text,
       userUID: "",
     );
-    await databaseFuncs.addUserWithSetModel(_tempModel);
     await authentication.signUp(_tempModel, context);
-    // await databaseFuncs.uploadFromGalleryImage(context, imagePath: imagePath);
-
     isPressed = !isPressed;
     Navigator.pop(context);
   }

@@ -3,15 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/feature/home_view/home_view.dart';
-import '../../search_view/search_view.dart';
 
 import '../../../product/utils/firebase/firebase_auth.dart';
-import '../../sign_up/sign_up_view.dart';
 
 class LoginCardCubit extends Cubit<LoginCardState> {
-  LoginCardCubit() : super(LoginCardInitial()) {
-    init();
-  }
+  LoginCardCubit() : super(LoginCardInitial()) {}
   bool isChecked = false;
   bool isObsecure = true;
   bool isLoginFail = false;
@@ -21,7 +17,7 @@ class LoginCardCubit extends Cubit<LoginCardState> {
   final FocusNode focusEmail = FocusNode();
   final FocusNode focusPassword = FocusNode();
   bool _isCircular = false;
-  IAuthentication authentication = Authentication(FirebaseAuth.instance);
+  Authentication authentication = Authentication();
 
   void changeIsCircular() {
     _isCircular = !_isCircular;
@@ -31,18 +27,10 @@ class LoginCardCubit extends Cubit<LoginCardState> {
     emit(SignUpViewState());
   }
 
-  Future<void> init() async {
-    emit(LoadingFirebaseState());
-    FirebaseApp firebaseApp = await authentication.initializeFirebase();
-    emit(LoadedFirebaseState(firebaseApp));
-  }
-
-  Future<User?> sendRequest(
-      String eMail, String password, BuildContext context) async {
+  Future<User?> sendRequest(String eMail, String password, BuildContext context) async {
     looseFocus();
     emit(LoginLoading());
-    User? user = await authentication.eMailSignIn(
-        eMail: eMail, password: password, context: context);
+    User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const HomeView(),
@@ -50,9 +38,7 @@ class LoginCardCubit extends Cubit<LoginCardState> {
       emit(LoginSucces(user));
 
       return user;
-    } else {
-      init();
-    }
+    } else {}
     return null;
   }
 
@@ -98,10 +84,6 @@ class LoginLoading extends LoginCardState {}
 
 class LoadingFirebaseState extends LoginCardState {}
 
-class LoadedFirebaseState extends LoginCardState {
-  final FirebaseApp app;
-
-  LoadedFirebaseState(this.app);
-}
+class LoadedFirebaseState extends LoginCardState {}
 
 class SignUpViewState extends LoginCardState {}

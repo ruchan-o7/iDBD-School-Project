@@ -58,7 +58,10 @@ class _HomeViewState extends State<HomeView> {
           CustomDrawerItem(leadingIcon: Icons.mail, text: "Change e-mail", onTapFunc: () {}),
           CustomDrawerItem(leadingIcon: Icons.sd_card, text: "Delete account", onTapFunc: () {}),
           CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () {}),
-          CustomDrawerItem(leadingIcon: Icons.logout, text: "Log out", onTapFunc: () async {})
+          CustomDrawerItem(
+              leadingIcon: Icons.logout,
+              text: "Log out",
+              onTapFunc: context.read<HomeViewCubit>().logOut(context))
         ],
       ),
     );

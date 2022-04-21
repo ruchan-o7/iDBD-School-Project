@@ -36,13 +36,13 @@ class _FireBookViewState extends State<FireBookView> {
     super.initState();
   }
 
-  FirestoreFunctions funcs = FirestoreFunctions(FirebaseFirestore.instance);
+  FirestoreFunctions funcs = FirestoreFunctions();
   void saveBooks() {
     if (model != null) {
       model?.items?.forEach((element) {
         if (element.volumeInfo?.categories != null && element.volumeInfo?.title != null) {
           print(element.volumeInfo?.title);
-          funcs.addBookWithModel(element);
+          funcs.addBook(element);
         }
       });
     } else {

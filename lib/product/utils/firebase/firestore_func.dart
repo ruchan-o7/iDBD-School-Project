@@ -6,46 +6,31 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+
 import '../../../feature/sign_up/model/signup_model.dart';
 
-abstract class IFirestoreFuncs {
-  final FirebaseFirestore instance;
-
-  IFirestoreFuncs(this.instance);
-  Future<void> addUserWithSet(UserSignUpModel model);
-  Future<void> addUserWithSetModel(UserSignUpModel model);
-  Future uploadFromGalleryImage(BuildContext context, User? user);
-}
-
-class FirestoreFunctions extends IFirestoreFuncs {
-  // final database = FirebaseFirestore.instance;
-
+class FirestoreFunctions {
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? filePath;
 
-  FirestoreFunctions(FirebaseFirestore instance) : super(instance);
-  // @override
-  //@Deprecated
-  // Future<void> addUserWithSet(String name, String e_mail, String password) async {
-  //   await instance.collection("users").doc().set({"user_name": name, "e-mail": e_mail, "password": password});
-  // }
-  @override
-  Future<void> addUserWithSet(UserSignUpModel model) async {
-    await instance.collection("users").doc().set(model.toJson());
+  FirestoreFunctions();
+
+  Future<void> addUser(UserSignUpModel model) async {
+    await _firestore.collection("users").doc().set(model.toJson());
   }
 
-  @override
-  Future<void> addUserWithSetModel(UserSignUpModel model) async {
-    await instance.collection("users").doc().set(model.toJson());
+  Future<void> addBook(Items model) async {
+    await _firestore.collection("books").doc().set(model.toJson());
   }
 
-  Future<void> addBookWithModel(Items model) async {
-    await instance.collection("books").doc().set(model.toJson());
-  }
-
-  Future updateUserInfo(UserSignUpModel model) async {
-    CollectionReference _user = FirebaseFirestore.instance.collection(
+  ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
+  ///Likedbooks and Ownedbooks are [<"String">]
+  ///Current updates only photo
+  Future updateUserData(UserSignUpModel model, String fieldName) async {
+    CollectionReference _user = _firestore.collection(
         "users"); //TODO: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
     await _user
         .doc(model.userUID)
@@ -54,7 +39,20 @@ class FirestoreFunctions extends IFirestoreFuncs {
         .catchError((error) => log("Failed to update user =>$error"));
   }
 
-  @override
+  // Future updateUserUID(String uid) async {
+  //   //TODO: DOES NOT UPDATE USER UID
+  //   Future.delayed(const Duration(seconds: 1), () async {
+  //     // DocumentReference _doc = _storage.
+  //     CollectionReference _users = _firestore.collection(
+  //         "users"); //WARNING: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
+  //     log(uid);
+  //     await _users
+  //         .doc(uid)
+  //         .update({"userUID": uid})
+  //         .then((value) => log("user updated"))
+  //         .catchError((error) => log("Failed to update user =>$error"));
+  //   });
+  // }
 
   ///Uploads image to firebase and applies to profile url
   Future uploadFromGalleryImage(BuildContext context, User? user) async {
@@ -64,7 +62,7 @@ class FirestoreFunctions extends IFirestoreFuncs {
       final _uploadTask =
           await _storage.ref("/${user?.uid}->${user?.displayName}/userImage").putFile(_imageFile);
       await user?.updatePhotoURL(await _uploadTask.ref.getDownloadURL());
-      await updateUserInfo(UserSignUpModel(imageUrl: user?.photoURL));
+      await updateUserData(UserSignUpModel(imageUrl: user?.photoURL), "");
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("failed to upload photo")));

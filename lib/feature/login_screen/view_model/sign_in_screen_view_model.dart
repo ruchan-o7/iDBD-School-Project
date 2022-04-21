@@ -23,7 +23,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
   final FocusNode focusEmail;
   final FocusNode focusPassword;
   bool _isCircular = false;
-  IAuthentication authentication = Authentication(FirebaseAuth.instance);
+  Authentication authentication = Authentication();
 
   void changeIsCircular() {
     _isCircular = !_isCircular;
@@ -35,12 +35,10 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     emit(LoadedFirebaseState(firebaseApp));
   }
 
-  Future<User?> sendRequest(
-      String eMail, String password, BuildContext context) async {
+  Future<User?> sendRequest(String eMail, String password, BuildContext context) async {
     looseFocus();
     emit(SignInLoadingState());
-    User? user = await authentication.eMailSignIn(
-        eMail: eMail, password: password, context: context);
+    User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
       emit(SignInSucces(user));
 
