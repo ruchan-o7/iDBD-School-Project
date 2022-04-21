@@ -23,7 +23,7 @@ class LoginCardView extends StatelessWidget {
             // } else {
             //   return const Scaffold();
             // }
-            if (state is LoadedFirebaseState) {
+            if (state is LoadingFirebaseState) {
               return progressBuilder();
             } else {
               return logInStruct(context);

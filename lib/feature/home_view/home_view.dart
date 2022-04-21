@@ -9,27 +9,22 @@ import 'package:school_project_ibdb/feature/user_settings/user_settings_view.dar
 import '../../product/drawer_item_custom/custom_drawer_item.dart';
 import 'cubit/home_view_cubit.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeViewCubit>(
-      create: (context) => HomeViewCubit(currentUser: FirebaseAuth.instance.currentUser),
+      create: (context) => HomeViewCubit(),
       child: BlocConsumer<HomeViewCubit, HomeViewState>(
         listener: (context, state) {},
         builder: (context, state) {
-          final model = context.read<HomeViewCubit>().currentUser;
           return Scaffold(
-            key: context.read<HomeViewCubit>().drawerKey,
-            appBar: appBar(context, model),
-            body: body(context, model),
-            drawer: drawer(context, model),
+            // key: context.read<HomeViewCubit>().drawerKey,
+
+            appBar: appBar(context, FirebaseAuth.instance.currentUser),
+            body: body(context, FirebaseAuth.instance.currentUser),
+            drawer: drawer(context, FirebaseAuth.instance.currentUser),
           );
         },
       ),

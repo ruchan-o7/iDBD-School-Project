@@ -7,7 +7,9 @@ import 'package:school_project_ibdb/feature/home_view/home_view.dart';
 import '../../../product/utils/firebase/firebase_auth.dart';
 
 class LoginCardCubit extends Cubit<LoginCardState> {
-  LoginCardCubit() : super(LoginCardInitial()) {}
+  LoginCardCubit() : super(LoginCardInitial()) {
+    init();
+  }
   bool isChecked = false;
   bool isObsecure = true;
   bool isLoginFail = false;
@@ -27,13 +29,19 @@ class LoginCardCubit extends Cubit<LoginCardState> {
     emit(SignUpViewState());
   }
 
+  Future<void> init() async {
+    emit(LoadedFirebaseState());
+    FirebaseApp firebaseApp = await authentication.initializeFirebase();
+    emit(LoadedFirebaseState());
+  }
+
   Future<User?> sendRequest(String eMail, String password, BuildContext context) async {
     looseFocus();
     emit(LoginLoading());
     User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const HomeView(),
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => HomeView(),
       ));
       emit(LoginSucces(user));
 
