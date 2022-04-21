@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,8 +7,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import 'package:school_project_ibdb/product/utils/firebase/models/rt_user_model.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
 
@@ -56,6 +59,7 @@ class FirestoreFunctions {
     return user?.photoURL;
   }
 
+  ///Finds user in firestore by user uid
   Future<Map<String, dynamic>?> getDocumentData(User? currentUser) async {
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
         (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
@@ -65,6 +69,48 @@ class FirestoreFunctions {
       _data = element.data();
     });
     return _data;
+  }
+
+  getBookById(String id) async {
+    final _docSnap = (await _firestore.collection("books").where("id", isEqualTo: id).get()).docs;
+    Map<String, dynamic> _data = {};
+    _docSnap.forEach((element) {
+      _data = element.data();
+    });
+    return Items.fromJson(_data);
+  }
+
+  //-----------------------------------------------------------------------------
+  //REALTIME DATABASE
+  final FirebaseDatabase _rtDatabase = FirebaseDatabase.instance;
+  final DatabaseReference _ref = FirebaseDatabase.instance.ref();
+
+  void readDataContinously() {
+    _ref.onValue.listen((event) {
+      final data = event.snapshot.value;
+      log(data.toString());
+    });
+  }
+
+  ///Reads data from realtime database only once
+  Future readDataOnce() async {
+    List<RTUserModel> list;
+    final snapshot = await _ref.child("/users/0").get();
+
+    if (snapshot.exists) {
+      final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
+      return RTUserModel.fromJson(data);
+    } else {
+      print("No data");
+    }
+  }
+
+  void writeData() {
+    final test = _ref.child("test");
+    test
+        .set({"desc": "test2"})
+        .then((value) => print("has been written"))
+        .catchError((er) => print(er.toString()));
   }
 
   _showSnackMessage(BuildContext context, String data) {

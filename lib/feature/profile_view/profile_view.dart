@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/feature/profile_view/cubit/profileview_cubit.dart';
+import 'package:school_project_ibdb/product/book_card/book_card.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import 'package:kartal/kartal.dart';
 
@@ -17,9 +18,17 @@ class ProfileView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-                elevation: 0,
-                title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
-                    style: Theme.of(context).textTheme.headline5)),
+              elevation: 0,
+              title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
+                  style: Theme.of(context).textTheme.headline5),
+              actions: [
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<ProfileviewCubit>().getData();
+                    },
+                    child: Text("get Data")),
+              ],
+            ),
             body: DefaultTabController(
               length: 2,
               child: Column(
@@ -35,14 +44,14 @@ class ProfileView extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ??
+                          Text(context.read<ProfileviewCubit>().rtUserModel?.likedBooks?.length.toString() ??
                               "null"),
                           Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
                         ],
                       ),
                       Column(
                         children: [
-                          Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ??
+                          Text(context.read<ProfileviewCubit>().rtUserModel?.ownedBooks?.length.toString() ??
                               "null"),
                           Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
                         ],
@@ -100,8 +109,18 @@ class ProfileView extends StatelessWidget {
                   ]),
                   Expanded(
                     child: TabBarView(children: [
-                      Text("firsty"),
-                      Text("second"),
+                      GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                          itemBuilder: (context, index) {
+                            return BookCard(bookModel: context.read<ProfileviewCubit>().likedBooks?[index]);
+                          },
+                          itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
+                      GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                          itemBuilder: (context, index) {
+                            return BookCard(bookModel: context.read<ProfileviewCubit>().ownedBooks?[index]);
+                          },
+                          itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
                     ]),
                   )
                 ],
