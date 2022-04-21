@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/feature/home_view/home_view.dart';
+import 'package:school_project_ibdb/feature/nav_bar/nav_bar_view.dart';
 
 import '../../../product/utils/firebase/firebase_auth.dart';
 
@@ -41,7 +42,7 @@ class LoginCardCubit extends Cubit<LoginCardState> {
     User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeView(),
+        builder: (context) => NavBar(),
       ));
       emit(LoginSucces(user));
 

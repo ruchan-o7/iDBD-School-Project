@@ -4,3 +4,5 @@ part of 'profileview_cubit.dart';
 abstract class ProfileviewState {}
 
 class ProfileviewInitial extends ProfileviewState {}
+
+class RefreshPage extends ProfileviewState {}

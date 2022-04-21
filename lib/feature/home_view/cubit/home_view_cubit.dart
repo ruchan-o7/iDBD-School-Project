@@ -7,16 +7,21 @@ part 'home_view_state.dart';
 
 class HomeViewCubit extends Cubit<HomeViewState> {
   HomeViewCubit() : super(HomeViewInitial()) {
-    Authentication().initializeFirebase();
+    init();
   }
 
   final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
+  final Authentication _auth = Authentication();
 
-  logOut(BuildContext context) {
-    Authentication().signOut();
+  logOut(BuildContext context) async {
+    await _auth.signOut();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) => LoginCardView(),
     ));
+  }
+
+  init() async {
+    await _auth.initializeFirebase();
   }
 
   goToPage(BuildContext context, Widget destination) {

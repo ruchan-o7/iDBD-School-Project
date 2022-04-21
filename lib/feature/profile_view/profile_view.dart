@@ -1,10 +1,115 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/feature/profile_view/cubit/profileview_cubit.dart';
+import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
+import 'package:kartal/kartal.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return BlocProvider(
+      create: (context) => ProfileviewCubit(),
+      child: BlocConsumer<ProfileviewCubit, ProfileviewState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+                elevation: 0,
+                title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
+                    style: Theme.of(context).textTheme.headline5)),
+            body: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          CustomCircleAvatar(),
+                          Text(FirebaseAuth.instance.currentUser?.displayName ?? "coultn't fetch user name")
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ??
+                              "null"),
+                          Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ??
+                              "null"),
+                          Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
+                        ],
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: context.horizontalPaddingHigh,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              showBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return Container(
+                                      width: context.dynamicWidth(1),
+                                      height: context.dynamicHeight(0.85),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: context.dynamicHeight(0.1),
+                                          ),
+                                          CustomCircleAvatar(),
+                                          TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Change Profile Photo",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .button
+                                                    ?.copyWith(color: Colors.white),
+                                              )),
+                                          Divider(),
+                                          ListTile(
+                                            leading: Text("Name: "),
+                                            title: Text("    nbanmasd"),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Text("Edit profile")),
+                      )),
+                    ],
+                  ),
+                  Divider(),
+                  const TabBar(tabs: [
+                    Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
+                    Tab(child: Icon(Icons.book, color: Colors.black))
+                  ]),
+                  Expanded(
+                    child: TabBarView(children: [
+                      Text("firsty"),
+                      Text("second"),
+                    ]),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

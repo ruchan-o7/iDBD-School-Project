@@ -32,7 +32,7 @@ class Authentication {
           await _auth.createUserWithEmailAndPassword(email: model.userMail!, password: model.userPassword!);
       await _user.user?.updateDisplayName(model.userName);
       _user.user?.sendEmailVerification();
-      await _firestoreFunctions.addUser(model.copyWith(userUID: _user.user?.uid));
+      await _firestoreFunctions.addUser(model.copyWith(userUid: _user.user?.uid));
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         _showSnackbar("Mail already using", context);

@@ -44,12 +44,14 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
     isPressed = !isPressed;
     final _tempModel = UserSignUpModel(
+      likedBooks: [],
+      ownedBooks: [],
       imageUrl: uploadPath ?? "",
       signDate: DateTime.now().toIso8601String(),
       userMail: mailController.text,
       userName: userNameController.text,
       userPassword: passController.text,
-      userUID: "",
+      userUid: "",
     );
     await authentication.signUp(_tempModel, context);
     isPressed = !isPressed;

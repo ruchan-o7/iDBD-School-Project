@@ -2,16 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
-import 'package:school_project_ibdb/feature/nav_bar/cubit/navbar_cubit.dart';
-import 'package:school_project_ibdb/feature/user_settings/user_settings_view.dart';
 
 import '../../product/drawer_item_custom/custom_drawer_item.dart';
 import 'cubit/home_view_cubit.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeViewCubit>(
@@ -20,18 +22,17 @@ class HomeView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            // key: context.read<HomeViewCubit>().drawerKey,
-
-            appBar: appBar(context, FirebaseAuth.instance.currentUser),
-            body: body(context, FirebaseAuth.instance.currentUser),
-            drawer: drawer(context, FirebaseAuth.instance.currentUser),
+            appBar: appBar(context),
+            drawer: drawer(context),
+            body: body(context),
           );
         },
       ),
     );
   }
 
-  Drawer drawer(BuildContext context, User? model) {
+  // Drawer drawer(BuildContext context, User? model) {
+  Drawer drawer(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
@@ -41,11 +42,15 @@ class HomeView extends StatelessWidget {
                   child: SizedBox(
                 width: context.dynamicWidth(0.3),
                 child: CircleAvatar(
-                  backgroundImage: model?.photoURL != null ? NetworkImage("${model?.photoURL}") : null,
-                  child: model?.photoURL == null ? Image.asset("assets/icon/dummy_per.png") : null,
+                  backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
+                      ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
+                      : null,
+                  child: FirebaseAuth.instance.currentUser?.photoURL == null
+                      ? Image.asset("assets/icon/dummy_per.png")
+                      : null,
                 ),
               )),
-              Text("${model?.displayName?.toUpperCase()}")
+              Text("${FirebaseAuth.instance.currentUser?.displayName?.toUpperCase()}")
             ],
           ),
           CustomDrawerItem(leadingIcon: Icons.account_box, text: "Change user name", onTapFunc: () {}),
@@ -54,15 +59,18 @@ class HomeView extends StatelessWidget {
           CustomDrawerItem(leadingIcon: Icons.sd_card, text: "Delete account", onTapFunc: () {}),
           CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () {}),
           CustomDrawerItem(
-              leadingIcon: Icons.logout,
-              text: "Log out",
-              onTapFunc: context.read<HomeViewCubit>().logOut(context))
+            leadingIcon: Icons.logout,
+            text: "Log out",
+            onTapFunc: () async {
+              await context.read<HomeViewCubit>().logOut(context);
+            },
+          )
         ],
       ),
     );
   }
 
-  SingleChildScrollView body(BuildContext context, User? model) {
+  SingleChildScrollView body(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: context.paddingNormal,
@@ -71,7 +79,7 @@ class HomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Welcome back, ${model?.displayName}",
+              "Welcome back, ${FirebaseAuth.instance.currentUser?.displayName}",
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w400),
             ),
             Text("What do yo want to read to today? ",
@@ -137,7 +145,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  AppBar appBar(BuildContext context, User? model) {
+  AppBar appBar(BuildContext context) {
     return AppBar(
       elevation: 0,
       actions: [
@@ -150,8 +158,12 @@ class HomeView extends StatelessWidget {
             },
             child: Container(
               child: CircleAvatar(
-                backgroundImage: model?.photoURL != null ? NetworkImage("${model?.photoURL}") : null,
-                child: model?.photoURL == null ? Image.asset("assets/icon/dummy_per.png") : null,
+                backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
+                    ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
+                    : null,
+                child: FirebaseAuth.instance.currentUser?.photoURL == null
+                    ? Image.asset("assets/icon/dummy_per.png")
+                    : null,
               ),
             ),
           ),

@@ -33,26 +33,11 @@ class FirestoreFunctions {
     CollectionReference _user = _firestore.collection(
         "users"); //TODO: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
     await _user
-        .doc(model.userUID)
+        .doc(model.userUid)
         .update({"imageUrl": model.imageUrl})
         .then((value) => log("user updated"))
         .catchError((error) => log("Failed to update user =>$error"));
   }
-
-  // Future updateUserUID(String uid) async {
-  //   //TODO: DOES NOT UPDATE USER UID
-  //   Future.delayed(const Duration(seconds: 1), () async {
-  //     // DocumentReference _doc = _storage.
-  //     CollectionReference _users = _firestore.collection(
-  //         "users"); //WARNING: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
-  //     log(uid);
-  //     await _users
-  //         .doc(uid)
-  //         .update({"userUID": uid})
-  //         .then((value) => log("user updated"))
-  //         .catchError((error) => log("Failed to update user =>$error"));
-  //   });
-  // }
 
   ///Uploads image to firebase and applies to profile url
   Future uploadFromGalleryImage(BuildContext context, User? user) async {
@@ -69,6 +54,17 @@ class FirestoreFunctions {
     }
 
     return user?.photoURL;
+  }
+
+  Future<Map<String, dynamic>?> getDocumentData(User? currentUser) async {
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
+        (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
+
+    Map<String, dynamic>? _data;
+    _docSnap.forEach((element) {
+      _data = element.data();
+    });
+    return _data;
   }
 
   _showSnackMessage(BuildContext context, String data) {
