@@ -69,8 +69,9 @@ class VolumeInfo {
   List<String>? authors;
   String? publishedDate;
   int? pageCount;
-  int? averageRating;
+  dynamic averageRating;
   int? ratingsCount;
+  dynamic description;
   bool? allowAnonLogging;
   ImageLinks? imageLinks;
   List<String>? categories;
@@ -95,6 +96,7 @@ class VolumeInfo {
       this.allowAnonLogging,
       this.imageLinks,
       this.language,
+      this.description,
       this.previewLink,
       this.categories,
       this.infoLink,
@@ -103,7 +105,8 @@ class VolumeInfo {
   VolumeInfo.fromJson(Map<String, dynamic> json) {
     categories = json['categories'] == null ? null : List<String>.from(json["categories"].map((x) => x));
     title = json['title'];
-    authors = json['authors'].cast<String>();
+    description = json["description"];
+    authors = json["authors"] != null ? json['authors'].cast<String>() : null;
     publishedDate = json['publishedDate'];
     pageCount = json['pageCount'];
     averageRating = json["averageRating"] == null ? null : json['averageRating'];
@@ -121,6 +124,7 @@ class VolumeInfo {
     data['title'] = title;
     data['authors'] = authors;
     data['publishedDate'] = publishedDate;
+    data['description'] = description;
     data['pageCount'] = pageCount;
     data["categories"] = categories?.toList();
     // "categories": categories ==null?null:List<dynamic>.from(categories.map((e) => e));

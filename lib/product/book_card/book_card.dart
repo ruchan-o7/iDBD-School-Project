@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/about_view/about_view.dart';
 
+import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
 
 class BookCard extends StatelessWidget {
@@ -9,69 +11,49 @@ class BookCard extends StatelessWidget {
   Items? bookModel;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: context.dynamicHeight(0.2),
-      child: Padding(
-        padding: context.paddingLow,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // SizedBox(height: context.dynamicHeight(0.015)),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "null",
-                  fit: BoxFit.contain,
-                  scale: 1.2,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookDetail(bookModel: bookModel),
+            ));
+      },
+      child: Card(
+        child: Padding(
+          padding: context.paddingLow,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: context.dynamicHeight(0.155),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: NetworkImage(bookModel?.volumeInfo?.imageLinks?.thumbnail != null
+                          ? "${bookModel?.volumeInfo?.imageLinks?.thumbnail}"
+                          : "https://picsum.photos/200/300"),
+                      fit: BoxFit.contain),
                 ),
               ),
-            ),
-            // SizedBox(height: context.dynamicHeight(0.015)),
-            Text(bookModel?.volumeInfo?.title ?? "null title"),
-            SizedBox(
-              height: context.dynamicHeight(0.015),
-              child: ListView.builder(
-                itemBuilder: (context, index) => Text(bookModel?.volumeInfo?.authors?[index] ?? "null author",
-                    style: Theme.of(context).textTheme.bodySmall),
-                itemCount: bookModel?.volumeInfo?.authors?.length,
+              Divider(),
+              Text(
+                bookModel?.volumeInfo?.title ?? "null title",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-            )
-            // Text(
-            //   "Yazar",
-            //   style: Theme.of(context).textTheme.bodySmall,
-            // )
-          ],
+              SizedBox(
+                height: context.dynamicHeight(0.015),
+                child: ListView.builder(
+                  itemBuilder: (context, index) => Text(
+                      bookModel?.volumeInfo?.authors?[index] ?? "null author",
+                      style: Theme.of(context).textTheme.bodySmall),
+                  itemCount: bookModel?.volumeInfo?.authors?.length,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
-    // return Card(
-    //     child: Column(
-    //   children: [
-    //     Image.network(
-    //       bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "",
-    //       fit: BoxFit.fitWidth,
-    //     ),
-    //     Container(
-    //         decoration: const BoxDecoration(
-    //       gradient: LinearGradient(
-    //           colors: [
-    //             Colors.black,
-    //             Colors.transparent,
-    //           ],
-    //           begin: Alignment.bottomCenter,
-    //           end: Alignment.topCenter,
-    //           stops: [0, 0.4]),
-    //     )),
-    //     Column(
-    //       mainAxisAlignment: MainAxisAlignment.end,
-    //       children: [
-    //         Text(bookModel?.volumeInfo?.title ?? "null title",
-    //             style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black)),
-    //       ],
-    //     )
-    //   ],
-    // ));
   }
 }

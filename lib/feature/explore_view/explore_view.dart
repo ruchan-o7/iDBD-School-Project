@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/feature/explore_view/cubit/explore_cubit.dart';
+// import 'package:school_project_ibdb/feature/search_view/model/searched_book_model.dart';
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
 
 import '../../product/book_card/book_card.dart';
@@ -21,7 +22,7 @@ class ExploreView extends StatelessWidget {
           return Scaffold(
             body: GridView.builder(
               padding: EdgeInsets.zero,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 9 / 13,
               ),
@@ -33,44 +34,10 @@ class ExploreView extends StatelessWidget {
                     ),
                   );
                 } else {
+                  final data = contex.read<ExploreCubit>().exploreBooks?.items?[index];
                   return SingleChildScrollView(
                     child: Column(
-                      children: [
-                        SizedBox(height: contex.dynamicHeight(0.03)),
-                        Card(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Image.network(
-                                  context
-                                          .read<ExploreCubit>()
-                                          .exploreBooks
-                                          ?.items?[index]
-                                          .volumeInfo
-                                          ?.imageLinks
-                                          ?.thumbnail ??
-                                      "",
-                                  fit: BoxFit.fitWidth),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    context
-                                            .read<ExploreCubit>()
-                                            .exploreBooks
-                                            ?.items?[index]
-                                            .volumeInfo
-                                            ?.title ??
-                                        "null title",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
+                      children: [SizedBox(height: contex.dynamicHeight(0.03)), BookCard(bookModel: data)],
                     ),
                   );
                 }
@@ -80,14 +47,6 @@ class ExploreView extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-
-  BookCard bookCards() {
-    return BookCard(
-      bookModel: Items(
-          volumeInfo: VolumeInfo(
-              title: "test kitap", imageLinks: ImageLinks(thumbnail: "https://picsum.photos/200/300"))),
     );
   }
 }
