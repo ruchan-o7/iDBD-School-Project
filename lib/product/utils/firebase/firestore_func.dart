@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
 import 'package:school_project_ibdb/product/utils/firebase/models/rt_user_model.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
@@ -92,8 +93,8 @@ class FirestoreFunctions {
     });
   }
 
-  ///Reads data from realtime database only once
-  Future readDataOnce() async {
+  ///Reads user data from realtime database only once
+  Future readUserDataOnce() async {
     List<RTUserModel> list;
     final snapshot = await _ref.child("/users/0").get();
 
@@ -105,12 +106,28 @@ class FirestoreFunctions {
     }
   }
 
-  void writeData() {
-    final test = _ref.child("test");
-    test
-        .set({"desc": "test2"})
-        .then((value) => print("has been written"))
-        .catchError((er) => print(er.toString()));
+  ///Reads user data from realtime database only once
+  Future readCommentData(String? bookID) async {
+    final snapshot = await _ref.child("/books/$bookID").get();
+    if (snapshot.exists) {
+      final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
+      return CommentModel.fromJson(data);
+    } else {
+      print("No data");
+    }
+  }
+
+  ///write comment to realtime datanase
+  void writeCommentData(CommentModel commentModel) {
+    // List<CommentModel>? commentList;
+
+    final comment = _ref.child("books/${commentModel.id}/comments");
+    // comment
+    //     .set(commentModel.toJson())
+    //     .then((value) => print("has been written"))
+    //     .catchError((er) => print(er.toString()));
+    final newComment = comment.push();
+    newComment.set(commentModel.comments?.first.toJson());
   }
 
   _showSnackMessage(BuildContext context, String data) {

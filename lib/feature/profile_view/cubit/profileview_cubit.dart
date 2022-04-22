@@ -34,7 +34,7 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
   }
 
   Future<void> getData() async {
-    rtUserModel = await _functions.readDataOnce();
+    rtUserModel = await _functions.readUserDataOnce();
 
     await getLikedBooks(rtUserModel);
     await getOwnedBooks(rtUserModel);
