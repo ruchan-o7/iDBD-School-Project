@@ -13,6 +13,7 @@ class StringConstants {
   String get joinUs => "Don't you have account. Let's join us";
   String get howCanISignUp => "Nasıl kayıt olabilirim";
   String get changeEMail => "E-postamı değiştirmek istiyorum";
+  String get notFound => "Couldn't find any information";
 }
 
 class percentageConstants {

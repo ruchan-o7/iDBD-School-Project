@@ -1,0 +1,48 @@
+
+
+{
+    "comments":[
+        {
+            "bookId" : "oZhLDwAAQBAJ",
+            "comment":[
+                {
+                    "userUid":"asdasdasd",
+                    "comment":"elle girilmis yorum",
+                    "time":"sali"
+                },
+                {
+                    "userUid":"asdasdasd",
+                    "comment":"elle girilmis yorum",
+                    "time":"sali"
+                }
+            ]
+        },
+        {
+            
+            "bookId" : "YGBUDgAAQBAJ",
+            "comment":[
+                {
+                    "userUid":"asdasdasd",
+                    "comment":"elle girilmis yorum",
+                    "time":"sali"
+                }
+            ]
+        }
+    ],
+    "users": [
+    {
+    "likedBooks": [
+    "oZhLDwAAQBAJ",
+    "YGBUDgAAQBAJ"
+    ],
+    "markedBook": [
+    "YGBUDgAAQBAJ"
+    ],
+    "ownedBooks": [
+    "oZhLDwAAQBAJ",
+    "YGBUDgAAQBAJ"
+    ],
+    "userUID": "9bGiRfGRC7cP3F66CxhSehydbKD3"
+    }
+    ]
+    }

@@ -42,7 +42,7 @@ class LoginCardCubit extends Cubit<LoginCardState> {
     User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => NavBar(),
+        builder: (context) => const NavBar(),
       ));
       emit(LoginSucces(user));
 

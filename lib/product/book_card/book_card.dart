@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/about_view/about_view.dart';
 
 import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
@@ -11,6 +10,10 @@ class BookCard extends StatelessWidget {
   Items? bookModel;
   @override
   Widget build(BuildContext context) {
+    return itemModel(context);
+  }
+
+  InkWell itemModel(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.push(

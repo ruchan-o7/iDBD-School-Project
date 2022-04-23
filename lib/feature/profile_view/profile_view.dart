@@ -45,14 +45,14 @@ class ProfileView extends StatelessWidget {
                       Column(
                         children: [
                           Text(context.read<ProfileviewCubit>().rtUserModel?.likedBooks?.length.toString() ??
-                              "null"),
+                              "0"),
                           Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
                         ],
                       ),
                       Column(
                         children: [
                           Text(context.read<ProfileviewCubit>().rtUserModel?.ownedBooks?.length.toString() ??
-                              "null"),
+                              "0"),
                           Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
                         ],
                       ),

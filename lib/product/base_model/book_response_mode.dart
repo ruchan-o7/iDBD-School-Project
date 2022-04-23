@@ -1,6 +1,8 @@
 //25,03,2022 - 19:16     UPTODATE MODEL --> https://www.googleapis.com/books/v1/volumes?q=intibah
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BookResponseModel {
   String? kind;
   List<Items>? items;
@@ -61,6 +63,17 @@ class Items {
       data['accessInfo'] = accessInfo!.toJson();
     }
     return data;
+  }
+
+  factory Items.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Items(
+        accessInfo: data["accesInfo"],
+        etag: data["etag"],
+        id: data["id"],
+        saleInfo: data["saleInfo"],
+        selfLink: data["selfLing"],
+        volumeInfo: data["volumeInfo"]);
   }
 }
 

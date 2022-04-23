@@ -72,6 +72,7 @@ class FirestoreFunctions {
     return _data;
   }
 
+  ///Finds books from databases by id
   getBookById(String id) async {
     final _docSnap = (await _firestore.collection("books").where("id", isEqualTo: id).get()).docs;
     Map<String, dynamic> _data = {};
@@ -79,6 +80,23 @@ class FirestoreFunctions {
       _data = element.data();
     });
     return Items.fromJson(_data);
+  }
+
+  ///Searchs From FireStore not Google books api.
+  ///Returns Items model
+  searchBookFromName(String bookName) async {
+    final _snap = (await _firestore
+            .collection("books")
+            .where("volumeInfo.title", isGreaterThanOrEqualTo: bookName)
+            .get())
+        .docs;
+
+    List<Items>? _books = [];
+    for (var item in _snap) {
+      _books.add(Items.fromJson(item.data()));
+    }
+    log(_books.length.toString());
+    return _books;
   }
 
   //-----------------------------------------------------------------------------
@@ -108,26 +126,36 @@ class FirestoreFunctions {
 
   ///Reads user data from realtime database only once
   Future readCommentData(String? bookID) async {
-    final snapshot = await _ref.child("/books/$bookID").get();
+    final snapshot = await _ref.get();
+
     if (snapshot.exists) {
-      final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
-      return CommentModel.fromJson(data);
-    } else {
-      print("No data");
-    }
+      final data = jsonDecode(jsonEncode(snapshot.value));
+      // final _model = CommentModel.fromMap((jsonDecode(jsonEncode(snapshot.value)).cast<String, dynamic>()));
+      // return data;
+      // final _model = CommentComment.fromJson(data);
+      // List<CommentComment>.from(CommentComment.fromJson(data)).toList();
+      try {
+        final _model = BaseModel.fromJson(data);
+        return _model;
+      } catch (e) {}
+      // if (data is List) {
+      //   for (var item in data) {
+      //     liste.add(CommentModelComment.fromJson(item as Map<String, dynamic>));
+      //   }
+      // }
+    } else {}
   }
 
   ///write comment to realtime datanase
-  void writeCommentData(CommentModel commentModel) {
-    // List<CommentModel>? commentList;
-
-    final comment = _ref.child("books/${commentModel.id}/comments");
-    // comment
-    //     .set(commentModel.toJson())
-    //     .then((value) => print("has been written"))
-    //     .catchError((er) => print(er.toString()));
+  void writeCommentData(String bookId, CommentModel model) {
+    final comment = _ref.child("comments/${bookId}/comment");
     final newComment = comment.push();
-    newComment.set(commentModel.comments?.first.toJson());
+    newComment.set(model.toJson());
+
+    //----------------------------
+    // newComment.set(commentModel.comments?.first?.toMap());
+    // final _newComment = _ref.push();
+    // _newComment.set(commentModel.comments?.first?.toMap());
   }
 
   _showSnackMessage(BuildContext context, String data) {

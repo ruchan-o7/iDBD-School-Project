@@ -1,214 +1,149 @@
-// class CommentModel {
-//   String? id;
-//   List<Comments>? comments;
-//   String? rating;
-
-//   CommentModel({this.id, this.comments, this.rating});
-
-//   CommentModel.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     if (json['comments'] != null) {
-//       comments = <Comments>[];
-//       json['comments'].forEach((v) {
-//         comments!.add(new Comments.fromJson(v));
-//       });
-//     }
-//     rating = json['rating'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     if (this.comments != null) {
-//       data['comments'] = this.comments!.map((v) => v.toJson()).toList();
-//     }
-//     data['rating'] = this.rating;
-//     return data;
-//   }
-// }
-
-// class Comments {
-//   String? commentOwner;
-//   String? comment;
-//   String? commentTime;
-
-//   Comments({this.commentOwner, this.comment, this.commentTime});
-
-//   Comments.fromJson(Map<String, dynamic> json) {
-//     commentOwner = json['commentOwner'];
-//     comment = json['comment'];
-//     commentTime = json['commentTime'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['commentOwner'] = this.commentOwner;
-//     data['comment'] = this.comment;
-//     data['commentTime'] = this.commentTime;
-//     return data;
-//   }
-// }
-// To parse this JSON data, do
-//
-//     final commentModel = commentModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// CommentModel commentModelFromJson(String str) => CommentModel.fromJson(json.decode(str));
-
-// String commentModelToJson(CommentModel data) => json.encode(data.toJson());
-
-// class CommentModel {
-//   CommentModel({
-//     this.id,
-//     this.comments,
-//     this.rating,
-//   });
-
-//   String? id;
-//   List<Comment>? comments;
-//   String? rating;
-
-//   CommentModel copyWith({
-//     String? id,
-//     List<Comment>? comments,
-//     String? rating,
-//   }) =>
-//       CommentModel(
-//         id: id ?? this.id,
-//         comments: comments ?? this.comments,
-//         rating: rating ?? this.rating,
-//       );
-
-//   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
-//         id: json["id"] == null ? null : json["id"],
-//         comments: json["comments"] == null
-//             ? null
-//             : List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x))),
-//         rating: json["rating"] == null ? null : json["rating"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "id": id == null ? null : id,
-//         "comments": comments == null ? null : List<dynamic>.from(comments!.map((x) => x.toJson())),
-//         "rating": rating == null ? null : rating,
-//       };
-// }
-
-// class Comment {
-//   Comment({
-//     this.commentOwner,
-//     this.comment,
-//     this.commentTime,
-//   });
-
-//   String? commentOwner;
-//   String? comment;
-//   String? commentTime;
-
-//   Comment copyWith({
-//     String? commentOwner,
-//     String? comment,
-//     String? commentTime,
-//   }) =>
-//       Comment(
-//         commentOwner: commentOwner ?? this.commentOwner,
-//         comment: comment ?? this.comment,
-//         commentTime: commentTime ?? this.commentTime,
-//       );
-
-//   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-//         commentOwner: json["commentOwner"] == null ? null : json["commentOwner"],
-//         comment: json["comment"] == null ? null : json["comment"],
-//         commentTime: json["commentTime"] == null ? null : json["commentTime"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "commentOwner": commentOwner == null ? null : commentOwner,
-//         "comment": comment == null ? null : comment,
-//         "commentTime": commentTime == null ? null : commentTime,
-//       };
-// }
-
 // To parse this JSON data, do
 //
 //     final commentModel = commentModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CommentModel commentModelFromJson(String str) => CommentModel.fromJson(json.decode(str));
+BaseModel commentModelFromJson(String str) => BaseModel.fromJson(json.decode(str));
 
-String commentModelToJson(CommentModel data) => json.encode(data.toJson());
+String commentModelToJson(BaseModel data) => json.encode(data.toJson());
 
-class CommentModel {
-  CommentModel({
+class BaseModel {
+  BaseModel({
     this.comments,
-    this.rating,
-    this.id,
+    this.users,
   });
 
-  List<Comment>? comments;
-  String? rating;
-  String? id;
+  List<CommentsModel>? comments;
+  List<UserModel>? users;
 
-  CommentModel copyWith({
-    List<Comment>? comments,
-    String? rating,
-    String? id,
+  BaseModel copyWith({
+    List<CommentsModel>? comments,
+    List<UserModel>? users,
   }) =>
-      CommentModel(
+      BaseModel(
         comments: comments ?? this.comments,
-        rating: rating ?? this.rating,
-        id: id ?? this.id,
+        users: users ?? this.users,
       );
 
-  factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
+  factory BaseModel.fromJson(Map<String, dynamic> json) => BaseModel(
         comments: json["comments"] == null
             ? null
-            // : List<Comment>.from(json["comments"].map<String, dynamic>((x) => Comment.fromJson(x))),
-            : List<Comment>.from(json.entries.map((e) => Comment.fromJson(e.value)).toList()),
-        rating: json["rating"] == null ? null : json["rating"],
-        id: json["id"] == null ? null : json["id"],
+            : List<CommentsModel>.from(json["comments"].map((x) => CommentsModel.fromJson(x))),
+        users: json["users"] == null
+            ? null
+            : List<UserModel>.from(json["users"].map((x) => UserModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "comments": comments == null ? null : List<dynamic>.from(comments?.map((x) => x.toJson()) ?? {}),
-        "rating": rating == null ? null : rating,
-        "id": id == null ? null : id,
+        "comments": comments == null ? null : List<dynamic>.from(comments!.map((x) => x.toJson())),
+        "users": users == null ? null : List<dynamic>.from(users!.map((x) => x.toJson())),
       };
 }
 
-class Comment {
-  Comment({
-    this.commentOwner,
+class CommentsModel {
+  CommentsModel({
+    this.bookId,
     this.comment,
-    this.commentTime,
   });
 
-  String? commentOwner;
-  String? comment;
-  String? commentTime;
+  String? bookId;
+  List<CommentModel>? comment;
 
-  Comment copyWith({
-    String? commentOwner,
-    String? comment,
-    String? commentTime,
+  CommentsModel copyWith({
+    String? bookId,
+    List<CommentModel>? comment,
   }) =>
-      Comment(
-        commentOwner: commentOwner ?? this.commentOwner,
+      CommentsModel(
+        bookId: bookId ?? this.bookId,
         comment: comment ?? this.comment,
-        commentTime: commentTime ?? this.commentTime,
       );
 
-  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
-        commentOwner: json["commentOwner"] == null ? null : json["commentOwner"],
-        comment: json["comment"] == null ? null : json["comment"],
-        commentTime: json["commentTime"] == null ? null : json["commentTime"],
+  factory CommentsModel.fromJson(Map<String, dynamic> json) => CommentsModel(
+        bookId: json["bookId"] == null ? null : json["bookId"],
+        comment: json["comment"] == null
+            ? null
+            : List<CommentModel>.from(json["comment"].map((x) => CommentModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "commentOwner": commentOwner == null ? null : commentOwner,
+        "bookId": bookId == null ? null : bookId,
+        "comment": comment == null ? null : List<dynamic>.from(comment!.map((x) => x.toJson())),
+      };
+}
+
+class CommentModel {
+  CommentModel({
+    this.comment,
+    this.time,
+    this.userUid,
+  });
+
+  String? comment;
+  String? time;
+  String? userUid;
+
+  CommentModel copyWith({
+    String? comment,
+    String? time,
+    String? userUid,
+  }) =>
+      CommentModel(
+        comment: comment ?? this.comment,
+        time: time ?? this.time,
+        userUid: userUid ?? this.userUid,
+      );
+
+  factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
+        comment: json["comment"] == null ? null : json["comment"],
+        time: json["time"] == null ? null : json["time"],
+        userUid: json["userUid"] == null ? null : json["userUid"],
+      );
+
+  Map<String, dynamic> toJson() => {
         "comment": comment == null ? null : comment,
-        "commentTime": commentTime == null ? null : commentTime,
+        "time": time == null ? null : time,
+        "userUid": userUid == null ? null : userUid,
+      };
+}
+
+class UserModel {
+  UserModel({
+    this.likedBooks,
+    this.markedBook,
+    this.ownedBooks,
+    this.userUid,
+  });
+
+  List<String>? likedBooks;
+  List<String>? markedBook;
+  List<String>? ownedBooks;
+  String? userUid;
+
+  UserModel copyWith({
+    List<String>? likedBooks,
+    List<String>? markedBook,
+    List<String>? ownedBooks,
+    String? userUid,
+  }) =>
+      UserModel(
+        likedBooks: likedBooks ?? this.likedBooks,
+        markedBook: markedBook ?? this.markedBook,
+        ownedBooks: ownedBooks ?? this.ownedBooks,
+        userUid: userUid ?? this.userUid,
+      );
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        likedBooks: json["likedBooks"] == null ? null : List<String>.from(json["likedBooks"].map((x) => x)),
+        markedBook: json["markedBook"] == null ? null : List<String>.from(json["markedBook"].map((x) => x)),
+        ownedBooks: json["ownedBooks"] == null ? null : List<String>.from(json["ownedBooks"].map((x) => x)),
+        userUid: json["userUID"] == null ? null : json["userUID"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "likedBooks": likedBooks == null ? null : List<dynamic>.from(likedBooks!.map((x) => x)),
+        "markedBook": markedBook == null ? null : List<dynamic>.from(markedBook!.map((x) => x)),
+        "ownedBooks": ownedBooks == null ? null : List<dynamic>.from(ownedBooks!.map((x) => x)),
+        "userUID": userUid == null ? null : userUid,
       };
 }

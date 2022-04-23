@@ -3,5 +3,6 @@ class LogoPaths {
   static const String transparent = "assets/sign_in/IBDb-logos_transparent.png";
   static const String white = "assets/sign_in/IBDb-logos_white.png";
   static const String normal = "assets/sign_in/IBDb-logos.jpeg";
-  static const String dummy_per = "assets/icon/dummy_per.png";
+  static const String dummyPer = "assets/icon/dummy_per.png";
+  static const String dummyBook = "assets/icon/dummy_book.png";
 }

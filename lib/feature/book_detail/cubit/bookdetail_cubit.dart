@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -16,7 +18,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   bool isClicked = false;
   Items? bookModel;
   FirestoreFunctions firestoreFunctions = FirestoreFunctions();
-  CommentModel? allComments;
+  BaseModel? comments;
 
   void changeClicked() {
     isClicked = !isClicked;
@@ -24,23 +26,17 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   }
 
   Future<void> getComments() async {
-    allComments = await firestoreFunctions.readCommentData(bookModel?.id);
-    if (allComments != null) emit(CommentLoaded());
+    comments = await firestoreFunctions.readCommentData(bookModel?.id);
+    if (comments != null) emit(CommentLoaded());
   }
 
   void writeComment(String text) {
     firestoreFunctions.writeCommentData(
+      bookModel?.id ?? "0",
       CommentModel(
-        id: bookModel?.id,
-        rating: bookModel?.volumeInfo?.ratingsCount.toString(),
-        comments: [
-          Comment(
-            comment: text,
-            commentOwner: FirebaseAuth.instance.currentUser?.displayName,
-            commentTime: DateTime.now().toIso8601String().substring(0, 19),
-          )
-        ],
-      ),
+          comment: text,
+          time: DateTime.now().toIso8601String().substring(0, 19),
+          userUid: FirebaseAuth.instance.currentUser?.uid),
     );
     getComments();
   }

@@ -38,9 +38,6 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
 
     await getLikedBooks(rtUserModel);
     await getOwnedBooks(rtUserModel);
-    for (Items item in likedBooks ?? []) {
-      print(item.volumeInfo?.title);
-    }
   }
 
   Future<void> getLikedBooks(RTUserModel? userModel) async {

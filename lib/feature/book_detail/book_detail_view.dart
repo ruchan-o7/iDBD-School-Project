@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/logo_path.dart';
+import 'package:school_project_ibdb/core/constants/string_constants.dart';
 
 import '../../product/base_model/book_response_mode.dart';
 import 'cubit/bookdetail_cubit.dart';
@@ -36,8 +37,8 @@ class BookDetail extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: context.dynamicHeight(0.02)),
-                  Text(bookModel?.volumeInfo?.title ?? "Couldn't find book name"),
-                  Text(bookModel?.volumeInfo?.authors?.first ?? "Couldn't find author info",
+                  Text(bookModel?.volumeInfo?.title ?? StringConstants().notFound),
+                  Text(bookModel?.volumeInfo?.authors?.first ?? StringConstants().notFound,
                       style: Theme.of(context).textTheme.bodyText1),
                   Row(
                     children: [
@@ -47,50 +48,53 @@ class BookDetail extends StatelessWidget {
                         const Icon(Icons.star)
                     ],
                   ),
-                  Text("About book", style: Theme.of(context).textTheme.headline4),
+                  // Text(context.read<BookDetailCubit>().commentData?["comments"].toString() ?? "nyull",
+                  //     style: Theme.of(context).textTheme.headline4),
+                  // Text("About book", style: Theme.of(context).textTheme.headline4),
                   const Divider(thickness: 1),
                   Padding(
                     padding: context.horizontalPaddingNormal,
                     child: Text(
-                        bookModel?.volumeInfo?.description?.toString() ??
-                            "There is no info for description" * 15,
+                        bookModel?.volumeInfo?.description?.toString() ?? StringConstants().notFound * 15,
                         style: Theme.of(context).textTheme.bodyLarge),
                   ),
-                  context.read<BookDetailCubit>().allComments == null
+                  context.read<BookDetailCubit>().comments == null
                       ? SizedBox(
                           height: context.dynamicHeight(0.8),
                           child: ListView.separated(
                               itemBuilder: (context, index) => ListTile(
-                                    leading: Image.asset(LogoPaths.dummy_per),
+                                    leading: Image.asset(LogoPaths.dummyPer),
+                                    // title: Text(
+                                    //     context.read<BookDetailCubit>().allComments?.comments?[index].commentOwner ??
+                                    //         "asd"),
                                     title: Text(
-                                      context
+                                      """context
                                               .read<BookDetailCubit>()
                                               .allComments
                                               ?.comments?[index]
-                                              .commentOwner ??
-                                          "null comment",
+                                              ?.commentOwner""",
                                       style: Theme.of(context).textTheme.bodyMedium,
                                     ),
-                                    subtitle: Text(context
+                                    subtitle: Text("""context
                                             .read<BookDetailCubit>()
                                             .allComments
                                             ?.comments?[index]
-                                            .comment ??
-                                        "null comment"),
+                                            ?.comment"""),
                                     trailing: Text(
-                                      context
+                                      """context
                                               .read<BookDetailCubit>()
                                               .allComments
                                               ?.comments?[index]
-                                              .commentTime
+                                              ?.commentTime
                                               ?.substring(0, 19)
-                                              .replaceAll("T", " ") ??
-                                          "",
+                                              .replaceAll("T", " ")""",
                                       style: Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
                               separatorBuilder: (_, index) => const Divider(thickness: 1),
-                              itemCount: context.read<BookDetailCubit>().allComments?.comments?.length ?? 0),
+                              itemCount:
+                                  //  context.read<BookDetailCubit>().allComments?.comments?.length ?? 0
+                                  2),
                         )
                       : Column(
                           children: [
