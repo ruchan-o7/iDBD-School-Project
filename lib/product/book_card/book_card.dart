@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/logo_path.dart';
 
 import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
@@ -35,7 +36,7 @@ class BookCard extends StatelessWidget {
                   image: DecorationImage(
                       image: NetworkImage(bookModel?.volumeInfo?.imageLinks?.thumbnail != null
                           ? "${bookModel?.volumeInfo?.imageLinks?.thumbnail}"
-                          : "https://picsum.photos/200/300"),
+                          : LogoPaths.dummyBook),
                       fit: BoxFit.contain),
                 ),
               ),

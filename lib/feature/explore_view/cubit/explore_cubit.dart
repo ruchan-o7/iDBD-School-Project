@@ -15,7 +15,7 @@ class ExploreCubit extends Cubit<ExploreState> {
   SearchBookModel? exploreBooks;
   Future<void> initBooks() async {
     emit(BooksDownloading());
-    exploreBooks = await _service.searchByName("donusum");
+    exploreBooks = await _service.searchRandom();
     emit(BooksDownloaded());
   }
 }

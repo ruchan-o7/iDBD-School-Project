@@ -30,7 +30,7 @@ class SearchView extends StatelessWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("        From Google              From Our Database"),
+                              const Text("        From Google              From Our Database"),
                               Expanded(
                                 child: Row(
                                   children: [
