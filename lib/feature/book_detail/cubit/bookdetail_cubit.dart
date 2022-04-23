@@ -31,13 +31,17 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   }
 
   void writeComment(String text) {
-    firestoreFunctions.writeCommentData(
-      bookModel?.id ?? "0",
-      CommentModel(
-          comment: text,
-          time: DateTime.now().toIso8601String().substring(0, 19),
-          userUid: FirebaseAuth.instance.currentUser?.uid),
-    );
-    getComments();
+    // firestoreFunctions.writeCommentData(
+    //   bookModel?.id ?? "0",
+    //   CommentModel(
+    //       comment: text,
+    //       time: DateTime.now().toIso8601String().substring(0, 19),
+    //       userUid: FirebaseAuth.instance.currentUser?.uid),
+    // );
+    // getComments();
+  }
+
+  void likeBook() async {
+    firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
   }
 }

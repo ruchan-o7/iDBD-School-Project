@@ -24,6 +24,7 @@ class BookCard extends StatelessWidget {
             ));
       },
       child: Card(
+        elevation: 10,
         child: Padding(
           padding: context.paddingLow,
           child: Column(
@@ -49,8 +50,10 @@ class BookCard extends StatelessWidget {
                 height: context.dynamicHeight(0.015),
                 child: ListView.builder(
                   itemBuilder: (context, index) => Text(
-                      bookModel?.volumeInfo?.authors?[index] ?? "null author",
-                      style: Theme.of(context).textTheme.bodySmall),
+                    bookModel?.volumeInfo?.authors?[index] ?? "null author",
+                    style: Theme.of(context).textTheme.bodySmall,
+                    maxLines: 1,
+                  ),
                   itemCount: bookModel?.volumeInfo?.authors?.length,
                 ),
               )

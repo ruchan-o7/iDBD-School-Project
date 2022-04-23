@@ -23,7 +23,7 @@ class FirestoreFunctions {
   FirestoreFunctions();
 
   Future<void> addUser(UserSignUpModel model) async {
-    await _firestore.collection("users").doc().set(model.toJson());
+    await _firestore.collection("users").doc(model.userUid).set(model.toJson());
   }
 
   Future<void> addBook(Items model) async {
@@ -61,24 +61,24 @@ class FirestoreFunctions {
   }
 
   ///Finds user in firestore by user uid
-  Future<Map<String, dynamic>?> getDocumentData(User? currentUser) async {
+  Future<UserSignUpModel> getDocumentData(User? currentUser) async {
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
         (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
 
-    Map<String, dynamic>? _data;
-    _docSnap.forEach((element) {
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
       _data = element.data();
-    });
-    return _data;
+    }
+    return UserSignUpModel.fromJson(_data);
   }
 
   ///Finds books from databases by id
-  getBookById(String id) async {
+  Future<Items?> getBookById(String id) async {
     final _docSnap = (await _firestore.collection("books").where("id", isEqualTo: id).get()).docs;
     Map<String, dynamic> _data = {};
-    _docSnap.forEach((element) {
+    for (var element in _docSnap) {
       _data = element.data();
-    });
+    }
     return Items.fromJson(_data);
   }
 
@@ -97,6 +97,38 @@ class FirestoreFunctions {
     }
     log(_books.length.toString());
     return _books;
+  }
+
+  getCollectionId(String? uid) async {
+    if (uid == "") return;
+
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
+        (await _firestore.collection("users").where("userUID", isEqualTo: uid).get()).docs;
+    String id = "";
+    for (var item in _docSnap) {
+      id = item.id;
+    }
+    return id;
+  }
+
+  likeBook(Items? book, User? currentUser) async {
+    // addBook(book ?? Items());
+    // final _tempModel = await getDocumentData(currentUser);
+    // _tempModel.likedBooks?.add(book?.id ?? "0000000");
+    // final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
+    //     (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
+    // final _ref = getBookById(currentUser?.uid ?? "");
+
+    // _users.doc().update(_tempModel.toJson()).then((value) => print("succes"));
+    // _users.
+    //-----------------------------------------------------------
+    var id = await getCollectionId(currentUser?.uid);
+    var _test = await _firestore.collection(id).get();
+    // print(_test);
+    //------------------------------------------------
+    _firestore.collection("users").doc(id).update({
+      "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
+    });
   }
 
   //-----------------------------------------------------------------------------

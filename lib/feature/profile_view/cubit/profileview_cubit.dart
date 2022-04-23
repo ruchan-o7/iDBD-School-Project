@@ -25,22 +25,26 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
   List<Items>? ownedBooks = [];
 
   Future<void> getLikedBookNumber() async {
-    var temp = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
-    if (temp is Map<String, dynamic>) {
-      currUser = UserSignUpModel.fromJson(temp);
-    }
-    log(temp?.entries.toString() ?? "null entries");
+    var _temp = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
+    // if (temp is Map<String, dynamic>) {
+    //   currUser = UserSignUpModel.fromJson(temp);
+    // }
+    // log(temp?.entries.toString() ?? "null entries");
+    currUser = _temp;
     emit(RefreshPage());
   }
 
   Future<void> getData() async {
-    rtUserModel = await _functions.readUserDataOnce();
+    // rtUserModel = await _functions.readUserDataOnce();
 
-    await getLikedBooks(rtUserModel);
-    await getOwnedBooks(rtUserModel);
+    // await getLikedBooks(rtUserModel);
+    // await getOwnedBooks(rtUserModel);
+    currUser = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
+    await getLikedBooks(currUser);
+    await getOwnedBooks(currUser);
   }
 
-  Future<void> getLikedBooks(RTUserModel? userModel) async {
+  Future<void> getLikedBooks(UserSignUpModel? userModel) async {
     for (var item in userModel?.likedBooks ?? []) {
       final _data = await _functions.getBookById(item ?? "null");
       if (_data != null) {
@@ -50,7 +54,7 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
     emit(RefreshPage());
   }
 
-  Future<void> getOwnedBooks(RTUserModel? userModel) async {
+  Future<void> getOwnedBooks(UserSignUpModel? userModel) async {
     for (var item in userModel?.ownedBooks ?? []) {
       final _data = await _functions.getBookById(item ?? "null");
       if (_data != null) {
