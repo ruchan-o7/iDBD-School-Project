@@ -37,7 +37,13 @@ class ExploreView extends StatelessWidget {
                   final data = contex.read<ExploreCubit>().exploreBooks?.items?[index];
                   return SingleChildScrollView(
                     child: Column(
-                      children: [SizedBox(height: contex.dynamicHeight(0.03)), BookCard(bookModel: data)],
+                      children: [
+                        SizedBox(height: contex.dynamicHeight(0.03)),
+                        BookCard(
+                          bookModel: data,
+                          isComeFromProfile: false,
+                        )
+                      ],
                     ),
                   );
                 }

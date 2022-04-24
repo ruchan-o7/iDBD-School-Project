@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:school_project_ibdb/feature/home_view/home_view.dart';
 import 'package:school_project_ibdb/feature/search_view/search_view.dart';
 
@@ -20,5 +19,14 @@ class NavbarCubit extends Cubit<NavbarState> {
     emit(PageChangedState());
   }
 
-  List<Widget> pages = [HomeView(), ExploreView(), SearchView(), ProfileView()];
+  goToProfilePage() {
+    selectedIndex = 4;
+  }
+
+  List<Widget> pages = [
+    HomeView(goToProfilePageFunc: () {}),
+    const ExploreView(),
+    SearchView(),
+    const ProfileView(),
+  ];
 }

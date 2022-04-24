@@ -9,9 +9,10 @@ import '../../product/base_model/book_response_mode.dart';
 import 'cubit/bookdetail_cubit.dart';
 
 class BookDetail extends StatelessWidget {
-  BookDetail({Key? key, this.bookModel}) : super(key: key);
+  BookDetail({Key? key, this.bookModel, required this.isComeFromProfile}) : super(key: key);
 
   Items? bookModel;
+  bool isComeFromProfile;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -22,7 +23,7 @@ class BookDetail extends StatelessWidget {
           return Scaffold(
             appBar: appBar(),
             body: body(context),
-            floatingActionButton: FAB(context),
+            floatingActionButton: isComeFromProfile ? null : FAB(context),
           );
         },
       ),
@@ -37,6 +38,7 @@ class BookDetail extends StatelessWidget {
             ? Padding(
                 padding: context.verticalPaddingLow,
                 child: FloatingActionButton(
+                    heroTag: null,
                     tooltip: "Leave a comment",
                     onPressed: () {
                       context.read<BookDetailCubit>().writeComment("asdasdasdasd");
@@ -49,6 +51,7 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
+              heroTag: null,
               tooltip: context.read<BookDetailCubit>().isClicked == false ? "More Options" : "Like this book",
               onPressed: () {
                 if (context.read<BookDetailCubit>().isClicked) {
@@ -78,7 +81,12 @@ class BookDetail extends StatelessWidget {
               height: context.dynamicHeight(0.4),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "", fit: BoxFit.contain),
+                child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
+                    ? Container(
+                        constraints: BoxConstraints(minHeight: context.dynamicHeight(0.3)),
+                        child: Image.asset(LogoPaths.dummyBook),
+                      )
+                    : Image.network(bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "", fit: BoxFit.contain),
               ),
             ),
           ),
@@ -94,13 +102,30 @@ class BookDetail extends StatelessWidget {
                 const Icon(Icons.star)
             ],
           ),
-          // Text(context.read<BookDetailCubit>().commentData?["comments"].toString() ?? "nyull",
-          //     style: Theme.of(context).textTheme.headline4),
-          // Text("About book", style: Theme.of(context).textTheme.headline4),
           const Divider(thickness: 1),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Text("Page number:"),
+                  bookModel?.volumeInfo?.language != null ? Text("Language:") : SizedBox(),
+                  bookModel?.volumeInfo?.publishedDate != null ? Text("Publish Date:") : SizedBox(),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(bookModel?.volumeInfo?.pageCount?.toString() ?? "Unknown"),
+                  Text(bookModel?.volumeInfo?.language ?? ""),
+                  Text(bookModel?.volumeInfo?.publishedDate ?? "")
+                ],
+              )
+            ],
+          ),
+          const Divider(),
           Padding(
             padding: context.horizontalPaddingNormal,
-            child: Text(bookModel?.volumeInfo?.description?.toString() ?? StringConstants().notFound * 15,
+            child: Text(bookModel?.volumeInfo?.description?.toString() ?? StringConstants().notFound,
                 style: Theme.of(context).textTheme.bodyLarge),
           ),
           context.read<BookDetailCubit>().comments == null

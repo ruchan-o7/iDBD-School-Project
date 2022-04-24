@@ -2,18 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/profile_view/profile_view.dart';
 
 import '../../product/drawer_item_custom/custom_drawer_item.dart';
 import 'cubit/home_view_cubit.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  HomeView({Key? key, required this.goToProfilePageFunc}) : super(key: key);
+  VoidCallback goToProfilePageFunc;
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeViewCubit>(
@@ -53,11 +50,22 @@ class _HomeViewState extends State<HomeView> {
               Text("${FirebaseAuth.instance.currentUser?.displayName?.toUpperCase()}")
             ],
           ),
-          CustomDrawerItem(leadingIcon: Icons.account_box, text: "Change user name", onTapFunc: () {}),
-          CustomDrawerItem(leadingIcon: (Icons.lock), text: "Change password", onTapFunc: () {}),
-          CustomDrawerItem(leadingIcon: Icons.mail, text: "Change e-mail", onTapFunc: () {}),
-          CustomDrawerItem(leadingIcon: Icons.sd_card, text: "Delete account", onTapFunc: () {}),
+          CustomDrawerItem(
+              leadingIcon: Icons.person,
+              text: "Profile",
+              onTapFunc: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ProfileView(),
+                ));
+              }),
+          const Divider(),
+          CustomDrawerItem(leadingIcon: Icons.shopping_bag_rounded, text: "My List", onTapFunc: () {}),
+          // CustomDrawerItem(leadingIcon: Icons.mail, text: "Change e-mail", onTapFunc: () {}),
+          const Divider(),
+          CustomDrawerItem(leadingIcon: Icons.sd_card, text: "About", onTapFunc: () {}),
+          const Divider(),
           CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () {}),
+          const Divider(),
           CustomDrawerItem(
             leadingIcon: Icons.logout,
             text: "Log out",

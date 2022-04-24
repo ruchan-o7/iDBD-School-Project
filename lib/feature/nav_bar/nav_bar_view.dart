@@ -14,9 +14,7 @@ class NavBar extends StatelessWidget {
       child: BlocConsumer<NavbarCubit, NavbarState>(
         listener: (context, state) {},
         builder: (context, state) {
-          List<Widget> pageList = context.read<NavbarCubit>().pages;
           int selectedIndex = context.read<NavbarCubit>().selectedIndex;
-
           return Scaffold(
             body: context.read<NavbarCubit>().pages.elementAt(selectedIndex),
             bottomNavigationBar: BottomNavigationBar(

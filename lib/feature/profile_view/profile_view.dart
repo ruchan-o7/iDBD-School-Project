@@ -17,118 +17,125 @@ class ProfileView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
-                  style: Theme.of(context).textTheme.headline5),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<ProfileviewCubit>().getData();
-                    },
-                    child: Text("get Data")),
-              ],
-            ),
-            body: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          CustomCircleAvatar(),
-                          Text(FirebaseAuth.instance.currentUser?.displayName ?? "coultn't fetch user name")
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ??
-                              "0"),
-                          Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ??
-                              "0"),
-                          Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
-                        ],
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: Padding(
-                        padding: context.horizontalPaddingHigh,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              showBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return Container(
-                                      width: context.dynamicWidth(1),
-                                      height: context.dynamicHeight(0.85),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: context.dynamicHeight(0.1),
-                                          ),
-                                          CustomCircleAvatar(),
-                                          TextButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "Change Profile Photo",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .button
-                                                    ?.copyWith(color: Colors.white),
-                                              )),
-                                          Divider(),
-                                          ListTile(
-                                            leading: Text("Name: "),
-                                            title: Text("    nbanmasd"),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            },
-                            child: Text("Edit profile")),
-                      )),
-                    ],
-                  ),
-                  Divider(),
-                  const TabBar(tabs: [
-                    Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
-                    Tab(child: Icon(Icons.book, color: Colors.black))
-                  ]),
-                  Expanded(
-                    child: TabBarView(children: [
-                      GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                          itemBuilder: (context, index) {
-                            return BookCard(bookModel: context.read<ProfileviewCubit>().likedBooks?[index]);
-                          },
-                          itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
-                      GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                          itemBuilder: (context, index) {
-                            return BookCard(bookModel: context.read<ProfileviewCubit>().ownedBooks?[index]);
-                          },
-                          itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
-                    ]),
-                  )
-                ],
-              ),
-            ),
+            appBar: appBar(context),
+            body: body(context),
           );
         },
       ),
+    );
+  }
+
+  DefaultTabController body(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  CustomCircleAvatar(),
+                  Text(FirebaseAuth.instance.currentUser?.displayName ?? "coultn't fetch user name")
+                ],
+              ),
+              Column(
+                children: [
+                  Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ?? "0"),
+                  Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
+                ],
+              ),
+              Column(
+                children: [
+                  Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ?? "0"),
+                  Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
+                ],
+              ),
+            ],
+          ),
+          Divider(),
+          Row(
+            children: [
+              Expanded(
+                  child: Padding(
+                padding: context.horizontalPaddingHigh,
+                child: ElevatedButton(
+                    onPressed: () {
+                      showBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              width: context.dynamicWidth(1),
+                              height: context.dynamicHeight(0.85),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: context.dynamicHeight(0.1),
+                                  ),
+                                  CustomCircleAvatar(),
+                                  TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Change Profile Photo",
+                                        style:
+                                            Theme.of(context).textTheme.button?.copyWith(color: Colors.white),
+                                      )),
+                                  Divider(),
+                                  ListTile(
+                                    leading: Text("Name: "),
+                                    title: Text("    nbanmasd"),
+                                  )
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Text("Edit profile")),
+              )),
+            ],
+          ),
+          Divider(),
+          const TabBar(tabs: [
+            Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
+            Tab(child: Icon(Icons.book, color: Colors.black))
+          ]),
+          bookContent(context)
+        ],
+      ),
+    );
+  }
+
+  Expanded bookContent(BuildContext context) {
+    return Expanded(
+      child: TabBarView(children: [
+        GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return BookCard(
+                isComeFromProfile: true,
+                bookModel: context.read<ProfileviewCubit>().likedBooks?[index],
+              );
+            },
+            itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
+        GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return BookCard(
+                bookModel: context.read<ProfileviewCubit>().ownedBooks?[index],
+                isComeFromProfile: true,
+              );
+            },
+            itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
+      ]),
+    );
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
+          style: Theme.of(context).textTheme.headline5),
     );
   }
 }

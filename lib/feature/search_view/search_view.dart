@@ -31,19 +31,13 @@ class SearchView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text("        From Google              From Our Database"),
+                              Divider(),
                               Expanded(
                                 child: Row(
                                   children: [
                                     Expanded(child: searchedFromGoogle(context)),
                                     Expanded(
-                                      child: ListView.builder(
-                                        itemBuilder: (context, index) => BookCard(
-                                            bookModel: context
-                                                .read<SearchViewCubit>()
-                                                .searchedBookFromDatabase?[index]),
-                                        itemCount:
-                                            context.read<SearchViewCubit>().searchedBookFromDatabase?.length,
-                                      ),
+                                      child: formDatabases(context),
                                     )
                                   ],
                                 ),
@@ -55,6 +49,22 @@ class SearchView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  ListView formDatabases(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) => InkWell(
+        onTap: () {
+          context
+              .read<SearchViewCubit>()
+              .goToBook(context.read<SearchViewCubit>().searchedBookFromDatabase?[index], context);
+        },
+        child: BookCard(
+            isComeFromProfile: false,
+            bookModel: context.read<SearchViewCubit>().searchedBookFromDatabase?[index]),
+      ),
+      itemCount: context.read<SearchViewCubit>().searchedBookFromDatabase?.length,
     );
   }
 
@@ -89,19 +99,27 @@ class SearchView extends StatelessWidget {
       itemBuilder: (context, index) {
         VolumeInfo? tempModel = context.read<SearchViewCubit>().results?.items?[index].volumeInfo;
         return Card(
-          child: Column(
-            children: [
-              tempModel?.imageLinks == null
-                  ? Container(
-                      constraints: BoxConstraints(minHeight: context.dynamicHeight(0.2)),
-                      child: Image.asset(LogoPaths.dummyBook),
-                    )
-                  : Container(
-                      constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.2)),
-                      child: Image.network(tempModel?.imageLinks?.thumbnail ?? "")),
-              Text(tempModel?.title ?? "unknown title", style: Theme.of(context).textTheme.bodyLarge),
-              Text(tempModel?.authors?.first ?? "", style: Theme.of(context).textTheme.bodySmall)
-            ],
+          elevation: 10,
+          child: InkWell(
+            onTap: () {
+              context
+                  .read<SearchViewCubit>()
+                  .goToBook(context.read<SearchViewCubit>().results?.items?[index], context);
+            },
+            child: Column(
+              children: [
+                tempModel?.imageLinks == null
+                    ? Container(
+                        constraints: BoxConstraints(minHeight: context.dynamicHeight(0.2)),
+                        child: Image.asset(LogoPaths.dummyBook),
+                      )
+                    : Container(
+                        constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.2)),
+                        child: Image.network(tempModel?.imageLinks?.thumbnail ?? "")),
+                Text(tempModel?.title ?? "unknown title", style: Theme.of(context).textTheme.bodyLarge),
+                Text(tempModel?.authors?.first ?? "", style: Theme.of(context).textTheme.bodySmall)
+              ],
+            ),
           ),
         );
       },

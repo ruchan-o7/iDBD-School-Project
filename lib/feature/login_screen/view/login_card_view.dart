@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import '../../../core/custom/circle_color_widget.dart';
 import 'login_card_view_cubit.dart';
 import '../../sign_up/sign_up_view.dart';
@@ -37,20 +38,20 @@ class LoginCardView extends StatelessWidget {
     return Scaffold(
       body: ClipRRect(
         child: Stack(fit: StackFit.expand, children: [
-          // Image.asset(
-          //   "assets/sign_in/kutuphane.jpg",
-          //   fit: BoxFit.cover,
-          // ),
-          Positioned(
-              child: CircleShape(
-                shapeColor: Colors.teal,
-              ),
-              bottom: context.dynamicHeight(0.69)),
-          Positioned(
-            bottom: context.dynamicHeight(0.15),
-            child: CircleShape(shapeColor: Colors.green),
+          Image.asset(
+            LogoPaths.kutuphaneCumhur,
+            fit: BoxFit.cover,
           ),
-          Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.3)),
+          // Positioned(
+          //     child: CircleShape(
+          //       shapeColor: Colors.teal,
+          //     ),
+          //     bottom: context.dynamicHeight(0.69)),
+          // Positioned(
+          //   bottom: context.dynamicHeight(0.15),
+          //   child: CircleShape(shapeColor: Colors.green),
+          // ),
+          // Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.3)),
           dataStruct(context),
         ]),
       ),
@@ -60,7 +61,7 @@ class LoginCardView extends StatelessWidget {
   Container dataStruct(BuildContext context) {
     return Container(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

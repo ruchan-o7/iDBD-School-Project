@@ -6,25 +6,27 @@ import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
 
 class BookCard extends StatelessWidget {
-  BookCard({Key? key, required this.bookModel}) : super(key: key);
+  BookCard({Key? key, required this.bookModel, required this.isComeFromProfile}) : super(key: key);
 
   Items? bookModel;
+  bool isComeFromProfile;
+
   @override
   Widget build(BuildContext context) {
     return itemModel(context);
   }
 
-  InkWell itemModel(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BookDetail(bookModel: bookModel),
-            ));
-      },
-      child: Card(
-        elevation: 10,
+  Widget itemModel(BuildContext context) {
+    return Card(
+      elevation: 10,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BookDetail(bookModel: bookModel, isComeFromProfile: isComeFromProfile),
+              ));
+        },
         child: Padding(
           padding: context.paddingLow,
           child: Column(
@@ -32,19 +34,26 @@ class BookCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                height: context.dynamicHeight(0.155),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(bookModel?.volumeInfo?.imageLinks?.thumbnail != null
-                          ? "${bookModel?.volumeInfo?.imageLinks?.thumbnail}"
-                          : LogoPaths.dummyBook),
-                      fit: BoxFit.contain),
-                ),
-              ),
+                  height: context.dynamicHeight(0.155),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(bookModel?.volumeInfo?.imageLinks?.thumbnail != null
+                            ? "${bookModel?.volumeInfo?.imageLinks?.thumbnail}"
+                            : LogoPaths.dummyBook),
+                        fit: BoxFit.contain),
+                  ),
+                  child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
+                      ? Image.asset(LogoPaths.dummyBook)
+                      : null),
               Divider(),
-              Text(
-                bookModel?.volumeInfo?.title ?? "null title",
-                style: Theme.of(context).textTheme.bodyLarge,
+              Container(
+                constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.08)),
+                child: Text(
+                  bookModel?.volumeInfo?.title ?? "null title",
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  overflow: TextOverflow.fade,
+                ),
               ),
               SizedBox(
                 height: context.dynamicHeight(0.015),
