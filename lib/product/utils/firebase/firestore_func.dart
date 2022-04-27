@@ -72,6 +72,17 @@ class FirestoreFunctions {
     return UserSignUpModel.fromJson(_data);
   }
 
+  Future<UserSignUpModel?> getUser(String? userUid) async {
+    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
+        (await _firestore.collection("users").where("userUID", isEqualTo: userUid).get()).docs;
+
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
+      _data = element.data();
+    }
+    return UserSignUpModel.fromJson(_data);
+  }
+
   ///Finds books from databases by id
   Future<Items?> getBookById(String id) async {
     final _docSnap = (await _firestore.collection("books").where("id", isEqualTo: id).get()).docs;
@@ -112,15 +123,6 @@ class FirestoreFunctions {
   }
 
   likeBook(Items? book, User? currentUser) async {
-    // addBook(book ?? Items());
-    // final _tempModel = await getDocumentData(currentUser);
-    // _tempModel.likedBooks?.add(book?.id ?? "0000000");
-    // final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
-    //     (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
-    // final _ref = getBookById(currentUser?.uid ?? "");
-
-    // _users.doc().update(_tempModel.toJson()).then((value) => print("succes"));
-    // _users.
     //-----------------------------------------------------------
     var id = await getCollectionId(currentUser?.uid);
     var _test = await _firestore.collection(id).get();
@@ -133,7 +135,7 @@ class FirestoreFunctions {
 
   //-----------------------------------------------------------------------------
   //REALTIME DATABASE
-  final FirebaseDatabase _rtDatabase = FirebaseDatabase.instance;
+  // final FirebaseDatabase _rtDatabase = FirebaseDatabase.instance;
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
   void readDataContinously() {
@@ -183,11 +185,6 @@ class FirestoreFunctions {
       "commenterId": currentUser?.uid,
       "comment": commentText,
     });
-
-    //----------------------------
-    // newComment.set(commentModel.comments?.first?.toMap());
-    // final _newComment = _ref.push();
-    // _newComment.set(commentModel.comments?.first?.toMap());
   }
 
   _showSnackMessage(BuildContext context, String data) {

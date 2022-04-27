@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
 import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
 
 import '../../../product/base_model/book_response_mode.dart';
@@ -16,8 +17,9 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
   bool isClicked = false;
   Items? bookModel;
-  FirestoreFunctions firestoreFunctions = FirestoreFunctions();
+  FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
   List<commentModelFromRTD>? comments;
+  List<UserSignUpModel>? commenters = [];
 
   void changeClicked() {
     isClicked = !isClicked;
@@ -25,16 +27,27 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   }
 
   Future<void> getComments() async {
-    comments = await firestoreFunctions.readCommentData(bookModel?.id);
-    if (comments != null) emit(CommentLoaded());
+    comments = await _firestoreFunctions.readCommentData(bookModel?.id);
+
+    if (comments != null) {
+      for (commentModelFromRTD item in comments!) {
+        commenters?.add(getUserPhoto(item.commenterId));
+      }
+    }
+  }
+
+  getUserPhoto(String? uid) async {
+    UserSignUpModel? model;
+    model = await _firestoreFunctions.getUser(uid);
+    return model;
   }
 
   Future<void> writeComment(String text) async {
-    await firestoreFunctions.writeCommentData(bookModel?.id ?? "0", FirebaseAuth.instance.currentUser, text);
+    await _firestoreFunctions.writeCommentData(bookModel?.id ?? "0", FirebaseAuth.instance.currentUser, text);
     getComments();
   }
 
   void likeBook() async {
-    firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
+    _firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
   }
 }
