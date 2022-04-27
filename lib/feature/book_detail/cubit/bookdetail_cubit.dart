@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
 import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
 
 import '../../../product/base_model/book_response_mode.dart';
+import '../../../product/comment_model/comment_model.dart';
 
 part 'bookdetail_state.dart';
 
@@ -16,7 +17,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   bool isClicked = false;
   Items? bookModel;
   FirestoreFunctions firestoreFunctions = FirestoreFunctions();
-  BaseModel? comments;
+  List<commentModelFromRTD>? comments;
 
   void changeClicked() {
     isClicked = !isClicked;
@@ -28,15 +29,9 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     if (comments != null) emit(CommentLoaded());
   }
 
-  void writeComment(String text) {
-    // firestoreFunctions.writeCommentData(
-    //   bookModel?.id ?? "0",
-    //   CommentModel(
-    //       comment: text,
-    //       time: DateTime.now().toIso8601String().substring(0, 19),
-    //       userUid: FirebaseAuth.instance.currentUser?.uid),
-    // );
-    // getComments();
+  Future<void> writeComment(String text) async {
+    await firestoreFunctions.writeCommentData(bookModel?.id ?? "0", FirebaseAuth.instance.currentUser, text);
+    getComments();
   }
 
   void likeBook() async {

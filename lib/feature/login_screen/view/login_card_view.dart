@@ -38,20 +38,20 @@ class LoginCardView extends StatelessWidget {
     return Scaffold(
       body: ClipRRect(
         child: Stack(fit: StackFit.expand, children: [
-          Image.asset(
-            LogoPaths.kutuphaneCumhur,
-            fit: BoxFit.cover,
-          ),
-          // Positioned(
-          //     child: CircleShape(
-          //       shapeColor: Colors.teal,
-          //     ),
-          //     bottom: context.dynamicHeight(0.69)),
-          // Positioned(
-          //   bottom: context.dynamicHeight(0.15),
-          //   child: CircleShape(shapeColor: Colors.green),
+          // Image.asset(
+          //   LogoPaths.kutuphaneCumhur,
+          //   fit: BoxFit.cover,
           // ),
-          // Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.3)),
+          Positioned(
+              child: CircleShape(
+                shapeColor: Colors.teal,
+              ),
+              bottom: context.dynamicHeight(0.69)),
+          Positioned(
+            bottom: context.dynamicHeight(0.15),
+            child: CircleShape(shapeColor: Colors.green),
+          ),
+          Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.5)),
           dataStruct(context),
         ]),
       ),
@@ -61,7 +61,7 @@ class LoginCardView extends StatelessWidget {
   Container dataStruct(BuildContext context) {
     return Container(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

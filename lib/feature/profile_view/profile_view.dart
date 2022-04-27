@@ -35,7 +35,7 @@ class ProfileView extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  CustomCircleAvatar(),
+                  CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
                   Text(FirebaseAuth.instance.currentUser?.displayName ?? "coultn't fetch user name")
                 ],
               ),
@@ -73,7 +73,7 @@ class ProfileView extends StatelessWidget {
                                   SizedBox(
                                     height: context.dynamicHeight(0.1),
                                   ),
-                                  CustomCircleAvatar(),
+                                  CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
                                   TextButton(
                                       onPressed: () {},
                                       child: Text(

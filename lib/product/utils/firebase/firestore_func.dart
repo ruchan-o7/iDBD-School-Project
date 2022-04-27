@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
 import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
@@ -158,31 +158,31 @@ class FirestoreFunctions {
 
   ///Reads user data from realtime database only once
   Future readCommentData(String? bookID) async {
-    final snapshot = await _ref.get();
+    final snapshot = await _ref.child("comments/$bookID").get();
 
+    List<commentModelFromRTD> _list = [];
     if (snapshot.exists) {
-      final data = jsonDecode(jsonEncode(snapshot.value));
-      // final _model = CommentModel.fromMap((jsonDecode(jsonEncode(snapshot.value)).cast<String, dynamic>()));
-      // return data;
-      // final _model = CommentComment.fromJson(data);
-      // List<CommentComment>.from(CommentComment.fromJson(data)).toList();
-      try {
-        final _model = BaseModel.fromJson(data);
-        return _model;
-      } catch (e) {}
-      // if (data is List) {
-      //   for (var item in data) {
-      //     liste.add(CommentModelComment.fromJson(item as Map<String, dynamic>));
-      //   }
-      // }
-    } else {}
+      final _data = jsonDecode(jsonEncode(snapshot.value));
+
+      for (Map<String, dynamic> item in _data.values) {
+        for (Map<String, dynamic> listofMaps in item.values) {
+          _list.add(commentModelFromRTD.fromMap(listofMaps));
+        }
+      }
+      return _list;
+    } else {
+      return _list;
+    }
   }
 
   ///write comment to realtime datanase
-  void writeCommentData(String bookId, CommentModel model) {
-    final comment = _ref.child("comments/${bookId}/comment");
+  Future<void> writeCommentData(String bookId, User? currentUser, String commentText) async {
+    final comment = _ref.child("comments/$bookId/comment");
     final newComment = comment.push();
-    newComment.set(model.toJson());
+    await newComment.set({
+      "commenterId": currentUser?.uid,
+      "comment": commentText,
+    });
 
     //----------------------------
     // newComment.set(commentModel.comments?.first?.toMap());

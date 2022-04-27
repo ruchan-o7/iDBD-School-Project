@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import 'package:school_project_ibdb/core/constants/string_constants.dart';
+import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
+import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
 
 import '../../product/base_model/book_response_mode.dart';
 import 'cubit/bookdetail_cubit.dart';
@@ -13,6 +15,7 @@ class BookDetail extends StatelessWidget {
 
   Items? bookModel;
   bool isComeFromProfile;
+  final commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -23,7 +26,7 @@ class BookDetail extends StatelessWidget {
           return Scaffold(
             appBar: appBar(),
             body: body(context),
-            floatingActionButton: isComeFromProfile ? null : FAB(context),
+            floatingActionButton: FAB(context),
           );
         },
       ),
@@ -31,39 +34,89 @@ class BookDetail extends StatelessWidget {
   }
 
   Column FAB(BuildContext context) {
+    Future<void> writeComment() async {
+      if (commentController.text != "" && commentController.text != null) {
+        await context.read<BookDetailCubit>().writeComment(commentController.text);
+        commentController.clear();
+      }
+    }
+
+    List<commentModelFromRTD>? _comments = context.read<BookDetailCubit>().comments;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        context.read<BookDetailCubit>().isClicked
-            ? Padding(
-                padding: context.verticalPaddingLow,
-                child: FloatingActionButton(
-                    heroTag: null,
-                    tooltip: "Leave a comment",
-                    onPressed: () {
-                      context.read<BookDetailCubit>().writeComment("asdasdasdasd");
-                    },
-                    child: const Icon(
-                      Icons.comment_outlined,
-                    )),
-              )
-            : const SizedBox(),
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
               heroTag: null,
-              tooltip: context.read<BookDetailCubit>().isClicked == false ? "More Options" : "Like this book",
+              tooltip: "Like",
+              onPressed: () {},
+              child: const Icon(
+                Icons.thumb_up,
+              )),
+        ),
+        Padding(
+          padding: context.verticalPaddingLow,
+          child: FloatingActionButton(
+              heroTag: null,
+              tooltip: "comment",
               onPressed: () {
-                if (context.read<BookDetailCubit>().isClicked) {
-                  context.read<BookDetailCubit>().changeClicked();
-                } else {
-                  context.read<BookDetailCubit>().likeBook();
-                  context.read<BookDetailCubit>().changeClicked();
-                }
+                showModalBottomSheet(
+                    shape:
+                        RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                    context: context,
+                    builder: (context) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: context.dynamicHeight(0.01),
+                              ),
+                              _comments == null && _comments?.length == 0
+                                  ? Text("No comments here")
+                                  : SizedBox(
+                                      height: context.dynamicHeight(0.45),
+                                      child: ListView.builder(
+                                        itemCount: _comments?.length,
+                                        itemBuilder: (context, index) => ListTile(
+                                          leading: CustomCircleAvatar(
+                                              size: 10,
+                                              avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
+                                          title: Text(_comments?[index].comment ?? "null comment"),
+                                        ),
+                                      ),
+                                    ),
+                              Divider(
+                                thickness: 2,
+                                indent: context.dynamicWidth(0.1),
+                                endIndent: context.dynamicWidth(0.1),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              CustomCircleAvatar(
+                                avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
+                                size: context.dynamicWidth(0.05),
+                              ),
+                              SizedBox(
+                                width: context.dynamicWidth(0.05),
+                              ),
+                              Expanded(
+                                  child: TextField(
+                                controller: commentController,
+                                onSubmitted: (v) async => await writeComment(),
+                              )),
+                            ],
+                          ),
+                        ],
+                      );
+                    });
               },
-              child: context.read<BookDetailCubit>().isClicked == false
-                  ? const Icon(Icons.add)
-                  : const Icon(Icons.thumb_up)),
+              child: const Icon(Icons.add_comment)),
         ),
       ],
     );
@@ -128,50 +181,50 @@ class BookDetail extends StatelessWidget {
             child: Text(bookModel?.volumeInfo?.description?.toString() ?? StringConstants().notFound,
                 style: Theme.of(context).textTheme.bodyLarge),
           ),
-          context.read<BookDetailCubit>().comments == null
-              ? SizedBox(
-                  height: context.dynamicHeight(0.8),
-                  child: ListView.separated(
-                      itemBuilder: (context, index) => ListTile(
-                            leading: Image.asset(LogoPaths.dummyPer),
-                            // title: Text(
-                            //     context.read<BookDetailCubit>().allComments?.comments?[index].commentOwner ??
-                            //         "asd"),
-                            title: Text(
-                              """context
-                                            .read<BookDetailCubit>()
-                                            .allComments
-                                            ?.comments?[index]
-                                            ?.commentOwner""",
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            subtitle: Text("""context
-                                          .read<BookDetailCubit>()
-                                          .allComments
-                                          ?.comments?[index]
-                                          ?.comment"""),
-                            trailing: Text(
-                              """context
-                                            .read<BookDetailCubit>()
-                                            .allComments
-                                            ?.comments?[index]
-                                            ?.commentTime
-                                            ?.substring(0, 19)
-                                            .replaceAll("T", " ")""",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                      separatorBuilder: (_, index) => const Divider(thickness: 1),
-                      itemCount:
-                          //  context.read<BookDetailCubit>().allComments?.comments?.length ?? 0
-                          2),
-                )
-              : Column(
-                  children: [
-                    const Divider(),
-                    const Text("There is no comment. Write first comment here"),
-                  ],
-                )
+          // context.read<BookDetailCubit>().comments == null
+          //     ? SizedBox(
+          //         height: context.dynamicHeight(0.8),
+          //         child: ListView.separated(
+          //             itemBuilder: (context, index) => ListTile(
+          //                   leading: Image.asset(LogoPaths.dummyPer),
+          //                   // title: Text(
+          //                   //     context.read<BookDetailCubit>().allComments?.comments?[index].commentOwner ??
+          //                   //         "asd"),
+          //                   title: Text(
+          //                     """context
+          //                                   .read<BookDetailCubit>()
+          //                                   .allComments
+          //                                   ?.comments?[index]
+          //                                   ?.commentOwner""",
+          //                     style: Theme.of(context).textTheme.bodyMedium,
+          //                   ),
+          //                   subtitle: Text("""context
+          //                                 .read<BookDetailCubit>()
+          //                                 .allComments
+          //                                 ?.comments?[index]
+          //                                 ?.comment"""),
+          //                   trailing: Text(
+          //                     """context
+          //                                   .read<BookDetailCubit>()
+          //                                   .allComments
+          //                                   ?.comments?[index]
+          //                                   ?.commentTime
+          //                                   ?.substring(0, 19)
+          //                                   .replaceAll("T", " ")""",
+          //                     style: Theme.of(context).textTheme.bodySmall,
+          //                   ),
+          //                 ),
+          //             separatorBuilder: (_, index) => const Divider(thickness: 1),
+          //             itemCount:
+          //                 //  context.read<BookDetailCubit>().allComments?.comments?.length ?? 0
+          //                 2),
+          //       )
+          //     : Column(
+          //         children: [
+          //           const Divider(),
+          //           // const Text("There is no comment. Write first comment here"),
+          //         ],
+          //       )
         ],
       ),
     );
