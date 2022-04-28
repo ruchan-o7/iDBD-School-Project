@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import 'package:school_project_ibdb/core/constants/string_constants.dart';
+import 'package:school_project_ibdb/core/custom/custom_divider.dart';
 import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
@@ -25,6 +26,7 @@ class BookDetail extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
+            key: context.read<BookDetailCubit>().scaffoldState,
             appBar: appBar(),
             body: body(context),
             floatingActionButton: FAB(context),
@@ -58,7 +60,9 @@ class BookDetail extends StatelessWidget {
           child: FloatingActionButton(
               heroTag: null,
               tooltip: "Like",
-              onPressed: () {},
+              onPressed: () {
+                context.read<BookDetailCubit>().likeBook();
+              },
               child: const Icon(
                 Icons.thumb_up,
               )),
@@ -69,67 +73,72 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "comment",
               onPressed: () {
-                showModalBottomSheet<BookDetailCubit>(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                    context: context,
-                    builder: (context) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+                context.read<BookDetailCubit>().scaffoldState.currentState?.showBottomSheet(
+                    (context) => SizedBox(
+                          height: context.dynamicHeight(0.8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                height: context.dynamicHeight(0.01),
-                              ),
-                              _comments == null && _comments?.length == 0
-                                  ? const Text("No comments here")
-                                  : SizedBox(
-                                      height: context.dynamicHeight(0.45),
-                                      child: ListView.builder(
-                                          itemCount: _comments?.length,
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: context.dynamicHeight(0.02),
+                                  ),
+                                  CustomDivider(context: context),
+                                  // ignore: prefer_is_empty
+                                  _comments == null || _comments.length == 0
+                                      ? const Text("No comments here")
+                                      :
+                                      // height: context.dynamicHeight(0.62),
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: _comments.length,
                                           itemBuilder: (context, index) {
-                                            //! range hatası veriyor
                                             return ListTile(
                                               leading: CustomCircleAvatar(
                                                 size: 10,
                                                 avatarUrl: _users?[index].imageUrl,
                                               ),
-                                              title: Text(_comments?[index].comment ?? "null comment data"),
+                                              title: Text(_comments[index].comment ?? "null comment data"),
                                             );
                                           }),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  CustomDivider(context: context),
+                                  Padding(
+                                    padding: context.paddingLow,
+                                    child: Row(
+                                      children: [
+                                        CustomCircleAvatar(
+                                          avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
+                                          size: context.dynamicWidth(0.05),
+                                        ),
+                                        SizedBox(
+                                          width: context.dynamicWidth(0.05),
+                                        ),
+                                        Expanded(
+                                            child: TextField(
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                            gapPadding: 20,
+                                          )),
+                                          controller: commentController,
+                                          onSubmitted: (v) async => await writeComment(),
+                                        )),
+                                      ],
                                     ),
-                              Divider(
-                                thickness: 2,
-                                indent: context.dynamicWidth(0.1),
-                                endIndent: context.dynamicWidth(0.1),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              CustomCircleAvatar(
-                                avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
-                                size: context.dynamicWidth(0.05),
-                              ),
-                              SizedBox(
-                                width: context.dynamicWidth(0.05),
-                              ),
-                              Expanded(
-                                  child: TextField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  gapPadding: 20,
-                                )),
-                                controller: commentController,
-                                onSubmitted: (v) async => await writeComment(),
-                              )),
-                            ],
-                          ),
-                        ],
-                      );
-                    });
+                        ),
+                    elevation: 10,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))));
               },
               child: const Icon(Icons.add_comment)),
         ),

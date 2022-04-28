@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
+import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
 
 import '../../../product/base_model/book_response_mode.dart';
@@ -17,9 +18,10 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
   bool isClicked = false;
   Items? bookModel;
-  FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
+  final FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
   List<commentModelFromRTD>? comments;
   List<UserSignUpModel>? commenters = [];
+  final scaffoldState = GlobalKey<ScaffoldState>();
 
   void changeClicked() {
     isClicked = !isClicked;
@@ -31,7 +33,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
     if (comments != null) {
       for (commentModelFromRTD item in comments!) {
-        commenters?.add(getUserPhoto(item.commenterId));
+        commenters?.add(await getUserPhoto(item.commenterId));
       }
     }
   }
