@@ -113,7 +113,6 @@ class ProfileView extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemBuilder: (context, index) {
               return BookCard(
-                isComeFromProfile: true,
                 bookModel: context.read<ProfileviewCubit>().likedBooks?[index],
               );
             },
@@ -123,7 +122,6 @@ class ProfileView extends StatelessWidget {
             itemBuilder: (context, index) {
               return BookCard(
                 bookModel: context.read<ProfileviewCubit>().ownedBooks?[index],
-                isComeFromProfile: true,
               );
             },
             itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),

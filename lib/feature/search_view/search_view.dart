@@ -60,9 +60,7 @@ class SearchView extends StatelessWidget {
               .read<SearchViewCubit>()
               .goToBook(context.read<SearchViewCubit>().searchedBookFromDatabase?[index], context);
         },
-        child: BookCard(
-            isComeFromProfile: false,
-            bookModel: context.read<SearchViewCubit>().searchedBookFromDatabase?[index]),
+        child: BookCard(bookModel: context.read<SearchViewCubit>().searchedBookFromDatabase?[index]),
       ),
       itemCount: context.read<SearchViewCubit>().searchedBookFromDatabase?.length,
     );

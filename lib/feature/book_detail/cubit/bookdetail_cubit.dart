@@ -15,7 +15,6 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     checkBookLiked();
   }
 
-  bool isClicked = false;
   Items? bookModel;
   final FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
   List<commentModelFromRTD>? comments;
@@ -57,9 +56,15 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     return model;
   }
 
-  Future<void> writeComment(String text) async {
-    await _firestoreFunctions.writeCommentData(bookModel?.id ?? "0", FirebaseAuth.instance.currentUser, text);
-    getComments();
+  Future writeComment(String text, BuildContext context, Items? book) async {
+    if (book?.id == null) {
+      Navigator.pop(context);
+      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Fail")));
+    } else {
+      await _firestoreFunctions.writeCommentData(book?.id, FirebaseAuth.instance.currentUser, text);
+      getComments();
+      emit(CommentLoaded());
+    }
   }
 
   void likeBook() async {

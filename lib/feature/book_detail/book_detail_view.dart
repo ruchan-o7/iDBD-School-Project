@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +30,7 @@ class BookDetail extends StatelessWidget {
             key: context.read<BookDetailCubit>().scaffoldState,
             appBar: appBar(),
             body: body(context),
-            floatingActionButton: context.read<BookDetailCubit>().isClicked ? null : FAB(context),
+            floatingActionButton: FAB(context),
           );
         },
       ),
@@ -47,9 +49,9 @@ class BookDetail extends StatelessWidget {
               onPressed: () {
                 if (context.read<BookDetailCubit>().isBookLiked == true) {
                   context.read<BookDetailCubit>().unLikeBook();
+                } else {
+                  context.read<BookDetailCubit>().likeBook();
                 }
-
-                context.read<BookDetailCubit>().likeBook();
               },
               child: Icon(
                 Icons.thumb_up,
@@ -62,8 +64,10 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "comment",
               onPressed: () {
+                context.read<BookDetailCubit>().getComments();
                 final _commenters = context.read<BookDetailCubit>().commenters;
                 final _comments = context.read<BookDetailCubit>().comments;
+                final _book = context.read<BookDetailCubit>().bookModel;
 
                 showModalBottomSheet(
                   shape: const RoundedRectangleBorder(
@@ -75,7 +79,7 @@ class BookDetail extends StatelessWidget {
                     child: BlocConsumer<BookDetailCubit, BookDetailState>(
                       listener: (context, state) {},
                       builder: (context, state) {
-                        return buildSheet(context, _commenters, _comments);
+                        return buildSheet(_book, context, _commenters, _comments);
                       },
                     ),
                   ),
@@ -88,6 +92,7 @@ class BookDetail extends StatelessWidget {
   }
 
   Widget buildSheet(
+    Items? book,
     BuildContext context,
     List<UserSignUpModel>? commenters,
     List<commentModelFromRTD>? comments,
@@ -120,7 +125,8 @@ class BookDetail extends StatelessWidget {
                                     size: 10,
                                     avatarUrl: commenters?[index].imageUrl,
                                   ),
-                                  title: Text(comments[index].comment ?? "null comment data"),
+                                  title: Text(
+                                      "${commenters?[index].userName ?? "null username"} : ${comments[index].comment ?? "null comment"}"),
                                 );
                               }),
                     ),
@@ -149,7 +155,7 @@ class BookDetail extends StatelessWidget {
                             )),
                             controller: commentController,
                             onSubmitted: (v) {
-                              context.read<BookDetailCubit>().writeComment(v);
+                              context.read<BookDetailCubit>().writeComment(v, context, book);
                               commentController.clear();
                             },
                           )),
@@ -190,6 +196,7 @@ class BookDetail extends StatelessWidget {
           Text(bookModel?.volumeInfo?.authors?.first ?? StringConstants().notFound,
               style: Theme.of(context).textTheme.bodyText1),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(bookModel?.volumeInfo?.ratingsCount?.toString() ?? ""),
               if (bookModel?.volumeInfo?.ratingsCount != null &&

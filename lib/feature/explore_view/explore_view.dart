@@ -25,7 +25,7 @@ class ExploreView extends StatelessWidget {
               ),
               itemBuilder: (contex, index) {
                 if (state is BooksDownloading) {
-                  return Scaffold(
+                  return const Scaffold(
                     body: Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -38,7 +38,6 @@ class ExploreView extends StatelessWidget {
                         SizedBox(height: contex.dynamicHeight(0.03)),
                         BookCard(
                           bookModel: data,
-                          isComeFromProfile: false,
                         )
                       ],
                     ),

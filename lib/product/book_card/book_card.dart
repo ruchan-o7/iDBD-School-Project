@@ -6,10 +6,9 @@ import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
 
 class BookCard extends StatelessWidget {
-  BookCard({Key? key, required this.bookModel, required this.isComeFromProfile}) : super(key: key);
+  BookCard({Key? key, required this.bookModel}) : super(key: key);
 
   Items? bookModel;
-  bool isComeFromProfile;
 
   bool validatePhoto(String? avatarUrl) {
     if (avatarUrl == null) {
@@ -31,11 +30,7 @@ class BookCard extends StatelessWidget {
       elevation: 10,
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BookDetail(bookModel: bookModel),
-              ));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => BookDetail(bookModel: bookModel)));
         },
         child: Padding(
           padding: context.paddingLow,

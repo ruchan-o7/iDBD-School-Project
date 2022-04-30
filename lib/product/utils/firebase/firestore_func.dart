@@ -122,27 +122,25 @@ class FirestoreFunctions {
   }
 
   likeBook(Items? book, User? currentUser) async {
-    //-----------------------------------------------------------
     final id = await getCollectionId(currentUser?.uid);
-    //------------------------------------------------
-    _firestore.collection("users").doc(id).update({
+    await _firestore.collection("users").doc(id).update({
       "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
     });
     if (book != null) {
-      final _temp = await getBookById(book.id ?? "");
-      if (_temp != null) {
-        return;
+      if (book.id != null) {
+        final _temp = await getBookById(book.id ?? "");
+        if (_temp?.id == null) {
+          addBook(book);
+          return;
+        }
       }
-      addBook(book);
     }
   }
 
   unLileBook(Items? book, User? user) async {
-    final _temp = await getUser(user?.uid);
-
     final _id = await getCollectionId(user?.uid);
-    final _collection = await _firestore.collection("users").doc(_id).update({
-      "likedBooks": FieldValue.arrayRemove([book?.id])
+    await _firestore.collection("users").doc(_id).update({
+      "likedBooks": FieldValue.arrayRemove([book?.id ?? "null"])
     });
   }
 
@@ -190,7 +188,7 @@ class FirestoreFunctions {
   }
 
   ///write comment to realtime datanase
-  Future<void> writeCommentData(String bookId, User? currentUser, String commentText) async {
+  Future<void> writeCommentData(String? bookId, User? currentUser, String commentText) async {
     final comment = _ref.child("comments/$bookId/comment");
     final newComment = comment.push();
     await newComment.set({
