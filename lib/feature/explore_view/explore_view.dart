@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/feature/explore_view/cubit/explore_cubit.dart';
-// import 'package:school_project_ibdb/feature/search_view/model/searched_book_model.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-
 import '../../product/book_card/book_card.dart';
 import 'package:kartal/kartal.dart';
 
@@ -24,7 +21,7 @@ class ExploreView extends StatelessWidget {
               padding: EdgeInsets.zero,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 9 / 13,
+                childAspectRatio: 9 / 10,
               ),
               itemBuilder: (contex, index) {
                 if (state is BooksDownloading) {

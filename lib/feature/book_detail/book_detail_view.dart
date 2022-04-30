@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/core/custom/custom_divider.dart';
 import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
-import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
 
+import '../../core/custom/custom_divider.dart';
 import '../../product/base_model/book_response_mode.dart';
+import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'cubit/bookdetail_cubit.dart';
 
 class BookDetail extends StatelessWidget {
@@ -29,7 +29,7 @@ class BookDetail extends StatelessWidget {
             key: context.read<BookDetailCubit>().scaffoldState,
             appBar: appBar(),
             body: body(context),
-            floatingActionButton: FAB(context),
+            floatingActionButton: context.read<BookDetailCubit>().isClicked ? null : FAB(context),
           );
         },
       ),
@@ -37,20 +37,17 @@ class BookDetail extends StatelessWidget {
   }
 
   Column FAB(BuildContext context) {
-    Future<void> writeComment() async {
-      if (commentController.text != "" && commentController.text != null) {
-        await context.read<BookDetailCubit>().writeComment(commentController.text);
-        commentController.clear();
-      }
-    }
+    // Future<void> writeComment() async {
+    //   if (commentController.text != "" && commentController.text != null) {
+    //     await context.read<BookDetailCubit>().writeComment(commentController.text);
+    //     commentController.clear();
+    //   }
+    // }
 
-    Future<UserSignUpModel?> getUser(String? uid) {
-      final _temp = context.read<BookDetailCubit>().getUserPhoto(uid);
-      return _temp;
-    }
-
-    List<commentModelFromRTD>? _comments = context.read<BookDetailCubit>().comments;
-    List<UserSignUpModel>? _users = context.read<BookDetailCubit>().commenters;
+    // Future<UserSignUpModel?> getUser(String? uid) {
+    //   final _temp = context.read<BookDetailCubit>().getUserPhoto(uid);
+    //   return _temp;
+    // }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -73,77 +70,111 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "comment",
               onPressed: () {
-                context.read<BookDetailCubit>().scaffoldState.currentState?.showBottomSheet(
-                    (context) => SizedBox(
-                          height: context.dynamicHeight(0.8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    height: context.dynamicHeight(0.02),
-                                  ),
-                                  CustomDivider(context: context),
-                                  // ignore: prefer_is_empty
-                                  _comments == null || _comments.length == 0
-                                      ? const Text("No comments here")
-                                      :
-                                      // height: context.dynamicHeight(0.62),
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: _comments.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              leading: CustomCircleAvatar(
-                                                size: 10,
-                                                avatarUrl: _users?[index].imageUrl,
-                                              ),
-                                              title: Text(_comments[index].comment ?? "null comment data"),
-                                            );
-                                          }),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  CustomDivider(context: context),
-                                  Padding(
-                                    padding: context.paddingLow,
-                                    child: Row(
-                                      children: [
-                                        CustomCircleAvatar(
-                                          avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
-                                          size: context.dynamicWidth(0.05),
-                                        ),
-                                        SizedBox(
-                                          width: context.dynamicWidth(0.05),
-                                        ),
-                                        Expanded(
-                                            child: TextField(
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(20),
-                                            gapPadding: 20,
-                                          )),
-                                          controller: commentController,
-                                          onSubmitted: (v) async => await writeComment(),
-                                        )),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                    elevation: 10,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))));
+                context.read<BookDetailCubit>().changeClicked();
+                final _commenters = context.read<BookDetailCubit>().commenters;
+                final _comments = context.read<BookDetailCubit>().comments;
+
+                showModalBottomSheet(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => BlocProvider(
+                    create: (context) => BookDetailCubit(),
+                    child: BlocConsumer<BookDetailCubit, BookDetailState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        return buildSheet(context, _commenters, _comments);
+                      },
+                    ),
+                  ),
+                );
               },
               child: const Icon(Icons.add_comment)),
         ),
       ],
     );
+  }
+
+  Widget buildSheet(
+    BuildContext context,
+    List<UserSignUpModel>? commenters,
+    List<commentModelFromRTD>? comments,
+  ) {
+    return DraggableScrollableSheet(
+        initialChildSize: 0.62,
+        maxChildSize: 0.9,
+        expand: false,
+        minChildSize: 0.5,
+        controller: context.read<BookDetailCubit>().bottomSheetController,
+        builder: (context, controller) {
+          return SizedBox(
+            // height: context.dynamicHeight(0.7),
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: context.dynamicHeight(0.02)),
+                    CustomDivider(context: context),
+                    SizedBox(
+                      height: context.dynamicHeight(0.42),
+                      // ignore: prefer_is_empty
+                      child: comments == null || comments.length == 0
+                          ? const Center(child: Text("No comments here"))
+                          : ListView.builder(
+                              // shrinkWrap: true,
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  leading: CustomCircleAvatar(
+                                    size: 10,
+                                    avatarUrl: commenters?[index].imageUrl,
+                                  ),
+                                  title: Text(comments[index].comment ?? "null comment data"),
+                                );
+                              }),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    CustomDivider(context: context),
+                    Padding(
+                      padding: context.paddingLow,
+                      child: Row(
+                        children: [
+                          CustomCircleAvatar(
+                            avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
+                            size: context.dynamicWidth(0.05),
+                          ),
+                          SizedBox(
+                            width: context.dynamicWidth(0.05),
+                          ),
+                          Expanded(
+                              child: TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              gapPadding: 20,
+                            )),
+                            controller: commentController,
+                            onSubmitted: (v) {
+                              context.read<BookDetailCubit>().writeComment(v);
+                              commentController.clear();
+                            },
+                          )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+    //   //
   }
 
   SingleChildScrollView body(BuildContext context) {

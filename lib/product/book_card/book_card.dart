@@ -11,6 +11,16 @@ class BookCard extends StatelessWidget {
   Items? bookModel;
   bool isComeFromProfile;
 
+  bool validatePhoto(String? avatarUrl) {
+    if (avatarUrl == null) {
+      return false;
+    } else if (avatarUrl == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return itemModel(context);
@@ -37,9 +47,9 @@ class BookCard extends StatelessWidget {
                   height: context.dynamicHeight(0.155),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(bookModel?.volumeInfo?.imageLinks?.thumbnail != null
-                            ? "${bookModel?.volumeInfo?.imageLinks?.thumbnail}"
-                            : LogoPaths.dummyBook),
+                        image: validatePhoto(bookModel?.volumeInfo?.imageLinks?.thumbnail)
+                            ? NetworkImage("${bookModel?.volumeInfo?.imageLinks?.thumbnail}")
+                            : const AssetImage(LogoPaths.dummyBook) as ImageProvider,
                         fit: BoxFit.contain),
                   ),
                   child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null

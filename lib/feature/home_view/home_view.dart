@@ -2,9 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/about_view/about_view.dart';
 import 'package:school_project_ibdb/feature/profile_view/profile_view.dart';
+import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import 'package:school_project_ibdb/product/book_categories/categories.dart';
 
 import '../../product/drawer_item_custom/custom_drawer_item.dart';
+import '../../product/home_book_card/home_book_card.dart';
 import 'cubit/home_view_cubit.dart';
 
 class HomeView extends StatelessWidget {
@@ -18,10 +22,13 @@ class HomeView extends StatelessWidget {
       child: BlocConsumer<HomeViewCubit, HomeViewState>(
         listener: (context, state) {},
         builder: (context, state) {
-          return Scaffold(
-            appBar: appBar(context),
-            drawer: drawer(context),
-            body: body(context),
+          return DefaultTabController(
+            length: Categories.instance.getLength ?? 0,
+            child: Scaffold(
+              appBar: appBar(context),
+              drawer: drawer(context),
+              body: body(context),
+            ),
           );
         },
       ),
@@ -58,13 +65,18 @@ class HomeView extends StatelessWidget {
                   builder: (context) => ProfileView(),
                 ));
               }),
-          const Divider(),
-          CustomDrawerItem(leadingIcon: Icons.shopping_bag_rounded, text: "My List", onTapFunc: () {}),
+          // const Divider(),
+          // CustomDrawerItem(leadingIcon: Icons.shopping_bag_rounded, text: "My List", onTapFunc: () {}),
           // CustomDrawerItem(leadingIcon: Icons.mail, text: "Change e-mail", onTapFunc: () {}),
           const Divider(),
-          CustomDrawerItem(leadingIcon: Icons.sd_card, text: "About", onTapFunc: () {}),
+          CustomDrawerItem(
+              leadingIcon: Icons.sd_card,
+              text: "About",
+              onTapFunc: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutView()));
+              }),
           const Divider(),
-          CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () {}),
+          CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () async {}),
           const Divider(),
           CustomDrawerItem(
             leadingIcon: Icons.logout,
@@ -95,54 +107,33 @@ class HomeView extends StatelessWidget {
             SizedBox(
               height: context.dynamicHeight(0.02),
             ),
-            DefaultTabController(
-                length: 5,
-                child: TabBar(
-                  isScrollable: true,
-                  unselectedLabelColor: Colors.black54,
-                  indicatorColor: Colors.red,
-                  labelColor: Colors.black,
-                  tabs: [
-                    Text("Novel"),
-                    Text("Self-Love"),
-                    Text("Science"),
-                    Text("Romance"),
-                    Text("Crime"),
-                  ],
-                )),
+            TabBar(
+              tabs: Categories.instance.toTab() ?? [],
+              isScrollable: true,
+              indicatorColor: Colors.red,
+              indicatorWeight: 3,
+              onTap: (categorieName) {
+                context
+                    .read<HomeViewCubit>()
+                    .getBooksFromCategories(Categories.instance.getCategorieList?[categorieName] ?? "");
+              },
+            ),
             SizedBox(
               height: context.dynamicHeight(0.4),
               child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    height: context.dynamicHeight(0.3),
-                    child: Padding(
-                      padding: context.paddingLow,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(height: context.dynamicHeight(0.015)),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              "https://picsum.photos/150/200",
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          SizedBox(height: context.dynamicHeight(0.015)),
-                          Text("Kitap Adı"),
-                          Text(
-                            "Yazar",
-                            style: Theme.of(context).textTheme.bodySmall,
-                          )
-                        ],
-                      ),
-                    ),
+                scrollDirection: Axis.horizontal,
+                itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (context.read<HomeViewCubit>().loadState == IsLoading.yes) {
+                    return SizedBox(
+                        width: context.dynamicWidth(0.4),
+                        child: const Center(child: CircularProgressIndicator()));
+                  }
+                  return HomeBookCard(
+                    model: context.read<HomeViewCubit>().categorieBooks?.items?[index].volumeInfo,
+                    context: context,
                   );
                 },
-                itemCount: 5,
-                scrollDirection: Axis.horizontal,
               ),
             ),
             Text("New Arrivals", style: Theme.of(context).textTheme.headline5),
@@ -161,8 +152,6 @@ class HomeView extends StatelessWidget {
           builder: (context) => InkWell(
             onTap: () {
               Scaffold.of(context).openDrawer();
-              // context.read<NavbarCubit>().selectedIndex = 3;
-              // context.read<HomeViewCubit>().goToPage(context, UserSettingsView());
             },
             child: Container(
               child: CircleAvatar(
@@ -219,28 +208,3 @@ class HomeView extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-/**************************************************************** */
-  // TextField(
-              //     decoration: InputDecoration(
-              //   border: OutlineInputBorder(
-              //     borderRadius: BorderRadius.circular(15),
-              //   ),
-              //   prefixIcon: const Icon(Icons.search),
-              //   hintText: "Search",
-              //   suffixIcon: const Icon(Icons.mic),
-              // )), TODO: This search will remove to search page
-              // ListView.builder(
-              //   itemBuilder: (context, index) {
-              //     return PageView.builder(
-              //       itemBuilder: (context, index) {},
-              //     );
-              //   },
-              // )

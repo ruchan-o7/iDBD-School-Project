@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:school_project_ibdb/core/network/NetworkManager.dart';
 import 'package:school_project_ibdb/feature/search_view/model/searched_book_model.dart';
@@ -13,6 +14,7 @@ class ExploreCubit extends Cubit<ExploreState> {
   }
   final ISearchBookService _service = SearchBookService(NetworkManager.instance);
   SearchBookModel? exploreBooks;
+  BookResponseModel? model;
   Future<void> initBooks() async {
     emit(BooksDownloading());
     exploreBooks = await _service.searchRandom();

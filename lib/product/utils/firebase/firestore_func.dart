@@ -124,13 +124,16 @@ class FirestoreFunctions {
 
   likeBook(Items? book, User? currentUser) async {
     //-----------------------------------------------------------
-    var id = await getCollectionId(currentUser?.uid);
-    var _test = await _firestore.collection(id).get();
+    final id = await getCollectionId(currentUser?.uid);
+    final _test = await _firestore.collection(id).get();
     // print(_test);
     //------------------------------------------------
     _firestore.collection("users").doc(id).update({
       "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
     });
+    if (book != null) {
+      addBook(book);
+    }
   }
 
   //-----------------------------------------------------------------------------

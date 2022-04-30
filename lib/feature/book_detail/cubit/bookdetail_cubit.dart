@@ -22,10 +22,11 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   List<commentModelFromRTD>? comments;
   List<UserSignUpModel>? commenters = [];
   final scaffoldState = GlobalKey<ScaffoldState>();
-
+  final bottomSheetController = DraggableScrollableController();
+  final draggableScrollBont = ScrollController();
   void changeClicked() {
-    isClicked = !isClicked;
-    emit(ClickedToButton());
+    // isClicked = !isClicked;
+    // emit(ClickedToButton());
   }
 
   Future<void> getComments() async {
@@ -35,6 +36,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
       for (commentModelFromRTD item in comments!) {
         commenters?.add(await getUserPhoto(item.commenterId));
       }
+      emit(CommentLoaded());
     }
   }
 
