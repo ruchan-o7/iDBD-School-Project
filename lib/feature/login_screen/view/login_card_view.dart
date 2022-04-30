@@ -131,6 +131,10 @@ class LoginCardView extends StatelessWidget {
 
   TextFormField passTextField(BuildContext context) {
     return TextFormField(
+      onFieldSubmitted: (v) {
+        context.read<LoginCardCubit>().sendRequest(context.read<LoginCardCubit>().emailController.text,
+            context.read<LoginCardCubit>().passwordController.text, context);
+      },
       controller: context.read<LoginCardCubit>().passwordController,
       obscureText: true,
       decoration: InputDecoration(
