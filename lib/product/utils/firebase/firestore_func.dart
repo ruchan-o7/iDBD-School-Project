@@ -129,8 +129,21 @@ class FirestoreFunctions {
       "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
     });
     if (book != null) {
+      final _temp = await getBookById(book.id ?? "");
+      if (_temp != null) {
+        return;
+      }
       addBook(book);
     }
+  }
+
+  unLileBook(Items? book, User? user) async {
+    final _temp = await getUser(user?.uid);
+
+    final _id = await getCollectionId(user?.uid);
+    final _collection = await _firestore.collection("users").doc(_id).update({
+      "likedBooks": FieldValue.arrayRemove([book?.id])
+    });
   }
 
   //-----------------------------------------------------------------------------

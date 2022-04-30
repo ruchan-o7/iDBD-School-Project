@@ -119,14 +119,20 @@ class HomeView extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final _tempModel = context.read<HomeViewCubit>().categorieBooks?.items?[index];
                   if (context.read<HomeViewCubit>().loadState == IsLoading.yes) {
                     return SizedBox(
                         width: context.dynamicWidth(0.4),
                         child: const Center(child: CircularProgressIndicator()));
                   }
-                  return HomeBookCard(
-                    model: context.read<HomeViewCubit>().categorieBooks?.items?[index].volumeInfo,
-                    context: context,
+                  return InkWell(
+                    onTap: () {
+                      context.read<HomeViewCubit>().goToBook(context, _tempModel);
+                    },
+                    child: HomeBookCard(
+                      model: _tempModel?.volumeInfo,
+                      context: context,
+                    ),
                   );
                 },
               ),

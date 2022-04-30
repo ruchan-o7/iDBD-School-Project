@@ -37,7 +37,7 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   goToBook(Items? model, BuildContext context) async {
     final _bookModel = await _functions.getBookById(model?.id ?? "");
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => BookDetail(isComeFromProfile: false, bookModel: model),
+      builder: (context) => BookDetail(bookModel: model),
     ));
   }
 }

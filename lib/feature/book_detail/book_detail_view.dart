@@ -13,10 +13,9 @@ import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'cubit/bookdetail_cubit.dart';
 
 class BookDetail extends StatelessWidget {
-  BookDetail({Key? key, this.bookModel, required this.isComeFromProfile}) : super(key: key);
+  BookDetail({Key? key, this.bookModel}) : super(key: key);
 
   Items? bookModel;
-  bool isComeFromProfile;
   final commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -46,10 +45,15 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "Like",
               onPressed: () {
+                if (context.read<BookDetailCubit>().isBookLiked == true) {
+                  context.read<BookDetailCubit>().unLikeBook();
+                }
+
                 context.read<BookDetailCubit>().likeBook();
               },
-              child: const Icon(
+              child: Icon(
                 Icons.thumb_up,
+                color: context.read<BookDetailCubit>().isBookLiked ? Colors.red : Colors.black,
               )),
         ),
         Padding(

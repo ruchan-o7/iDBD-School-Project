@@ -34,7 +34,7 @@ class BookCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BookDetail(bookModel: bookModel, isComeFromProfile: isComeFromProfile),
+                builder: (context) => BookDetail(bookModel: bookModel),
               ));
         },
         child: Padding(

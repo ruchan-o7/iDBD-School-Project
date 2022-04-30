@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kartal/kartal.dart';
 import '../../sign_up/model/signup_model.dart';
-import '../../../product/circle_avatar/custom_circle_avatar.dart';
 import '../../../product/utils/firebase/firestore_func.dart';
 
 import '../../../product/base_model/book_response_mode.dart';
@@ -14,6 +12,7 @@ part 'bookdetail_state.dart';
 class BookDetailCubit extends Cubit<BookDetailState> {
   BookDetailCubit({this.bookModel}) : super(BookdetailInitial()) {
     getComments();
+    checkBookLiked();
   }
 
   bool isClicked = false;
@@ -24,6 +23,22 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   final scaffoldState = GlobalKey<ScaffoldState>();
   final bottomSheetController = DraggableScrollableController();
   final draggableScrollBont = ScrollController();
+
+  bool isBookLiked = false;
+
+  Future<void> checkBookLiked() async {
+    final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
+    if (_temp?.likedBooks != null) {
+      for (String item in _temp!.likedBooks ?? []) {
+        if (item == bookModel?.id) {
+          isBookLiked = true;
+          emit(ClickedToButton());
+        } else {
+          isBookLiked = false;
+        }
+      }
+    }
+  }
 
   Future<void> getComments() async {
     comments = await _firestoreFunctions.readCommentData(bookModel?.id);
@@ -49,5 +64,16 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
   void likeBook() async {
     _firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
+    isBookLiked = true;
+    emit(ClickedToButton());
+  }
+
+  Future<void> unLikeBook() async {
+    final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
+    if (_temp?.likedBooks != null && _temp?.likedBooks?.length != 0) {
+      _firestoreFunctions.unLileBook(bookModel, FirebaseAuth.instance.currentUser);
+      isBookLiked = false;
+      emit(ClickedToButton());
+    }
   }
 }

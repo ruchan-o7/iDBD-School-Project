@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
 
 import '../../../core/network/NetworkManager.dart';
 import '../../../product/base_model/book_response_mode.dart';
@@ -57,6 +58,14 @@ class HomeViewCubit extends Cubit<HomeViewState> {
       loadState = IsLoading.no;
       emit(BooksLoaded());
     }
+  }
+
+  void goToBook(BuildContext context, Items? bookModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BookDetail(bookModel: bookModel),
+        ));
   }
 }
 
