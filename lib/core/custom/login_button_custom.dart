@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoginBtnCustomStyle extends ButtonStyle {
-  // final Color color;
   LoginBtnCustomStyle(
     BuildContext context,
   ) : super(
@@ -10,7 +9,5 @@ class LoginBtnCustomStyle extends ButtonStyle {
               horizontal: MediaQuery.of(context).size.width * 0.35,
               vertical: MediaQuery.of(context).size.height * 0.02)),
           shape: MaterialStateProperty.all<StadiumBorder>(StadiumBorder()),
-          // shadowColor: MaterialStateProperty.all<Color>(color),
-          // backgroundColor: MaterialStateProperty.all<Color>(color),
         );
 }

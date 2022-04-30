@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../product/utils/validator/validator.dart';
-import '../../core/constants/string_constants.dart';
-import '../../core/custom/custom_sized_box.dart';
-import 'model/signup_model.dart';
-import 'sign_up_view_model.dart';
 import 'package:kartal/kartal.dart';
 
 import '../../core/constants/color_constants.dart';
+import '../../core/constants/string_constants.dart';
+import '../../core/custom/custom_sized_box.dart';
 import '../../core/custom/input_dec_custom.dart';
+import '../../product/utils/validator/validator.dart';
+import 'sign_up_view_model.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
@@ -48,8 +47,7 @@ class SignUpView extends StatelessWidget {
             ? const NeverScrollableScrollPhysics()
             : const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(
-            vertical: context.dynamicHeight(0.05),
-            horizontal: context.dynamicWidth(0.05)),
+            vertical: context.dynamicHeight(0.05), horizontal: context.dynamicWidth(0.05)),
         child: GestureDetector(
           onTap: () {
             context.read<SignUpCubit>().looseFocus();
@@ -83,9 +81,8 @@ class SignUpView extends StatelessWidget {
           child: Text("Sign Up", style: Theme.of(context).textTheme.headline5),
           style: ButtonStyle(
               padding: MaterialStateProperty.all(context.verticalPaddingNormal),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(context.dynamicWidth(0.02))))),
+              shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.02))))),
         ))
       ],
     );
@@ -102,21 +99,6 @@ class SignUpView extends StatelessWidget {
           : AutovalidateMode.disabled,
       child: Column(
         children: [
-          // GestureDetector(
-          //   onTap: () {
-          //     //********************************************************************************************************** */
-          //     context.read<SignUpCubit>().selectImage();
-          //   },
-          //   child: CircleAvatar(
-          //     foregroundImage: context.read<SignUpCubit>().image != null
-          //         ? MemoryImage(context.read<SignUpCubit>().image!)
-          //         : null,
-          //     child: context.read<SignUpCubit>().image != null
-          //         ? null
-          //         : Image.asset("assets/icon/dummy_per.png"),
-          //     radius: 50,
-          //   ),
-          // ),
           customSizedBox(context, percentageConstants().small),
           userNameMethod(context),
           customSizedBox(context, percentageConstants().small),

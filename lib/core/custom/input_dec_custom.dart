@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
 
 class InputDecCustom extends InputDecoration {
   final Widget? iconButton;
@@ -15,7 +14,6 @@ class InputDecCustom extends InputDecoration {
                 )),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
             ),
             errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -24,7 +22,6 @@ class InputDecCustom extends InputDecoration {
                 )),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              // borderSide: BorderSide(color: AppTheme().myTheme.backgroundColor),
             ),
             label: Text(hintTextstring),
             suffixIcon: iconButton == null ? null : iconButton,

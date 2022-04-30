@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/feature/profile_view/cubit/profileview_cubit.dart';
-import 'package:school_project_ibdb/product/book_card/book_card.dart';
-import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
+import 'cubit/profileview_cubit.dart';
+import '../../product/book_card/book_card.dart';
+import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'package:kartal/kartal.dart';
 
 class ProfileView extends StatelessWidget {

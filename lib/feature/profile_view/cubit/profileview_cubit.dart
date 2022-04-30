@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
-import 'package:school_project_ibdb/product/utils/firebase/models/rt_user_model.dart';
+import '../../../product/utils/firebase/firestore_func.dart';
+import '../../../product/utils/firebase/models/rt_user_model.dart';
 
 import '../../../product/base_model/book_response_mode.dart';
 import '../../sign_up/model/signup_model.dart';
@@ -26,19 +26,11 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
 
   Future<void> getLikedBookNumber() async {
     var _temp = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
-    // if (temp is Map<String, dynamic>) {
-    //   currUser = UserSignUpModel.fromJson(temp);
-    // }
-    // log(temp?.entries.toString() ?? "null entries");
     currUser = _temp;
     emit(RefreshPage());
   }
 
   Future<void> getData() async {
-    // rtUserModel = await _functions.readUserDataOnce();
-
-    // await getLikedBooks(rtUserModel);
-    // await getOwnedBooks(rtUserModel);
     currUser = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
     await getLikedBooks(currUser);
     await getOwnedBooks(currUser);

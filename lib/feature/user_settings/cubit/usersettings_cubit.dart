@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
+import '../../sign_up/model/signup_model.dart';
 
 import '../../../product/utils/firebase/firestore_func.dart';
 import '../../login_screen/view/login_card_view.dart';
@@ -26,8 +26,6 @@ class UserSettingsCubit extends Cubit<UserSettingsState> {
 
   changeImage(BuildContext context) async {
     await FirestoreFunctions().uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
-    // await FirestoreFunctions(FirebaseFirestore.instance)
-    //     .updateUserInfo(UserSignUpModel(imageUrl: FirebaseAuth.instance.currentUser?.photoURL));
   }
 
   logOut(BuildContext context) async {

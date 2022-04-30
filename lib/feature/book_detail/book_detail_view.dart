@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/feature/sign_up/model/signup_model.dart';
-import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
+import '../../core/constants/logo_path.dart';
+import '../../core/constants/string_constants.dart';
+import '../sign_up/model/signup_model.dart';
+import '../../product/comment_model/comment_model.dart';
 
 import '../../core/custom/custom_divider.dart';
 import '../../product/base_model/book_response_mode.dart';
@@ -37,18 +37,6 @@ class BookDetail extends StatelessWidget {
   }
 
   Column FAB(BuildContext context) {
-    // Future<void> writeComment() async {
-    //   if (commentController.text != "" && commentController.text != null) {
-    //     await context.read<BookDetailCubit>().writeComment(commentController.text);
-    //     commentController.clear();
-    //   }
-    // }
-
-    // Future<UserSignUpModel?> getUser(String? uid) {
-    //   final _temp = context.read<BookDetailCubit>().getUserPhoto(uid);
-    //   return _temp;
-    // }
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -70,7 +58,6 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "comment",
               onPressed: () {
-                context.read<BookDetailCubit>().changeClicked();
                 final _commenters = context.read<BookDetailCubit>().commenters;
                 final _comments = context.read<BookDetailCubit>().comments;
 
@@ -109,8 +96,6 @@ class BookDetail extends StatelessWidget {
         controller: context.read<BookDetailCubit>().bottomSheetController,
         builder: (context, controller) {
           return SizedBox(
-            // height: context.dynamicHeight(0.7),
-
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -124,7 +109,6 @@ class BookDetail extends StatelessWidget {
                       child: comments == null || comments.length == 0
                           ? const Center(child: Text("No comments here"))
                           : ListView.builder(
-                              // shrinkWrap: true,
                               itemCount: comments.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
@@ -174,7 +158,6 @@ class BookDetail extends StatelessWidget {
             ),
           );
         });
-    //   //
   }
 
   SingleChildScrollView body(BuildContext context) {

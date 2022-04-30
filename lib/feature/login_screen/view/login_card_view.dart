@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
+import '../../../core/constants/logo_path.dart';
 import '../../../core/custom/circle_color_widget.dart';
 import 'login_card_view_cubit.dart';
 import '../../sign_up/sign_up_view.dart';
@@ -17,13 +17,6 @@ class LoginCardView extends StatelessWidget {
       create: (context) => LoginCardCubit(),
       child: BlocConsumer<LoginCardCubit, LoginCardState>(
           builder: (context, state) {
-            // if (state is LoadingFirebaseState) {
-            //   return progressBuilder();
-            // } else if (state is LoadedFirebaseState) {
-            //   return logInStruct(context);
-            // } else {
-            //   return const Scaffold();
-            // }
             if (state is LoadingFirebaseState) {
               return progressBuilder();
             } else {
@@ -38,10 +31,6 @@ class LoginCardView extends StatelessWidget {
     return Scaffold(
       body: ClipRRect(
         child: Stack(fit: StackFit.expand, children: [
-          // Image.asset(
-          //   LogoPaths.kutuphaneCumhur,
-          //   fit: BoxFit.cover,
-          // ),
           Positioned(
               child: CircleShape(
                 shapeColor: Colors.teal,

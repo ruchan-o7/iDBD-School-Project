@@ -9,9 +9,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-import 'package:school_project_ibdb/product/comment_model/comment_model.dart';
-import 'package:school_project_ibdb/product/utils/firebase/models/rt_user_model.dart';
+import '../../base_model/book_response_mode.dart';
+import '../../comment_model/comment_model.dart';
+import 'models/rt_user_model.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
 
@@ -34,8 +34,7 @@ class FirestoreFunctions {
   ///Likedbooks and Ownedbooks are [<"String">]
   ///Current updates only photo
   Future updateUserData(UserSignUpModel model, String fieldName) async {
-    CollectionReference _user = _firestore.collection(
-        "users"); //TODO: fix issue =>  [cloud_firestore/not-found] Some requested document was not found.
+    CollectionReference _user = _firestore.collection("users");
     await _user
         .doc(model.userUid)
         .update({"imageUrl": model.imageUrl})
@@ -125,8 +124,6 @@ class FirestoreFunctions {
   likeBook(Items? book, User? currentUser) async {
     //-----------------------------------------------------------
     final id = await getCollectionId(currentUser?.uid);
-    final _test = await _firestore.collection(id).get();
-    // print(_test);
     //------------------------------------------------
     _firestore.collection("users").doc(id).update({
       "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
@@ -138,7 +135,6 @@ class FirestoreFunctions {
 
   //-----------------------------------------------------------------------------
   //REALTIME DATABASE
-  // final FirebaseDatabase _rtDatabase = FirebaseDatabase.instance;
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
   void readDataContinously() {
@@ -149,7 +145,7 @@ class FirestoreFunctions {
   }
 
   ///Reads user data from realtime database only once
-  Future readUserDataOnce() async {
+  Future readUserDataOnce(BuildContext context) async {
     List<RTUserModel> list;
     final snapshot = await _ref.child("/users/0").get();
 
@@ -157,7 +153,7 @@ class FirestoreFunctions {
       final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
       return RTUserModel.fromJson(data);
     } else {
-      print("No data");
+      _showSnackMessage(context, "Couldn't read data");
     }
   }
 

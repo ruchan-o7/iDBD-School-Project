@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/feature/home_view/home_view.dart';
-import 'package:school_project_ibdb/feature/search_view/search_view.dart';
+import '../../home_view/home_view.dart';
+import '../../search_view/search_view.dart';
 
 import '../../explore_view/explore_view.dart';
 import '../../profile_view/profile_view.dart';

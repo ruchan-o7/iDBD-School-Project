@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 
-import '../../product/utils/firebase/firestore_func.dart';
 import '../change_user_name_view/change_user_name_view.dart';
 import 'cubit/usersettings_cubit.dart';
 

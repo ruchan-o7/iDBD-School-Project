@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:school_project_ibdb/core/network/NetworkManager.dart';
-import 'package:school_project_ibdb/feature/search_view/model/searched_book_model.dart';
-import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import '../../../core/network/NetworkManager.dart';
+import '../../search_view/model/searched_book_model.dart';
+import '../../search_view/service/search_book_service.dart';
+import '../../../product/base_model/book_response_mode.dart';
 
 part 'explore_state.dart';
 

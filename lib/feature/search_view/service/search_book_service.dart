@@ -1,9 +1,10 @@
 import 'dart:math';
 
+import 'package:english_words/english_words.dart';
+
 import '../../../core/network/NetworkManager.dart';
 import '../../../product/base_model/book_response_mode.dart';
 import '../model/searched_book_model.dart';
-import 'package:english_words/english_words.dart';
 
 abstract class ISearchBookService {
   NetworkManager manager;

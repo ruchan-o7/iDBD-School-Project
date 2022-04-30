@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/feature/explore_view/cubit/explore_cubit.dart';
+import 'cubit/explore_cubit.dart';
 import '../../product/book_card/book_card.dart';
 import 'package:kartal/kartal.dart';
 

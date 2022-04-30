@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import '../../core/constants/logo_path.dart';
+import '../base_model/book_response_mode.dart';
 
 class HomeBookCard extends SizedBox {
   HomeBookCard({Key? key, required this.model, required this.context})

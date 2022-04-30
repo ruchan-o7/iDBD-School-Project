@@ -10,7 +10,6 @@ class NetworkManager {
   }
 
   late final Dio dio;
-  // final String _baseLoginUrl = "https://reqres.in/api";
   NetworkManager._init() {
     dio = Dio(BaseOptions(baseUrl: ServicePath.baseUrl.rawValue));
   }

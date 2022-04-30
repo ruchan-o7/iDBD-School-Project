@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/about_view/about_view.dart';
-import 'package:school_project_ibdb/feature/profile_view/profile_view.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-import 'package:school_project_ibdb/product/book_categories/categories.dart';
+import '../about_view/about_view.dart';
+import '../profile_view/profile_view.dart';
+import '../../product/book_categories/categories.dart';
 
 import '../../product/drawer_item_custom/custom_drawer_item.dart';
 import '../../product/home_book_card/home_book_card.dart';
@@ -35,7 +34,6 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  // Drawer drawer(BuildContext context, User? model) {
   Drawer drawer(BuildContext context) {
     return Drawer(
       child: ListView(
@@ -65,9 +63,6 @@ class HomeView extends StatelessWidget {
                   builder: (context) => ProfileView(),
                 ));
               }),
-          // const Divider(),
-          // CustomDrawerItem(leadingIcon: Icons.shopping_bag_rounded, text: "My List", onTapFunc: () {}),
-          // CustomDrawerItem(leadingIcon: Icons.mail, text: "Change e-mail", onTapFunc: () {}),
           const Divider(),
           CustomDrawerItem(
               leadingIcon: Icons.sd_card,

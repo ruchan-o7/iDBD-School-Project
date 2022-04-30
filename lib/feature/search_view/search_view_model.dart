@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/core/network/NetworkManager.dart';
-import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
-import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../../core/network/NetworkManager.dart';
+import '../book_detail/book_detail_view.dart';
+import 'service/search_book_service.dart';
+import '../../product/base_model/book_response_mode.dart';
+import '../../product/utils/firebase/firestore_func.dart';
 
 import 'model/searched_book_model.dart';
 

@@ -22,7 +22,6 @@ class DarkTextTheme implements ITextTheme {
   AppColors getAppColors = AppColors();
 
   DarkTextTheme(this.primaryColor) {
-    // fontFamily = GoogleFonts.lato().fontFamily;
     headline2 = const TextStyle(fontSize: 65, fontWeight: FontWeight.w400);
     headline3 = const TextStyle(fontWeight: FontWeight.bold);
     headline4 = const TextStyle(fontSize: 30, fontWeight: FontWeight.w300);

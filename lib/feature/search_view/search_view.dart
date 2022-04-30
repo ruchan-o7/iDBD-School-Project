@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
-import 'package:school_project_ibdb/feature/search_view/search_view_model.dart';
-import 'package:school_project_ibdb/product/book_card/book_card.dart';
+import '../../core/constants/logo_path.dart';
+import 'search_view_model.dart';
+import '../../product/book_card/book_card.dart';
 import '../../product/base_model/book_response_mode.dart';
 import 'service/search_book_service.dart';
 

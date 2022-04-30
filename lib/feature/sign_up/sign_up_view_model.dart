@@ -64,9 +64,6 @@ class SignUpCubit extends Cubit<SignUpState> {
       imagePath = selectedImage;
       imageName = selectedImage.name.toString();
     }
-
-    // imagePath = await ImagePicker().pickImage(source: ImageSource.gallery);
-
     File imageFile = File(selectedImage!.path);
     Uint8List imageRaw = await imageFile.readAsBytes();
     image = imageRaw;

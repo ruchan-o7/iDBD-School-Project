@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
+import '../../core/constants/logo_path.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   const CustomCircleAvatar({Key? key, this.size = 40, required this.avatarUrl}) : super(key: key);

@@ -26,7 +26,6 @@ class LightTextTheme implements ITextTheme {
   AppColors getAppColors = AppColors();
 
   LightTextTheme() {
-    // fontFamily = GoogleFonts.lato().fontFamily;
     headline2 = const TextStyle(fontSize: 65, fontWeight: FontWeight.w300);
     headline3 = const TextStyle(fontWeight: FontWeight.bold);
     headline4 = const TextStyle(fontSize: 30, fontWeight: FontWeight.w200);
@@ -34,14 +33,12 @@ class LightTextTheme implements ITextTheme {
     headline6 = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w100,
-      // color: getAppColors.headline6Color,
     );
     body1 = const TextStyle(fontSize: 15, fontWeight: FontWeight.w400);
     body2 = const TextStyle(fontSize: 18, fontWeight: FontWeight.w800);
     button = TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      // color: getAppColors.riceVine,
     );
   }
 

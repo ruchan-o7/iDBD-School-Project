@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../base_model/book_response_mode.dart';
+import '../utils/firebase/firestore_func.dart';
 
 class FireBookView extends StatefulWidget {
   FireBookView({Key? key}) : super(key: key);
@@ -41,7 +41,6 @@ class _FireBookViewState extends State<FireBookView> {
     if (model != null) {
       model?.items?.forEach((element) {
         if (element.volumeInfo?.categories != null && element.volumeInfo?.title != null) {
-          print(element.volumeInfo?.title);
           funcs.addBook(element);
         }
       });
