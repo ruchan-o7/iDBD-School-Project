@@ -27,6 +27,6 @@ class NavbarCubit extends Cubit<NavbarState> {
     HomeView(goToProfilePageFunc: () {}),
     const ExploreView(),
     SearchView(),
-    const ProfileView(),
+    ProfileView(),
   ];
 }

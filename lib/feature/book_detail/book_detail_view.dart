@@ -116,7 +116,7 @@ class BookDetail extends StatelessWidget {
                       height: context.dynamicHeight(0.42),
                       // ignore: prefer_is_empty
                       child: comments == null || comments.length == 0
-                          ? const Center(child: Text("No comments here"))
+                          ? const Center(child: Text("No comments yet"))
                           : ListView.builder(
                               itemCount: comments.length,
                               itemBuilder: (context, index) {

@@ -25,8 +25,7 @@ class AppThemeDark extends ITheme {
   IColorTheme get colorTheme => DarkColorTheme();
 
   @override
-  ITextTheme get textTheme =>
-      DarkTextTheme(colorTheme.colors.darkThemeTextColor);
+  ITextTheme get textTheme => DarkTextTheme(colorTheme.colors.darkThemeTextColor);
 }
 
 abstract class ThemeManager {
@@ -34,7 +33,7 @@ abstract class ThemeManager {
     return ThemeData(
       indicatorColor: theme.colorTheme.textfield,
       cardColor: theme.colorTheme.cardColor,
-      canvasColor: theme.colorTheme.colorRed,
+      canvasColor: theme.colorTheme.colorRed, // --> alakasız yerleri kırmızı renk yapıyor
       fontFamily: theme.textTheme.fontFamily,
       scaffoldBackgroundColor: theme.colorTheme.backgroundColor,
       textTheme: TextTheme(
@@ -46,8 +45,8 @@ abstract class ThemeManager {
         button: theme.textTheme.button,
       ),
       appBarTheme: AppBarTheme(color: theme.colorTheme.appBarColor),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: theme.colorTheme.floatingButtonColor),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: theme.colorTheme.floatingButtonColor),
       colorScheme: theme.colorTheme.colorScheme,
     );
   }

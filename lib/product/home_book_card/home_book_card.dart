@@ -17,7 +17,9 @@ class HomeBookCard extends SizedBox {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: context.dynamicHeight(0.015)),
-                    SizedBox(
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(20)),
                       height: context.dynamicHeight(0.25),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
