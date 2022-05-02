@@ -74,7 +74,7 @@ class ProfileView extends StatelessWidget {
                               child: BlocConsumer<EditProfileCubit, EditProfileState>(
                                 listener: (context, state) {},
                                 builder: (context, state) {
-                                  return buildSheet(context);
+                                  return buildSheet(context, state);
                                 },
                               ),
                             );
@@ -95,7 +95,10 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget buildSheet(BuildContext context) {
+  Widget buildSheet(BuildContext context, EditProfileState state) {
+    if (state is ImageUploading) {
+      return const AlertDialog(content: Center(child: CircularProgressIndicator()));
+    }
     return SizedBox(
       width: context.dynamicWidth(1),
       height: context.dynamicHeight(0.85),
@@ -109,7 +112,7 @@ class ProfileView extends StatelessWidget {
                 avatarUrl: FirebaseAuth.instance.currentUser?.photoURL, size: context.dynamicHeight(0.07)),
             TextButton(
                 onPressed: () {
-                  context.read<EditProfileCubit>().selectImageFromGallery();
+                  context.read<EditProfileCubit>().selectImageFromGallery(context);
                 },
                 child: Text(
                   "Change Profile Photo",

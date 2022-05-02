@@ -17,9 +17,9 @@ class StatisticView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Statistics'),
+          title: const Text('Statistics'),
           centerTitle: true,
-          leading: Icon(Icons.more_vert),
+          leading: const Icon(Icons.more_vert),
         ),
         body: ListView.builder(
           itemBuilder: (context, index) => categoriList(),
@@ -34,17 +34,15 @@ class StatisticView extends StatelessWidget {
               backgroundImage: NetworkImage(imageUrl),
               backgroundColor: Colors.transparent,
             ),
-            title: Container(
-              child: Row(
-                children: [
-                  Column(
-                    children: categories.asMap().keys.map((e) => Text((e + 1).toString() + ": ")).toList(),
-                  ),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: categories.map((e) => Text("${e} $e")).toList()),
-                ],
-              ),
+            title: Row(
+              children: [
+                Column(
+                  children: categories.asMap().keys.map((e) => Text((e + 1).toString() + ": ")).toList(),
+                ),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: categories.map((e) => Text("$e $e")).toList()),
+              ],
             )),
       );
 }

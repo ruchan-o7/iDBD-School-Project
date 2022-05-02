@@ -50,7 +50,7 @@ class BookCard extends StatelessWidget {
                   child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
                       ? Image.asset(LogoPaths.dummyBook)
                       : null),
-              Divider(),
+              const Divider(),
               Container(
                 constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.08)),
                 child: Text(

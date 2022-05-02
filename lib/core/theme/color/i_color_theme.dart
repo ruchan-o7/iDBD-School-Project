@@ -16,7 +16,7 @@ class AppColors {
   final lightGreen = Colors.lightGreen[200]!;
   final moreLigtGreen = Colors.green[100];
   final green = (Colors.green[900]);
-  final turqoz = Color(0xff4ad2b8);
+  final turqoz = const Color(0xff4ad2b8);
   /*----------------------------------------*/
   final white = Colors.white;
   final appleBlossom = const Color(0xffDEBA9D);

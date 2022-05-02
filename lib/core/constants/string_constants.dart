@@ -16,7 +16,7 @@ class StringConstants {
   String get notFound => "Couldn't find any information";
 }
 
-class percentageConstants {
+class PercentageConstants {
   double get small => 2;
   double get medium => 5;
   double get large => 10;

@@ -47,23 +47,23 @@ class UserSignUpModel {
       );
 
   factory UserSignUpModel.fromJson(Map<String, dynamic> json) => UserSignUpModel(
-        imageUrl: json["imageUrl"] == null ? null : json["imageUrl"],
-        userMail: json["userMail"] == null ? null : json["userMail"],
-        userName: json["userName"] == null ? null : json["userName"],
-        userPassword: json["userPassword"] == null ? null : json["userPassword"],
-        userUid: json["userUID"] == null ? null : json["userUID"],
-        signDate: json["signDate"] == null ? null : json["signDate"],
+        imageUrl: json["imageUrl"],
+        userMail: json["userMail"],
+        userName: json["userName"],
+        userPassword: json["userPassword"],
+        userUid: json["userUID"],
+        signDate: json["signDate"],
         likedBooks: json["likedBooks"] == null ? null : List<String>.from(json["likedBooks"].map((x) => x)),
         ownedBooks: json["ownedBooks"] == null ? null : List<String>.from(json["ownedBooks"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "imageUrl": imageUrl == null ? null : imageUrl,
-        "userMail": userMail == null ? null : userMail,
-        "userName": userName == null ? null : userName,
-        "userPassword": userPassword == null ? null : userPassword,
-        "userUID": userUid == null ? null : userUid,
-        "signDate": signDate == null ? null : signDate,
+        "imageUrl": imageUrl,
+        "userMail": userMail,
+        "userName": userName,
+        "userPassword": userPassword,
+        "userUID": userUid,
+        "signDate": signDate,
         "likedBooks": likedBooks == null ? null : List<dynamic>.from(likedBooks!.map((x) => x)),
         "ownedBooks": ownedBooks == null ? null : List<dynamic>.from(ownedBooks!.map((x) => x)),
       };

@@ -68,7 +68,7 @@ class HomeView extends StatelessWidget {
               leadingIcon: Icons.sd_card,
               text: "About",
               onTapFunc: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutView()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutView()));
               }),
           const Divider(),
           CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () async {}),
@@ -154,15 +154,13 @@ class HomeView extends StatelessWidget {
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
-            child: Container(
-              child: CircleAvatar(
-                backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
-                    ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
-                    : null,
-                child: FirebaseAuth.instance.currentUser?.photoURL == null
-                    ? Image.asset("assets/icon/dummy_per.png")
-                    : null,
-              ),
+            child: CircleAvatar(
+              backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
+                  ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
+                  : null,
+              child: FirebaseAuth.instance.currentUser?.photoURL == null
+                  ? Image.asset("assets/icon/dummy_per.png")
+                  : null,
             ),
           ),
         ),
@@ -193,7 +191,7 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: context.dynamicHeight(0.015)),
-                  Text("Kitap Adı"),
+                  const Text("Kitap Adı"),
                   Text(
                     "Yazar",
                     style: Theme.of(context).textTheme.bodySmall,

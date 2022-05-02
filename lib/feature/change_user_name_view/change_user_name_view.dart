@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 class ChangeUserName extends StatefulWidget {
-  ChangeUserName({Key? key}) : super(key: key);
+  const ChangeUserName({Key? key}) : super(key: key);
 
   @override
   State<ChangeUserName> createState() => _ChangeUserNameState();

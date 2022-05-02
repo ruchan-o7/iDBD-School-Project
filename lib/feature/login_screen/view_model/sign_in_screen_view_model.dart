@@ -47,6 +47,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     } else {
       init();
     }
+    return null;
   }
 
   void goToPage(BuildContext context, Widget destination) {

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
 
-import '../../../core/network/NetworkManager.dart';
+import '../../../core/network/network_manager.dart';
 import '../../../product/base_model/book_response_mode.dart';
 import '../../../product/book_categories/categories.dart';
 import '../../../product/utils/firebase/firebase_auth.dart';
@@ -26,7 +26,7 @@ class HomeViewCubit extends Cubit<HomeViewState> {
   logOut(BuildContext context) async {
     await _auth.signOut();
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => LoginCardView(),
+      builder: (context) => const LoginCardView(),
     ));
   }
 

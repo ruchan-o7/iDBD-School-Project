@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
 import '../color/i_color_theme.dart';
 import 'i_text_theme.dart';
 
@@ -30,13 +27,13 @@ class LightTextTheme implements ITextTheme {
     headline3 = const TextStyle(fontWeight: FontWeight.bold);
     headline4 = const TextStyle(fontSize: 30, fontWeight: FontWeight.w200);
     headline5 = const TextStyle(fontWeight: FontWeight.w100);
-    headline6 = TextStyle(
+    headline6 = const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w100,
     );
     body1 = const TextStyle(fontSize: 15, fontWeight: FontWeight.w400);
     body2 = const TextStyle(fontSize: 18, fontWeight: FontWeight.w800);
-    button = TextStyle(
+    button = const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
     );

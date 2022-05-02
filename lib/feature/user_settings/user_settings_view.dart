@@ -7,7 +7,7 @@ import '../change_user_name_view/change_user_name_view.dart';
 import 'cubit/usersettings_cubit.dart';
 
 class UserSettingsView extends StatelessWidget {
-  UserSettingsView({Key? key}) : super(key: key);
+  const UserSettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class UserSettingsView extends StatelessWidget {
   GestureDetector userNameBTN(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<UserSettingsCubit>().changePage(context, ChangeUserName());
+        context.read<UserSettingsCubit>().changePage(context, const ChangeUserName());
       },
       child: const ListTile(
         leading: Icon(Icons.account_box),

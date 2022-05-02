@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +6,6 @@ import '../../core/constants/logo_path.dart';
 import '../../core/constants/string_constants.dart';
 import '../sign_up/model/signup_model.dart';
 import '../../product/comment_model/comment_model.dart';
-
 import '../../core/custom/custom_divider.dart';
 import '../../product/base_model/book_response_mode.dart';
 import '../../product/circle_avatar/custom_circle_avatar.dart';
@@ -30,14 +27,14 @@ class BookDetail extends StatelessWidget {
             key: context.read<BookDetailCubit>().scaffoldState,
             appBar: appBar(),
             body: body(context),
-            floatingActionButton: FAB(context),
+            floatingActionButton: fab(context),
           );
         },
       ),
     );
   }
 
-  Column FAB(BuildContext context) {
+  Column fab(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -95,7 +92,7 @@ class BookDetail extends StatelessWidget {
     Items? book,
     BuildContext context,
     List<UserSignUpModel>? commenters,
-    List<commentModelFromRTD>? comments,
+    List<CommentModelFromRTD>? comments,
   ) {
     return DraggableScrollableSheet(
         initialChildSize: 0.62,
@@ -210,9 +207,11 @@ class BookDetail extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Text("Page number:"),
-                  bookModel?.volumeInfo?.language != null ? Text("Language:") : SizedBox(),
-                  bookModel?.volumeInfo?.publishedDate != null ? Text("Publish Date:") : SizedBox(),
+                  const Text("Page number:"),
+                  bookModel?.volumeInfo?.language != null ? const Text("Language:") : const SizedBox(),
+                  bookModel?.volumeInfo?.publishedDate != null
+                      ? const Text("Publish Date:")
+                      : const SizedBox(),
                 ],
               ),
               Column(

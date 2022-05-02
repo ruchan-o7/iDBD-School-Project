@@ -1,18 +1,18 @@
 import 'dart:convert';
 
-class commentModelFromRTD {
+class CommentModelFromRTD {
   String? comment;
   String? commenterId;
-  commentModelFromRTD({
+  CommentModelFromRTD({
     this.comment,
     this.commenterId,
   });
 
-  commentModelFromRTD copyWith({
+  CommentModelFromRTD copyWith({
     String? comment,
     String? commenterId,
   }) {
-    return commentModelFromRTD(
+    return CommentModelFromRTD(
       comment: comment ?? this.comment,
       commenterId: commenterId ?? this.commenterId,
     );
@@ -25,8 +25,8 @@ class commentModelFromRTD {
     };
   }
 
-  factory commentModelFromRTD.fromMap(Map<String, dynamic> map) {
-    return commentModelFromRTD(
+  factory CommentModelFromRTD.fromMap(Map<String, dynamic> map) {
+    return CommentModelFromRTD(
       comment: map['comment'],
       commenterId: map['commenterId'],
     );
@@ -34,7 +34,7 @@ class commentModelFromRTD {
 
   String toJson() => json.encode(toMap());
 
-  factory commentModelFromRTD.fromJson(String source) => commentModelFromRTD.fromMap(json.decode(source));
+  factory CommentModelFromRTD.fromJson(String source) => CommentModelFromRTD.fromMap(json.decode(source));
 
   @override
   String toString() => 'commentModelFromRTD(comment: $comment, commenterId: $commenterId)';
@@ -43,7 +43,7 @@ class commentModelFromRTD {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is commentModelFromRTD && other.comment == comment && other.commenterId == commenterId;
+    return other is CommentModelFromRTD && other.comment == comment && other.commenterId == commenterId;
   }
 
   @override

@@ -1,13 +1,10 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../base_model/book_response_mode.dart';
 import '../utils/firebase/firestore_func.dart';
 
 class FireBookView extends StatefulWidget {
-  FireBookView({Key? key}) : super(key: key);
+  const FireBookView({Key? key}) : super(key: key);
 
   @override
   State<FireBookView> createState() => _FireBookViewState();
@@ -21,13 +18,6 @@ class _FireBookViewState extends State<FireBookView> {
     final response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=kumarbaz");
     if (response.statusCode == 200) {
       model = BookResponseModel.fromJson(response.data);
-      log(model.toString());
-      log(model?.items?.first.volumeInfo?.title ?? "null title");
-      log(model?.items?.first.volumeInfo?.authors?.first ?? "null authors");
-      log(model?.items?.first.id ?? "null id");
-      log(model?.items?.first.volumeInfo?.pageCount.toString() ?? "null pageCount");
-      log(model?.items?.first.volumeInfo?.pageCount.toString() ?? "null title");
-      log(model?.items?.first.volumeInfo?.categories?.first.toString() ?? "null title");
     }
   }
 
@@ -44,14 +34,11 @@ class _FireBookViewState extends State<FireBookView> {
           funcs.addBook(element);
         }
       });
-    } else {
-      log("model boş");
-    }
+    } else {}
   }
 
   void clearRam() {
     model = null;
-    log("model silindi");
   }
 
   @override
@@ -62,15 +49,15 @@ class _FireBookViewState extends State<FireBookView> {
         children: [
           FloatingActionButton(
             onPressed: getBooks,
-            child: Icon(Icons.download),
+            child: const Icon(Icons.download),
           ),
           FloatingActionButton(
             onPressed: saveBooks,
-            child: Icon(Icons.upload),
+            child: const Icon(Icons.upload),
           ),
           FloatingActionButton(
             onPressed: clearRam,
-            child: Icon(Icons.clear_all),
+            child: const Icon(Icons.clear_all),
           )
         ],
       ),

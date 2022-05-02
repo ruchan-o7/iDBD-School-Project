@@ -99,13 +99,13 @@ class SignUpView extends StatelessWidget {
           : AutovalidateMode.disabled,
       child: Column(
         children: [
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           userNameMethod(context),
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           mailMethod(context),
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           passwordMethod(context),
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           passwordAgainMethod(context)
         ],
       ),

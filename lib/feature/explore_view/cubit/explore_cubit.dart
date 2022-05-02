@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import '../../../core/network/NetworkManager.dart';
+import '../../../core/network/network_manager.dart';
 import '../../search_view/model/searched_book_model.dart';
 import '../../search_view/service/search_book_service.dart';
 import '../../../product/base_model/book_response_mode.dart';

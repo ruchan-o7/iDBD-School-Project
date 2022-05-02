@@ -34,7 +34,7 @@ class SignInViewold extends StatelessWidget {
       child: BlocConsumer<SignInScreenCubit, SignInScreenState>(
         listener: (context, state) {
           if (state is SignInLoadingState) {
-            AlertDialog(
+            const AlertDialog(
               title: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -49,7 +49,7 @@ class SignInViewold extends StatelessWidget {
           } else if (state is SignInSucces) {
             return SearchView();
           } else {
-            return Scaffold();
+            return const Scaffold();
           }
         },
       ),
@@ -84,9 +84,9 @@ class SignInViewold extends StatelessWidget {
   Column structBuilder(BuildContext context) {
     return Column(
       children: [
-        customSizedBox(context, 10),
+        CustomSizedBox(context, 10),
         logoBuilder(context),
-        customSizedBox(context, 2),
+        CustomSizedBox(context, 2),
         formBuilder(context),
         forgetPassText(context),
         signInBtn(context), //await silindi belki lazım olabilir
@@ -110,7 +110,7 @@ class SignInViewold extends StatelessWidget {
       child: Column(
         children: [
           mailTextField(),
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           passwordTextfield(),
         ],
       ),
@@ -123,15 +123,16 @@ class SignInViewold extends StatelessWidget {
 
   Padding signInBtn(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: percentageConstants().medium),
+      padding: EdgeInsets.symmetric(vertical: PercentageConstants().medium),
       child: CustomBtn(StringConstants().signIn, () async {
         context.read<SignInScreenCubit>().looseFocus();
         if (emailController.text.isEmpty || passwordController.text.isEmpty) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Alanlar boş bırakılamaz")));
+              .showSnackBar(const SnackBar(content: Text("Alanlar boş bırakılamaz")));
         } else {
-          context.read<SignInScreenCubit>().sendRequest(
-              emailController.text, passwordController.text, context);
+          context
+              .read<SignInScreenCubit>()
+              .sendRequest(emailController.text, passwordController.text, context);
         }
       }, context),
     );
@@ -140,10 +141,7 @@ class SignInViewold extends StatelessWidget {
   Row forgetPassText(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        TextButton(
-            onPressed: () {}, child: Text(StringConstants().forgetPassword))
-      ],
+      children: [TextButton(onPressed: () {}, child: Text(StringConstants().forgetPassword))],
     );
   }
 
@@ -167,7 +165,7 @@ class SignInViewold extends StatelessWidget {
     );
   }
 
-  customSizedBox spacerWidget(BuildContext context) {
-    return customSizedBox(context, percentageConstants().medium);
+  CustomSizedBox spacerWidget(BuildContext context) {
+    return CustomSizedBox(context, PercentageConstants().medium);
   }
 }

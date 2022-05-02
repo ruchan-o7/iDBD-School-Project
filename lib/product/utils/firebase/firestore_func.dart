@@ -11,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../base_model/book_response_mode.dart';
 import '../../comment_model/comment_model.dart';
-import 'models/rt_user_model.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
 
@@ -33,10 +32,10 @@ class FirestoreFunctions {
   ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
   ///Likedbooks and Ownedbooks are [<"String">]
   ///Current updates only photo
-  Future updateUserData(UserSignUpModel model, String fieldName) async {
+  Future updateUserPhotoUrl(UserSignUpModel model, String uid) async {
     CollectionReference _user = _firestore.collection("users");
     await _user
-        .doc(model.userUid)
+        .doc(uid)
         .update({"imageUrl": model.imageUrl})
         .then((value) => log("user updated"))
         .catchError((error) => log("Failed to update user =>$error"));
@@ -45,12 +44,14 @@ class FirestoreFunctions {
   ///Uploads image to firebase and applies to profile url
   Future uploadFromGalleryImage(BuildContext context, User? user) async {
     final XFile? _selectedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
     if (_selectedImage != null) {
       File _imageFile = File(_selectedImage.path);
       final _uploadTask =
           await _storage.ref("/${user?.uid}->${user?.displayName}/userImage").putFile(_imageFile);
       await user?.updatePhotoURL(await _uploadTask.ref.getDownloadURL());
-      await updateUserData(UserSignUpModel(imageUrl: user?.photoURL), "");
+      final String _uid = await getCollectionId(user?.uid);
+      await updateUserPhotoUrl(UserSignUpModel(imageUrl: user?.photoURL), _uid);
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("failed to upload photo")));
@@ -105,7 +106,6 @@ class FirestoreFunctions {
     for (var item in _snap) {
       _books.add(Items.fromJson(item.data()));
     }
-    log(_books.length.toString());
     return _books;
   }
 
@@ -148,37 +148,36 @@ class FirestoreFunctions {
   //REALTIME DATABASE
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
-  void readDataContinously() {
-    _ref.onValue.listen((event) {
-      final data = event.snapshot.value;
-      log(data.toString());
-    });
-  }
+  // void readDataContinously() {
+  //   _ref.onValue.listen((event) {
+  //     final data = event.snapshot.value;
+  //   });
+  // }
 
   ///Reads user data from realtime database only once
-  Future readUserDataOnce(BuildContext context) async {
-    List<RTUserModel> list;
-    final snapshot = await _ref.child("/users/0").get();
+  // Future readUserDataOnce(BuildContext context) async {
+  //   List<RTUserModel> list;
+  //   final snapshot = await _ref.child("/users/0").get();
 
-    if (snapshot.exists) {
-      final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
-      return RTUserModel.fromJson(data);
-    } else {
-      _showSnackMessage(context, "Couldn't read data");
-    }
-  }
+  //   if (snapshot.exists) {
+  //     final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
+  //     return RTUserModel.fromJson(data);
+  //   } else {
+  //     _showSnackMessage(context, "Couldn't read data");
+  //   }
+  // }
 
   ///Reads user data from realtime database only once
   Future readCommentData(String? bookID) async {
     final snapshot = await _ref.child("comments/$bookID").get();
 
-    List<commentModelFromRTD> _list = [];
+    List<CommentModelFromRTD> _list = [];
     if (snapshot.exists) {
       final _data = jsonDecode(jsonEncode(snapshot.value));
 
       for (Map<String, dynamic> item in _data.values) {
         for (Map<String, dynamic> listofMaps in item.values) {
-          _list.add(commentModelFromRTD.fromMap(listofMaps));
+          _list.add(CommentModelFromRTD.fromMap(listofMaps));
         }
       }
       return _list;
@@ -197,7 +196,7 @@ class FirestoreFunctions {
     });
   }
 
-  _showSnackMessage(BuildContext context, String data) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data)));
-  }
+  // _showSnackMessage(BuildContext context, String data) {
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data)));
+  // }
 }

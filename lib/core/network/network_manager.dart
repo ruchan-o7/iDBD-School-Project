@@ -5,7 +5,7 @@ import '../enum/service_path.dart';
 class NetworkManager {
   static NetworkManager? _instace;
   static NetworkManager get instance {
-    if (_instace == null) _instace = NetworkManager._init();
+    _instace ??= NetworkManager._init();
     return _instace!;
   }
 

@@ -8,6 +8,6 @@ class LoginBtnCustomStyle extends ButtonStyle {
           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.35,
               vertical: MediaQuery.of(context).size.height * 0.02)),
-          shape: MaterialStateProperty.all<StadiumBorder>(StadiumBorder()),
+          shape: MaterialStateProperty.all<StadiumBorder>(const StadiumBorder()),
         );
 }

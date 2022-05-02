@@ -5,3 +5,7 @@ abstract class EditProfileState {}
 class EditProfileInitial extends EditProfileState {}
 
 class RefreshPage extends EditProfileState {}
+
+class ImageUploaded extends EditProfileState {}
+
+class ImageUploading extends EditProfileState {}

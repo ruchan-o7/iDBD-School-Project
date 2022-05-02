@@ -9,7 +9,7 @@ class InputDecCustom extends InputDecoration {
       : super(
             focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                 )),
             enabledBorder: OutlineInputBorder(
@@ -17,13 +17,13 @@ class InputDecCustom extends InputDecoration {
             ),
             errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                 )),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
             label: Text(hintTextstring),
-            suffixIcon: iconButton == null ? null : iconButton,
-            prefixIcon: isMail ? Icon(Icons.mail_outline) : null);
+            suffixIcon: iconButton,
+            prefixIcon: isMail ? const Icon(Icons.mail_outline) : null);
 }

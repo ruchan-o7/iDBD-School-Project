@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import '../../../core/constants/logo_path.dart';
 import '../../../core/custom/circle_color_widget.dart';
 import 'login_card_view_cubit.dart';
 import '../../sign_up/sign_up_view.dart';
@@ -32,69 +31,66 @@ class LoginCardView extends StatelessWidget {
       body: ClipRRect(
         child: Stack(fit: StackFit.expand, children: [
           Positioned(
-              child: CircleShape(
+              child: const CircleShape(
                 shapeColor: Colors.teal,
               ),
               bottom: context.dynamicHeight(0.69)),
           Positioned(
             bottom: context.dynamicHeight(0.15),
-            child: CircleShape(shapeColor: Colors.green),
+            child: const CircleShape(shapeColor: Colors.green),
           ),
-          Positioned(child: CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.5)),
+          Positioned(child: const CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.5)),
           dataStruct(context),
         ]),
       ),
     );
   }
 
-  Container dataStruct(BuildContext context) {
-    return Container(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: context.horizontalPaddingMedium,
-              child: Card(
-                color: Colors.green[100],
-                shape:
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
-                child: Padding(
-                  padding: context.horizontalPaddingNormal,
-                  child: Form(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: context.dynamicHeight(0.02),
-                        ),
-                        Text("Log in", style: Theme.of(context).textTheme.headline3),
-                        Text("Welcome", style: Theme.of(context).textTheme.headline5),
-                        SizedBox(
-                          height: context.dynamicHeight(0.04),
-                        ),
-                        mailTextField(context),
-                        SizedBox(
-                          height: context.dynamicHeight(0.02),
-                        ),
-                        passTextField(context),
-                        ForgetPassBTN(context),
-                        LogInBTN(context),
-                        const Divider(thickness: 2),
-                        signUpBTN(context),
-                        SizedBox(
-                          height: context.dynamicHeight(0.02),
-                        ),
-                      ],
-                    ),
+  Widget dataStruct(BuildContext context) {
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: context.horizontalPaddingMedium,
+            child: Card(
+              color: Colors.green[100],
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
+              child: Padding(
+                padding: context.horizontalPaddingNormal,
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: context.dynamicHeight(0.02),
+                      ),
+                      Text("Log in", style: Theme.of(context).textTheme.headline3),
+                      Text("Welcome", style: Theme.of(context).textTheme.headline5),
+                      SizedBox(
+                        height: context.dynamicHeight(0.04),
+                      ),
+                      mailTextField(context),
+                      SizedBox(
+                        height: context.dynamicHeight(0.02),
+                      ),
+                      passTextField(context),
+                      forgetPassBTN(context),
+                      logInBTN(context),
+                      const Divider(thickness: 2),
+                      signUpBTN(context),
+                      SizedBox(
+                        height: context.dynamicHeight(0.02),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -144,7 +140,7 @@ class LoginCardView extends StatelessWidget {
     );
   }
 
-  Row ForgetPassBTN(BuildContext context) {
+  Row forgetPassBTN(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -159,7 +155,7 @@ class LoginCardView extends StatelessWidget {
     );
   }
 
-  Row LogInBTN(BuildContext context) {
+  Row logInBTN(BuildContext context) {
     return Row(
       children: [
         Expanded(

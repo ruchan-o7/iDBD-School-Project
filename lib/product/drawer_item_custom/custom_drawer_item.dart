@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomDrawerItem extends StatelessWidget {
-  CustomDrawerItem({Key? key, this.onTapFunc, required this.leadingIcon, required this.text})
+  const CustomDrawerItem({Key? key, this.onTapFunc, required this.leadingIcon, required this.text})
       : super(key: key);
   final VoidCallback? onTapFunc;
   final IconData leadingIcon;

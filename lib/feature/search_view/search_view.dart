@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:kartal/kartal.dart';
+
 import '../../core/constants/logo_path.dart';
 import 'search_view_model.dart';
 import '../../product/book_card/book_card.dart';
@@ -26,12 +28,13 @@ class SearchView extends StatelessWidget {
             body: state is SearchViewInitial
                 ? null
                 : state is SearchDone
+                    // ignore: prefer_is_empty
                     ? context.read<SearchViewCubit>().searchedBookFromDatabase?.length != 0
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text("        From Google              From Our Database"),
-                              Divider(),
+                              const Divider(),
                               Expanded(
                                 child: Row(
                                   children: [
@@ -125,5 +128,5 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  Center centerProgress() => Center(child: CircularProgressIndicator());
+  Center centerProgress() => const Center(child: CircularProgressIndicator());
 }

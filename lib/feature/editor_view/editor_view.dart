@@ -13,12 +13,12 @@ class EditorView extends StatelessWidget {
         body: Padding(
           padding: context.paddingNormal,
           child: Column(
-            children: [userProfile(context), OptionsCards(context)],
+            children: [userProfile(context), optionsCards(context)],
           ),
         ));
   }
 
-  Expanded OptionsCards(BuildContext context) {
+  Expanded optionsCards(BuildContext context) {
     return Expanded(
       child: GridView(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -27,12 +27,14 @@ class EditorView extends StatelessWidget {
           mainAxisSpacing: context.dynamicWidth(0.1),
         ),
         children: [
-          GestureDetector(onTap: () {}, child: Card(elevation: 5, child: Center(child: Text("Add Book")))),
-          GestureDetector(onTap: () {}, child: Card(elevation: 5, child: Center(child: Text("Remove Book")))),
           GestureDetector(
-              onTap: () {}, child: Card(elevation: 5, child: Center(child: Text("Category Add")))),
+              onTap: () {}, child: const Card(elevation: 5, child: Center(child: Text("Add Book")))),
           GestureDetector(
-              onTap: () {}, child: Card(elevation: 5, child: Center(child: Text("Edit Category")))),
+              onTap: () {}, child: const Card(elevation: 5, child: Center(child: Text("Remove Book")))),
+          GestureDetector(
+              onTap: () {}, child: const Card(elevation: 5, child: Center(child: Text("Category Add")))),
+          GestureDetector(
+              onTap: () {}, child: const Card(elevation: 5, child: Center(child: Text("Edit Category")))),
         ],
       ),
     );
@@ -65,7 +67,7 @@ class EditorView extends StatelessWidget {
               Positioned(
                   bottom: context.dynamicHeight(0.02),
                   right: context.dynamicHeight(0.01),
-                  child: Icon(Icons.add_a_photo)),
+                  child: const Icon(Icons.add_a_photo)),
             ],
           ),
           Padding(

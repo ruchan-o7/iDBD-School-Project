@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -40,7 +39,8 @@ class SignUpCubit extends Cubit<SignUpState> {
   Future saveUSER(BuildContext context) async {
     looseFocus();
     if (passController.text != passwordSecondController.text) {
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("passwords are not same")));
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("passwords are not same")));
     }
     isPressed = !isPressed;
     final _tempModel = UserSignUpModel(
@@ -56,18 +56,6 @@ class SignUpCubit extends Cubit<SignUpState> {
     await authentication.signUp(_tempModel, context);
     isPressed = !isPressed;
     Navigator.pop(context);
-  }
-
-  void selectImage() async {
-    final XFile? selectedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (selectedImage != null) {
-      imagePath = selectedImage;
-      imageName = selectedImage.name.toString();
-    }
-    File imageFile = File(selectedImage!.path);
-    Uint8List imageRaw = await imageFile.readAsBytes();
-    image = imageRaw;
-    emit(ImageSelected());
   }
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:school_project_ibdb/core/network/NetworkManager.dart';
+import 'package:school_project_ibdb/core/network/network_manager.dart';
 import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
 
 void main() {

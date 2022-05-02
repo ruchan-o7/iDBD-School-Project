@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/network/NetworkManager.dart';
+import '../../core/network/network_manager.dart';
 import '../book_detail/book_detail_view.dart';
 import 'service/search_book_service.dart';
 import '../../product/base_model/book_response_mode.dart';
@@ -15,12 +14,17 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   final searchNode = FocusNode();
 
   SearchBookModel? results;
-  ISearchBookService _service = SearchBookService(NetworkManager.instance);
+  final ISearchBookService _service = SearchBookService(NetworkManager.instance);
   List<Items>? searchedBookFromDatabase;
+  String? path;
 
-  FirestoreFunctions _functions = FirestoreFunctions();
+  final FirestoreFunctions _functions = FirestoreFunctions();
+  final GenerateRandomProfilePic _picGenerate = GenerateRandomProfilePic();
+  Future<void> callFunc() async {
+    path = await _picGenerate.generateRandomPic();
+  }
 
-  Future<void> searchBooks(String searchText) async {
+  Future<void> searchBooks(String? searchText) async {
     emit(SearchingState());
     if (searchText != null && searchText != "") {
       searchNode.unfocus();
@@ -35,7 +39,6 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   }
 
   goToBook(Items? model, BuildContext context) async {
-    final _bookModel = await _functions.getBookById(model?.id ?? "");
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => BookDetail(bookModel: model),
     ));

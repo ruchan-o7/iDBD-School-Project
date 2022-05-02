@@ -17,7 +17,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
   Items? bookModel;
   final FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
-  List<commentModelFromRTD>? comments;
+  List<CommentModelFromRTD>? comments;
   List<UserSignUpModel>? commenters = [];
   final scaffoldState = GlobalKey<ScaffoldState>();
   final bottomSheetController = DraggableScrollableController();
@@ -43,7 +43,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     comments = await _firestoreFunctions.readCommentData(bookModel?.id);
 
     if (comments != null) {
-      for (commentModelFromRTD item in comments!) {
+      for (CommentModelFromRTD item in comments!) {
         commenters?.add(await getUserPhoto(item.commenterId));
       }
       emit(CommentLoaded());
@@ -59,7 +59,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   Future writeComment(String text, BuildContext context, Items? book) async {
     if (book?.id == null) {
       Navigator.pop(context);
-      return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Fail")));
+      return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fail")));
     } else {
       await _firestoreFunctions.writeCommentData(book?.id, FirebaseAuth.instance.currentUser, text);
       getComments();
@@ -75,6 +75,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
 
   Future<void> unLikeBook() async {
     final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
+    // ignore: prefer_is_empty
     if (_temp?.likedBooks != null && _temp?.likedBooks?.length != 0) {
       _firestoreFunctions.unLileBook(bookModel, FirebaseAuth.instance.currentUser);
       isBookLiked = false;

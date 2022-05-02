@@ -15,7 +15,7 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
     getData();
   }
 
-  FirestoreFunctions _functions = FirestoreFunctions();
+  final FirestoreFunctions _functions = FirestoreFunctions();
   UserSignUpModel? currUser;
   int selectedIndex = 0;
   RTUserModel? rtUserModel;

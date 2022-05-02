@@ -1,8 +1,7 @@
 import 'dart:math';
-
 import 'package:english_words/english_words.dart';
-
-import '../../../core/network/NetworkManager.dart';
+import 'package:path_provider/path_provider.dart';
+import '../../../core/network/network_manager.dart';
 import '../../../product/base_model/book_response_mode.dart';
 import '../model/searched_book_model.dart';
 
@@ -19,7 +18,7 @@ abstract class ISearchBookService {
 
 class SearchBookService extends ISearchBookService {
   SearchBookService(NetworkManager manager) : super(manager);
-  Random _random = Random();
+  final Random _random = Random();
 
   @override
   Future<SearchBookModel?> searchByName(String nameofBook) async {
@@ -42,11 +41,13 @@ class SearchBookService extends ISearchBookService {
     return null;
   }
 
+  @override
   Future<BookResponseModel?> searchByCategories(String bookName, String categorieName) async {
     final _response = await manager.dio.get("volumes?q=$bookName:subject:$categorieName");
     if (_response.statusCode == 200) {
       return BookResponseModel.fromJson(_response.data);
     }
+    return null;
   }
 
   @override
@@ -57,5 +58,19 @@ class SearchBookService extends ISearchBookService {
     if (_response.statusCode == 200) {
       return BookResponseModel.fromJson(_response.data);
     }
+    return null;
+  }
+}
+
+class GenerateRandomProfilePic {
+  final _manager = NetworkManager.instance;
+  final Iterable<String> _word = nouns.take(200);
+
+  generateRandomPic() async {
+    var _tempDir = await getTemporaryDirectory();
+    String _fullpath = _tempDir.path + "/avatar.svg";
+    await _manager.dio.download(
+        "https://avatars.dicebear.com/api/bottts/${_word.elementAt(Random().nextInt(199))}.svg", _fullpath);
+    return _fullpath;
   }
 }

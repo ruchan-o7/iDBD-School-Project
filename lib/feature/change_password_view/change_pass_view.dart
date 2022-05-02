@@ -15,7 +15,7 @@ class ChangePassView extends StatelessWidget {
           ),
         ),
         body: Padding(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Form(
               key: formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -50,7 +50,7 @@ class ChangePassView extends StatelessWidget {
                         child: Padding(
                           padding: context.horizontalPaddingHigh,
                           child: ElevatedButton(
-                            child: Text('Apply'),
+                            child: const Text('Apply'),
                             onPressed: () {},
                           ),
                         ),

@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../home_view/home_view.dart';
 import '../../nav_bar/nav_bar_view.dart';
 
 import '../../../product/utils/firebase/firebase_auth.dart';
@@ -32,7 +30,8 @@ class LoginCardCubit extends Cubit<LoginCardState> {
 
   Future<void> init() async {
     emit(LoadedFirebaseState());
-    FirebaseApp firebaseApp = await authentication.initializeFirebase();
+    await authentication.initializeFirebase();
+    // FirebaseApp firebaseApp = await authentication.initializeFirebase();
     emit(LoadedFirebaseState());
   }
 
