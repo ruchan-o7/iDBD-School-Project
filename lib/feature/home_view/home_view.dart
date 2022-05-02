@@ -148,7 +148,10 @@ class HomeView extends StatelessWidget {
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
-            child: CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
+            child: CustomCircleAvatar(
+              avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
+              size: context.dynamicWidth(0.05),
+            ),
           ),
         ),
         SizedBox(width: context.dynamicWidth(0.05))

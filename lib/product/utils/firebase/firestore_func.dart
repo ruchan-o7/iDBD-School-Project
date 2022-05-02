@@ -50,8 +50,8 @@ class FirestoreFunctions {
       final _uploadTask =
           await _storage.ref("/${user?.uid}->${user?.displayName}/userImage").putFile(_imageFile);
       await user?.updatePhotoURL(await _uploadTask.ref.getDownloadURL());
-      final String _uid = await getCollectionId(user?.uid);
-      await updateUserPhotoUrl(UserSignUpModel(imageUrl: user?.photoURL), _uid);
+      final String? _uid = await getCollectionId(user?.uid);
+      await updateUserPhotoUrl(UserSignUpModel(imageUrl: user?.photoURL), _uid ?? "");
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("failed to upload photo")));
@@ -109,8 +109,8 @@ class FirestoreFunctions {
     return _books;
   }
 
-  getCollectionId(String? uid) async {
-    if (uid == "") return;
+  Future<String?> getCollectionId(String? uid) async {
+    if (uid == "") return null;
 
     final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
         (await _firestore.collection("users").where("userUID", isEqualTo: uid).get()).docs;

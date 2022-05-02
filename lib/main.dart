@@ -22,9 +22,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: FirebaseAuth.instance.currentUser != null ? NavBar() : LoginCardView(),
+      home: isUserLoggedBefore() ? NavBar() : LoginCardView(),
     );
   }
 }
 
 Future<void> init() async {}
+
+bool isUserLoggedBefore() {
+  if (FirebaseAuth.instance.currentUser?.uid == null) {
+    return false;
+  } else {
+    return true;
+  }
+}

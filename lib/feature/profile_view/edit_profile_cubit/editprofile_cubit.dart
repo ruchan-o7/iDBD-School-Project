@@ -12,7 +12,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   selectImageFromGallery(BuildContext context) async {
     _functions.uploadFromGalleryImage(context, FirebaseAuth.instance.currentUser);
-    emit(ImageUploading());
     await Future.delayed(const Duration(seconds: 2), () {
       emit(ImageUploaded());
     });
