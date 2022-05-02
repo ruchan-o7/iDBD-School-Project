@@ -10,33 +10,12 @@ Features:
 
 
 TODO:
-- Login - done
-- about - done
-- SignUp - done
-- menu - done
-- Send verification  - done
-- Account verification  - done
-- forget password verification
-- forget password new password
-- Help - done
-- Application menu 
-- Explore  - done
-- Category page - done
-- Category selected 
-- Book preview  - done
-- Book search - done
-- Profile  - done
-- Liked books
-- Read book
 - Statistics page - done
 - Admin panel - done
 - Editor page - done
 - publisher page - done
-- User settings - done
-- Change user name  - done
-- Change password - done
 - Change mail page
-- Shutdown account
+- 
 Screenshots
 
 
