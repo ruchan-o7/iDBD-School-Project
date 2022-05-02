@@ -105,6 +105,8 @@ class LoginCardView extends StatelessWidget {
               shape: MaterialStateProperty.all(const StadiumBorder()),
             ),
             onPressed: () {
+              context.read<LoginCardCubit>().emailController.clear();
+              context.read<LoginCardCubit>().passwordController.clear();
               context.read<LoginCardCubit>().goToPage(context, SignUpView());
             },
             child: const Text("Sign Up"),

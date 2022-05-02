@@ -18,3 +18,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 }
+
+class DeleteAccountCubit extends Cubit<DeleteAccountState> {
+  DeleteAccountCubit() : super(DeleteAccountInitial());
+  Future<void> deleteAccount() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      await FirebaseAuth.instance.currentUser?.delete();
+    }
+  }
+}
+
+abstract class DeleteAccountState {}
+
+class DeleteAccountInitial extends DeleteAccountState {}

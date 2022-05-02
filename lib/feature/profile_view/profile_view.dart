@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/core/custom/custom_divider.dart';
+import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
 import 'package:school_project_ibdb/feature/profile_view/edit_profile_cubit/editprofile_cubit.dart';
 import 'cubit/profileview_cubit.dart';
 import '../../product/book_card/book_card.dart';
@@ -97,7 +98,7 @@ class ProfileView extends StatelessWidget {
 
   Widget buildSheet(BuildContext context, EditProfileState state) {
     if (state is ImageUploading) {
-      return const AlertDialog(content: Center(child: CircularProgressIndicator()));
+      return const Center(child: CircularProgressIndicator());
     }
     return SizedBox(
       width: context.dynamicWidth(1),
@@ -122,7 +123,7 @@ class ProfileView extends StatelessWidget {
             ListTile(
               leading: const Text("User name: "),
               title: TextFormField(
-                initialValue: FirebaseAuth.instance.currentUser?.displayName,
+                initialValue: FirebaseAuth.instance.currentUser?.photoURL,
               ),
             ),
             ListTile(
@@ -133,7 +134,13 @@ class ProfileView extends StatelessWidget {
             SizedBox(
               width: context.dynamicWidth(0.6),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return alertForDeleteAccount(context);
+                        });
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
@@ -144,6 +151,45 @@ class ProfileView extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget alertForDeleteAccount(BuildContext context) {
+    return BlocProvider(
+      create: (context) => DeleteAccountCubit(),
+      child: BlocConsumer<DeleteAccountCubit, DeleteAccountState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return AlertDialog(
+            title: const Text("Delete my account"),
+            content: const Text("Are you sure to delete account?"),
+            actions: [
+              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Cancel")),
+              ElevatedButton(
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              content: Text("See you later"),
+                              actions: [
+                                Center(child: CircularProgressIndicator()),
+                                SizedBox(
+                                  height: context.dynamicHeight(0.01),
+                                )
+                              ],
+                            ));
+                    await context.read<DeleteAccountCubit>().deleteAccount();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginCardView(),
+                        ));
+                  },
+                  child: const Text("Apply"))
+            ],
+          );
+        },
       ),
     );
   }

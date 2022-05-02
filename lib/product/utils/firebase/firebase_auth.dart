@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
+import '../../random_pic_generator/random_pict_generator.dart';
 import 'firestore_func.dart';
 
 class Authentication {
@@ -32,7 +34,9 @@ class Authentication {
           await _auth.createUserWithEmailAndPassword(email: model.userMail!, password: model.userPassword!);
       await _user.user?.updateDisplayName(model.userName);
       _user.user?.sendEmailVerification();
-      await _firestoreFunctions.addUser(model.copyWith(userUid: _user.user?.uid));
+      ;
+      await _firestoreFunctions.addUser(model.copyWith(
+          userUid: _user.user?.uid, imageUrl: await GenerateRandomProfilePic().generateRandomPic()));
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         _showSnackbar("Mail already using", context);

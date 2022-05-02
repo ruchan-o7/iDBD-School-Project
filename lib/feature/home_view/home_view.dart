@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import '../about_view/about_view.dart';
 import '../profile_view/profile_view.dart';
 import '../../product/book_categories/categories.dart';
@@ -43,14 +44,7 @@ class HomeView extends StatelessWidget {
               DrawerHeader(
                   child: SizedBox(
                 width: context.dynamicWidth(0.3),
-                child: CircleAvatar(
-                  backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
-                      ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
-                      : null,
-                  child: FirebaseAuth.instance.currentUser?.photoURL == null
-                      ? Image.asset("assets/icon/dummy_per.png")
-                      : null,
-                ),
+                child: CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
               )),
               Text("${FirebaseAuth.instance.currentUser?.displayName?.toUpperCase()}")
             ],
@@ -154,14 +148,7 @@ class HomeView extends StatelessWidget {
             onTap: () {
               Scaffold.of(context).openDrawer();
             },
-            child: CircleAvatar(
-              backgroundImage: FirebaseAuth.instance.currentUser?.photoURL != null
-                  ? NetworkImage("${FirebaseAuth.instance.currentUser?.photoURL}")
-                  : null,
-              child: FirebaseAuth.instance.currentUser?.photoURL == null
-                  ? Image.asset("assets/icon/dummy_per.png")
-                  : null,
-            ),
+            child: CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
           ),
         ),
         SizedBox(width: context.dynamicWidth(0.05))

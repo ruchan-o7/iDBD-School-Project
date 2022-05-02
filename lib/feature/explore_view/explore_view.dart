@@ -12,9 +12,7 @@ class ExploreView extends StatelessWidget {
     return BlocProvider(
       create: (context) => ExploreCubit(),
       child: BlocConsumer<ExploreCubit, ExploreState>(
-        listener: (context, state) {
-          if (state is BooksDownloading) {}
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             body: GridView.builder(

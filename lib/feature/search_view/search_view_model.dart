@@ -19,10 +19,6 @@ class SearchViewCubit extends Cubit<SearchViewState> {
   String? path;
 
   final FirestoreFunctions _functions = FirestoreFunctions();
-  final GenerateRandomProfilePic _picGenerate = GenerateRandomProfilePic();
-  Future<void> callFunc() async {
-    path = await _picGenerate.generateRandomPic();
-  }
 
   Future<void> searchBooks(String? searchText) async {
     emit(SearchingState());
