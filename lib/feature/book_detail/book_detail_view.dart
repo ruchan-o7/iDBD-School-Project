@@ -207,18 +207,30 @@ class BookDetail extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  const Text("Page number:"),
+                  bookModel?.volumeInfo?.pageCount != null ? const Text("Page number:") : const SizedBox(),
                   bookModel?.volumeInfo?.language != null ? const Text("Language:") : const SizedBox(),
                   bookModel?.volumeInfo?.publishedDate != null
                       ? const Text("Publish Date:")
                       : const SizedBox(),
+                  bookModel?.volumeInfo?.categories?.first != null
+                      ? const Text("Categories")
+                      : const SizedBox()
                 ],
               ),
               Column(
                 children: [
-                  Text(bookModel?.volumeInfo?.pageCount?.toString() ?? "Unknown"),
-                  Text(bookModel?.volumeInfo?.language ?? ""),
-                  Text(bookModel?.volumeInfo?.publishedDate ?? "")
+                  bookModel?.volumeInfo?.pageCount != null
+                      ? Text(bookModel?.volumeInfo?.pageCount?.toString() ?? "Unknown")
+                      : const SizedBox(),
+                  bookModel?.volumeInfo?.language != null
+                      ? Text(bookModel?.volumeInfo?.language ?? "")
+                      : const SizedBox(),
+                  bookModel?.volumeInfo?.publishedDate != null
+                      ? Text(bookModel?.volumeInfo?.publishedDate ?? "")
+                      : const SizedBox(),
+                  bookModel?.volumeInfo?.categories != null
+                      ? Text(bookModel?.volumeInfo?.categories?.first ?? "null")
+                      : const SizedBox()
                 ],
               )
             ],

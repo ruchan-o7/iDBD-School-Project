@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:isolate';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:school_project_ibdb/core/theme/app_theme.dart';
 import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
@@ -27,12 +30,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<void> init() async {}
+// Future<bool> init() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   return true;
+// }
 
 bool isUserLoggedBefore() {
   if (FirebaseAuth.instance.currentUser?.uid == null) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 }
