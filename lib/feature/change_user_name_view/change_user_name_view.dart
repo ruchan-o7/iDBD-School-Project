@@ -44,7 +44,10 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                   validator: (s) {
                     if (s == "") {
                       return "Please type something";
+                    } else if (s == null) {
+                      return "Please type something";
                     }
+                    return null;
                   },
                   decoration:
                       InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),

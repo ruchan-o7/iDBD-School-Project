@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../base_model/book_response_mode.dart';
+import '../../categories_liked_model/categor_liked_model.dart';
 import '../../comment_model/comment_model.dart';
 
 import '../../../feature/sign_up/model/signup_model.dart';
@@ -121,7 +122,7 @@ class FirestoreFunctions {
     return id;
   }
 
-  likeBook(Items? book, User? currentUser) async {
+  Future<void> likeBook(Items? book, User? currentUser) async {
     final id = await getCollectionId(currentUser?.uid);
     await _firestore.collection("users").doc(id).update({
       "likedBooks": FieldValue.arrayUnion(<String>[book?.id ?? "null"])
@@ -131,18 +132,34 @@ class FirestoreFunctions {
         final _temp = await getBookById(book.id ?? "");
         if (_temp?.id == null) {
           addBook(book);
+          writeCategoriesData(book, currentUser);
           return;
         }
       }
     }
   }
 
-  unLileBook(Items? book, User? user) async {
+  Future<void> unLikeBook(Items? book, User? user) async {
     final _id = await getCollectionId(user?.uid);
     await _firestore.collection("users").doc(_id).update({
       "likedBooks": FieldValue.arrayRemove([book?.id ?? "null"])
     });
   }
+
+  Future<Map<String, dynamic>> getStatistics() async {
+    final _dateTime = DateTime.now();
+    final _rawData = await _ref.child("categories/${_dateTime.year}/${_dateTime.month}").get();
+    Map<String, int> _statistics = {};
+    if (_rawData.exists) {
+      final Map<String, dynamic> _data = jsonDecode(jsonEncode(_rawData.value));
+      final list = List.from(_data.keys);
+      for (int i = 0; i < _data.values.length; i++) {
+        _statistics[list[i]] = _data.values.length;
+      }
+      return _statistics;
+    }
+    return {};
+  } //todo: make suggestion by user's preferences
 
   //-----------------------------------------------------------------------------
   //REALTIME DATABASE
@@ -194,6 +211,46 @@ class FirestoreFunctions {
       "commenterId": currentUser?.uid,
       "comment": commentText,
     });
+  }
+
+  ///Write data to categories section
+  Future<void> writeCategoriesData(Items? items, User? currentUser) async {
+    final _date = DateTime.now();
+
+    final _comment = _ref.child(
+        "categories/${_date.year}/${_date.month}/${items?.volumeInfo?.categories?.first}"); //this will come from categories
+    if (await checkUserLikedAlready(items?.id ?? "") != false) {
+      await _comment.push().set({
+        "likedBy": currentUser?.uid,
+        "bookId": items?.id,
+        // "time": "${_date.year}/${_date.month}",
+        "likedTime": {"year": _date.year, "month": _date.month}
+      });
+    }
+  }
+
+  Future<bool> checkUserLikedAlready(String bookId) async {
+    final _snapshot =
+        await _ref.child("categories/${DateTime.now().year}/${DateTime.now().month}/Fiction/").get();
+    if (_snapshot.exists) {
+      final _data = jsonDecode(jsonEncode(_snapshot.value));
+
+      List<CategoriesLikedModel>? _modelList = [];
+
+      for (Map<String, dynamic> item in _data.values) {
+        _modelList.add(CategoriesLikedModel.fromJson(item));
+      }
+      if (_modelList.isNotEmpty) {
+        for (CategoriesLikedModel item in _modelList) {
+          if (item.bookId == bookId) {
+            if (item.likedBy == FirebaseAuth.instance.currentUser?.uid) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 
   // _showSnackMessage(BuildContext context, String data) {

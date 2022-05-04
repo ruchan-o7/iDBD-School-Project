@@ -12,7 +12,7 @@ import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'cubit/bookdetail_cubit.dart';
 
 class BookDetail extends StatelessWidget {
-  BookDetail({Key? key, this.bookModel}) : super(key: key);
+  BookDetail({Key? key, required this.bookModel}) : super(key: key);
 
   Items? bookModel;
   final commentController = TextEditingController();
@@ -35,6 +35,7 @@ class BookDetail extends StatelessWidget {
   }
 
   Column fab(BuildContext context) {
+    bool _isLiked = context.read<BookDetailCubit>().isBookLiked;
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -52,7 +53,7 @@ class BookDetail extends StatelessWidget {
               },
               child: Icon(
                 Icons.thumb_up,
-                color: context.read<BookDetailCubit>().isBookLiked ? Colors.red : Colors.black,
+                color: _isLiked ? Colors.red : Colors.black,
               )),
         ),
         Padding(

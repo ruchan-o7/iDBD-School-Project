@@ -22,14 +22,14 @@ class ProfileView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: appBar(context),
-            body: body(context),
+            body: body(context, state),
           );
         },
       ),
     );
   }
 
-  DefaultTabController body(BuildContext context) {
+  DefaultTabController body(BuildContext context, ProfileviewState state) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -90,7 +90,7 @@ class ProfileView extends StatelessWidget {
             Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
             Tab(child: Icon(Icons.book, color: Colors.black))
           ]),
-          bookContent(context)
+          bookContent(context, state)
         ],
       ),
     );
@@ -171,9 +171,9 @@ class ProfileView extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              content: Text("See you later"),
+                              content: const Text("See you later"),
                               actions: [
-                                Center(child: CircularProgressIndicator()),
+                                const Center(child: CircularProgressIndicator()),
                                 SizedBox(
                                   height: context.dynamicHeight(0.01),
                                 )
@@ -183,7 +183,7 @@ class ProfileView extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginCardView(),
+                          builder: (context) => const LoginCardView(),
                         ));
                   },
                   child: const Text("Apply"))
@@ -194,25 +194,36 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Expanded bookContent(BuildContext context) {
+  Expanded bookContent(BuildContext context, ProfileviewState state) {
     return Expanded(
       child: TabBarView(children: [
-        GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return BookCard(
-                bookModel: context.read<ProfileviewCubit>().likedBooks?[index],
-              );
-            },
-            itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
-        GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, index) {
-              return BookCard(
-                bookModel: context.read<ProfileviewCubit>().ownedBooks?[index],
-              );
-            },
-            itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
+        state is Loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return BookCard(
+                    bookModel: context.read<ProfileviewCubit>().likedBooks?.reversed.elementAt(index),
+                  );
+                },
+                itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
+        state is Loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            // ignore: prefer_is_empty
+            : context.read<ProfileviewCubit>().ownedBooks?.length == 0
+                ? const Center(child: Text("There is no owned books"))
+                : GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      return BookCard(
+                        bookModel: context.read<ProfileviewCubit>().ownedBooks?[index],
+                      );
+                    },
+                    itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
       ]),
     );
   }

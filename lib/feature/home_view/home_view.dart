@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/statistic_view/statistic_view.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import '../about_view/about_view.dart';
 import '../profile_view/profile_view.dart';
@@ -57,6 +58,16 @@ class HomeView extends StatelessWidget {
                   builder: (context) => ProfileView(),
                 ));
               }),
+          const Divider(),
+          CustomDrawerItem(
+            leadingIcon: Icons.stacked_bar_chart_sharp,
+            text: "Statistics",
+            onTapFunc: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const StatisticView(),
+              ));
+            },
+          ),
           const Divider(),
           CustomDrawerItem(
               leadingIcon: Icons.sd_card,

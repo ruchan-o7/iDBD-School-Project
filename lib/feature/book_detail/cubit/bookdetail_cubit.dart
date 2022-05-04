@@ -32,6 +32,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
         if (item == bookModel?.id) {
           isBookLiked = true;
           emit(ClickedToButton());
+          return;
         } else {
           isBookLiked = false;
         }
@@ -70,6 +71,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   void likeBook() async {
     _firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
     isBookLiked = true;
+    await _firestoreFunctions.writeCategoriesData(bookModel, FirebaseAuth.instance.currentUser);
     emit(ClickedToButton());
   }
 
@@ -77,7 +79,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
     // ignore: prefer_is_empty
     if (_temp?.likedBooks != null && _temp?.likedBooks?.length != 0) {
-      _firestoreFunctions.unLileBook(bookModel, FirebaseAuth.instance.currentUser);
+      _firestoreFunctions.unLikeBook(bookModel, FirebaseAuth.instance.currentUser);
       isBookLiked = false;
       emit(ClickedToButton());
     }

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:english_words/english_words.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../../core/network/network_manager.dart';
 import '../../../product/base_model/book_response_mode.dart';
 import '../model/searched_book_model.dart';

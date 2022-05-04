@@ -11,7 +11,6 @@ part 'profileview_state.dart';
 
 class ProfileviewCubit extends Cubit<ProfileviewState> {
   ProfileviewCubit() : super(ProfileviewInitial()) {
-    getLikedBookNumber();
     getData();
   }
 
@@ -29,9 +28,11 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
   }
 
   Future<void> getData() async {
+    emit(Loading());
     currUser = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
     await getLikedBooks(currUser);
     await getOwnedBooks(currUser);
+    emit(Loaded());
   }
 
   Future<void> getLikedBooks(UserSignUpModel? userModel) async {
