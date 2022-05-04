@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/border_radius.dart';
+
 class InputDecCustom extends InputDecoration {
   final Widget? iconButton;
   final String hintTextstring;
@@ -8,20 +10,20 @@ class InputDecCustom extends InputDecoration {
   InputDecCustom(this.hintTextstring, {this.iconButton, this.isMail = false})
       : super(
             focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadiusConst.normal,
                 borderSide: const BorderSide(
                   color: Colors.red,
                 )),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadiusConst.normal,
             ),
             errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadiusConst.normal,
                 borderSide: const BorderSide(
                   color: Colors.red,
                 )),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadiusConst.normal,
             ),
             label: Text(hintTextstring),
             suffixIcon: iconButton,

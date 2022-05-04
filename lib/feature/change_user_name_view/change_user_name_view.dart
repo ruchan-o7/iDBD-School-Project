@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
+import '../../core/constants/border_radius.dart';
+
 class ChangeUserName extends StatefulWidget {
   const ChangeUserName({Key? key}) : super(key: key);
 
@@ -50,7 +52,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                     return null;
                   },
                   decoration:
-                      InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
+                      InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadiusConst.low)),
                 ),
                 SizedBox(
                   height: context.dynamicHeight(0.05),

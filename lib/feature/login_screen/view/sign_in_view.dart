@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/border_radius.dart';
 import '../../../core/constants/logo_path.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../core/custom/custom_btn.dart';
@@ -96,7 +97,7 @@ class SignInViewold extends StatelessWidget {
 
   ClipRRect logoBuilder(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadiusConst.veryLow,
       child: Image.asset(
         LogoPaths.normal,
         height: MediaQuery.of(context).size.height * 0.3,

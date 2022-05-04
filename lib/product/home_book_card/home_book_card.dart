@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import '../../core/constants/border_radius.dart';
 import '../../core/constants/logo_path.dart';
 import '../base_model/book_response_mode.dart';
 
@@ -19,10 +20,10 @@ class HomeBookCard extends SizedBox {
                     SizedBox(height: context.dynamicHeight(0.015)),
                     Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(20)),
+                          border: Border.all(color: Colors.black), borderRadius: BorderRadiusConst.normal),
                       height: context.dynamicHeight(0.25),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadiusConst.normal,
                         child: model?.imageLinks?.thumbnail == null
                             ? Image.asset(LogoPaths.dummyBook)
                             : Image.network(

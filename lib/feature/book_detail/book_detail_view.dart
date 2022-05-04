@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/border_radius.dart';
 import '../../core/constants/logo_path.dart';
 import '../../core/constants/string_constants.dart';
 import '../sign_up/model/signup_model.dart';
@@ -148,7 +149,7 @@ class BookDetail extends StatelessWidget {
                               child: TextField(
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadiusConst.normal,
                               gapPadding: 20,
                             )),
                             controller: commentController,
@@ -175,11 +176,11 @@ class BookDetail extends StatelessWidget {
         children: [
           Card(
             elevation: 10,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadiusConst.normal),
             child: SizedBox(
               height: context.dynamicHeight(0.4),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadiusConst.normal,
                 child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
                     ? Container(
                         constraints: BoxConstraints(minHeight: context.dynamicHeight(0.3)),

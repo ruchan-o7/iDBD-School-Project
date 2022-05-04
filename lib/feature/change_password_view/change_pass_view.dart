@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/border_radius.dart';
 
 class ChangePassView extends StatelessWidget {
   ChangePassView({Key? key}) : super(key: key);
@@ -23,14 +24,14 @@ class ChangePassView extends StatelessWidget {
                 children: <Widget>[
                   TextFormField(
                       decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                    border: OutlineInputBorder(borderRadius: BorderRadiusConst.low),
                     labelText: 'Old Password',
                     hintText: 'New  Password',
                   )),
                   SizedBox(height: context.dynamicHeight(0.02)),
                   TextFormField(
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                      border: OutlineInputBorder(borderRadius: BorderRadiusConst.low),
                       labelText: 'New  Password',
                       hintText: 'New  Password',
                     ),
@@ -38,7 +39,7 @@ class ChangePassView extends StatelessWidget {
                   SizedBox(height: context.dynamicHeight(0.02)),
                   TextFormField(
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                      border: OutlineInputBorder(borderRadius: BorderRadiusConst.low),
                       labelText: 'New  Password Again',
                       hintText: 'New  Password Again',
                     ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/border_radius.dart';
 import 'package:school_project_ibdb/feature/statistic_view/statistic_view.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import '../about_view/about_view.dart';
@@ -185,7 +186,7 @@ class HomeView extends StatelessWidget {
                 children: [
                   SizedBox(height: context.dynamicHeight(0.015)),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadiusConst.normal,
                     child: Image.network(
                       "https://picsum.photos/150/200",
                       fit: BoxFit.contain,
