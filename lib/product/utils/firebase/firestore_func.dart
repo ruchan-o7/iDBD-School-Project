@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:school_project_ibdb/product/publisher_user_model/publisher_user.dart';
 
 import '../../base_model/book_response_mode.dart';
 import '../../categories_liked_model/categor_liked_model.dart';
@@ -33,10 +34,10 @@ class FirestoreFunctions {
   ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
   ///Likedbooks and Ownedbooks are [<"String">]
   ///Current updates only photo
-  Future updateUserPhotoUrl(UserSignUpModel model, String uid) async {
+  Future updateUserPhotoUrl(UserSignUpModel model, String collectionId) async {
     CollectionReference _user = _firestore.collection("users");
     await _user
-        .doc(uid)
+        .doc(collectionId)
         .update({"imageUrl": model.imageUrl})
         .then((value) => log("user updated"))
         .catchError((error) => log("Failed to update user =>$error"));
@@ -63,7 +64,7 @@ class FirestoreFunctions {
 
   ///Finds user in firestore by user uid
   Future<UserSignUpModel> getDocumentData(User? currentUser) async {
-    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
+    final _docSnap =
         (await _firestore.collection("users").where("userUID", isEqualTo: currentUser?.uid).get()).docs;
 
     Map<String, dynamic> _data = {};
@@ -74,14 +75,24 @@ class FirestoreFunctions {
   }
 
   Future<UserSignUpModel?> getUser(String? userUid) async {
-    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
-        (await _firestore.collection("users").where("userUID", isEqualTo: userUid).get()).docs;
+    final _docSnap = (await _firestore.collection("users").where("userUID", isEqualTo: userUid).get()).docs;
 
     Map<String, dynamic> _data = {};
     for (var element in _docSnap) {
       _data = element.data();
     }
     return UserSignUpModel.fromJson(_data);
+  }
+
+  Future<PublisherUser?> getPublisherUser(String? userUid) async {
+    final _docSnap =
+        (await _firestore.collection("publisher_user").where("userId", isEqualTo: userUid).get()).docs;
+
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
+      _data = element.data();
+    }
+    return PublisherUser.fromMap(_data);
   }
 
   ///Finds books from databases by id
@@ -113,8 +124,7 @@ class FirestoreFunctions {
   Future<String?> getCollectionId(String? uid) async {
     if (uid == "") return null;
 
-    final List<QueryDocumentSnapshot<Map<String, dynamic>>> _docSnap =
-        (await _firestore.collection("users").where("userUID", isEqualTo: uid).get()).docs;
+    final _docSnap = (await _firestore.collection("users").where("userUID", isEqualTo: uid).get()).docs;
     String id = "";
     for (var item in _docSnap) {
       id = item.id;

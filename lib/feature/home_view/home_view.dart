@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/border_radius.dart';
+import 'package:school_project_ibdb/feature/publisher_view/publisher_view.dart';
 import 'package:school_project_ibdb/feature/statistic_view/statistic_view.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import '../about_view/about_view.dart';
@@ -69,6 +70,13 @@ class HomeView extends StatelessWidget {
               ));
             },
           ),
+          const Divider(),
+          CustomDrawerItem(
+              leadingIcon: Icons.book,
+              text: "Publisher Page",
+              onTapFunc: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PublisherView()));
+              }),
           const Divider(),
           CustomDrawerItem(
               leadingIcon: Icons.sd_card,
