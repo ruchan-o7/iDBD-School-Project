@@ -24,48 +24,25 @@ class SearchView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            appBar: appBar(context),
-            body: state is SearchViewInitial
-                ? null
-                : state is SearchDone
-                    // ignore: prefer_is_empty
-                    ? context.read<SearchViewCubit>().searchedBookFromDatabase?.length != 0
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("        From Google              From Our Database"),
-                              const Divider(),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Expanded(child: searchedFromGoogle(context)),
-                                    Expanded(
-                                      child: formDatabases(context),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )
-                        : searchedFromGoogle(context)
-                    : centerProgress(),
-          );
+              appBar: appBar(context),
+              body: state is SearchViewInitial
+                  ? const Center(
+                      child: Text("search something"),
+                    )
+                  : state is SearchDone
+                      // ignore: prefer_is_empty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Divider(),
+                            Expanded(
+                              child: searchedFromGoogle(context),
+                            ),
+                          ],
+                        )
+                      : searchedFromGoogle(context));
         },
       ),
-    );
-  }
-
-  ListView formDatabases(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {
-          context
-              .read<SearchViewCubit>()
-              .goToBook(context.read<SearchViewCubit>().searchedBookFromDatabase?[index], context);
-        },
-        child: BookCard(bookModel: context.read<SearchViewCubit>().searchedBookFromDatabase?[index]),
-      ),
-      itemCount: context.read<SearchViewCubit>().searchedBookFromDatabase?.length,
     );
   }
 
@@ -87,6 +64,7 @@ class SearchView extends StatelessWidget {
 
   TextField searchBar(BuildContext context) {
     return TextField(
+      decoration: InputDecoration(hintText: "Harry Potter"),
       focusNode: context.read<SearchViewCubit>().searchNode,
       controller: context.read<SearchViewCubit>().searchController,
       onSubmitted: (v) {
@@ -95,34 +73,33 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  ListView searchedFromGoogle(BuildContext context) {
-    return ListView.builder(
+  Widget searchedFromGoogle(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, index) {
-        VolumeInfo? tempModel = context.read<SearchViewCubit>().results?.items?[index].volumeInfo;
-        return Card(
-          elevation: 10,
-          child: InkWell(
+        final _tempModel = context.read<SearchViewCubit>().results?.items?[index];
+        return InkWell(
             onTap: () {
               context
                   .read<SearchViewCubit>()
                   .goToBook(context.read<SearchViewCubit>().results?.items?[index], context);
             },
-            child: Column(
-              children: [
-                tempModel?.imageLinks == null
-                    ? Container(
-                        constraints: BoxConstraints(minHeight: context.dynamicHeight(0.2)),
-                        child: Image.asset(LogoPaths.dummyBook),
-                      )
-                    : Container(
-                        constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.2)),
-                        child: Image.network(tempModel?.imageLinks?.thumbnail ?? "")),
-                Text(tempModel?.title ?? "unknown title", style: Theme.of(context).textTheme.bodyLarge),
-                Text(tempModel?.authors?.first ?? "", style: Theme.of(context).textTheme.bodySmall)
-              ],
-            ),
-          ),
-        );
+            child: BookCard(bookModel: _tempModel)
+            // Column(
+            //   children: [
+            //     tempModel?.imageLinks == null
+            //         ? Container(
+            //             constraints: BoxConstraints(minHeight: context.dynamicHeight(0.2)),
+            //             child: Image.asset(LogoPaths.dummyBook),
+            //           )
+            //         : Container(
+            //             constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.2)),
+            //             child: Image.network(tempModel?.imageLinks?.thumbnail ?? "")),
+            //     Text(tempModel?.title ?? "unknown title", style: Theme.of(context).textTheme.bodyLarge),
+            //     Text(tempModel?.authors?.first ?? "", style: Theme.of(context).textTheme.bodySmall)
+            //   ],
+            // ),
+            );
       },
       itemCount: context.read<SearchViewCubit>().results?.items?.length,
     );
