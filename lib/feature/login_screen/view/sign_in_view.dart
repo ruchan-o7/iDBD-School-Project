@@ -128,8 +128,7 @@ class SignInViewold extends StatelessWidget {
       child: CustomBtn(StringConstants().signIn, () async {
         context.read<SignInScreenCubit>().looseFocus();
         if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Alanlar boş bırakılamaz")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fields can not empty")));
         } else {
           context
               .read<SignInScreenCubit>()

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 
-import '../../core/constants/color_constants.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/custom/custom_sized_box.dart';
 import '../../core/custom/input_dec_custom.dart';
@@ -115,7 +114,7 @@ class SignUpView extends StatelessWidget {
   TextFormField userNameMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
-        cursorColor: ColorConstants.secondaryColor,
+        // cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodeUserName,
         controller: context.read<SignUpCubit>().userNameController,
         validator: ((value) => Validator().validatePassword(password: value)),
@@ -125,7 +124,7 @@ class SignUpView extends StatelessWidget {
   TextFormField mailMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
-        cursorColor: ColorConstants.secondaryColor,
+        // cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodeMail,
         controller: context.read<SignUpCubit>().mailController,
         validator: (v) => Validator().validateEmail(email: v),
@@ -135,7 +134,7 @@ class SignUpView extends StatelessWidget {
   TextFormField passwordMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
-        cursorColor: ColorConstants.secondaryColor,
+        // cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodePass,
         controller: context.read<SignUpCubit>().passController,
         validator: (v) => Validator().validatePassword(password: v),
@@ -145,7 +144,7 @@ class SignUpView extends StatelessWidget {
   TextFormField passwordAgainMethod(BuildContext context) {
     return TextFormField(
         keyboardType: TextInputType.emailAddress,
-        cursorColor: ColorConstants.secondaryColor,
+        // cursorColor: ColorConstants.secondaryColor,
         focusNode: context.read<SignUpCubit>().nodePassSecond,
         controller: context.read<SignUpCubit>().passwordSecondController,
         validator: (v) => Validator().validatePassword(password: v),
