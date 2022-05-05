@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
+import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
 
 import '../../../core/network/network_manager.dart';
 import '../../../product/base_model/book_response_mode.dart';
@@ -20,8 +22,16 @@ class HomeViewCubit extends Cubit<HomeViewState> {
   final Authentication _auth = Authentication();
   final ISearchBookService _service = SearchBookService(NetworkManager.instance);
   BookResponseModel? categorieBooks;
+  final FirestoreFunctions _functions = FirestoreFunctions();
+  final ScrollController scrollController = ScrollController();
 
   IsLoading loadState = IsLoading.no;
+
+  bool isUserPublisher = false;
+
+  Future<void> checkUserIsPublisher() async {
+    isUserPublisher = await _functions.checkUserPublisher(FirebaseAuth.instance.currentUser?.uid);
+  }
 
   logOut(BuildContext context) async {
     await _auth.signOut();
@@ -32,6 +42,7 @@ class HomeViewCubit extends Cubit<HomeViewState> {
 
   init() async {
     await _auth.initializeFirebase();
+    checkUserIsPublisher();
     getBooksFromCategories(Categories.instance.getCategorieList?.first ?? "History");
   }
 

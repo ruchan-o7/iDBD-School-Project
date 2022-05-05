@@ -171,6 +171,21 @@ class FirestoreFunctions {
     return {};
   } //todo: make suggestion by user's preferences
 
+  Future<bool> checkUserPublisher(String? userUid) async {
+    final _docSnap =
+        (await _firestore.collection("publisher_user").where("userId", isEqualTo: userUid).get()).docs;
+
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
+      _data = element.data();
+    }
+    if (_data["isPublisher"] == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   //-----------------------------------------------------------------------------
   //REALTIME DATABASE
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();

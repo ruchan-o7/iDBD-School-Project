@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/product/utils/validator/validator.dart';
 import '../../core/constants/logo_path.dart';
 
 import '../../feature/book_detail/book_detail_view.dart';
@@ -9,16 +10,6 @@ class BookCard extends StatelessWidget {
   BookCard({Key? key, required this.bookModel}) : super(key: key);
 
   Items? bookModel;
-
-  bool validatePhoto(String? avatarUrl) {
-    if (avatarUrl == null) {
-      return false;
-    } else if (avatarUrl == "") {
-      return false;
-    } else {
-      return true;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +33,7 @@ class BookCard extends StatelessWidget {
                   height: context.dynamicHeight(0.155),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: validatePhoto(bookModel?.volumeInfo?.imageLinks?.thumbnail)
+                        image: Validator().validateString(bookModel?.volumeInfo?.imageLinks?.thumbnail)
                             ? NetworkImage("${bookModel?.volumeInfo?.imageLinks?.thumbnail}")
                             : const AssetImage(LogoPaths.dummyBook) as ImageProvider,
                         fit: BoxFit.contain),

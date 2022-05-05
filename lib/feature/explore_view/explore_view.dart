@@ -21,7 +21,7 @@ class ExploreView extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 9 / 10,
               ),
-              itemBuilder: (contex, index) {
+              itemBuilder: (context, index) {
                 if (state is BooksDownloading) {
                   return const Scaffold(
                     body: Center(
@@ -29,16 +29,14 @@ class ExploreView extends StatelessWidget {
                     ),
                   );
                 } else {
-                  final data = contex.read<ExploreCubit>().exploreBooks?.items?[index];
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(height: contex.dynamicHeight(0.03)),
-                        BookCard(
-                          bookModel: data,
-                        )
-                      ],
-                    ),
+                  final data = context.read<ExploreCubit>().exploreBooks?.items?[index];
+                  return Column(
+                    children: [
+                      SizedBox(height: context.dynamicHeight(0.03)),
+                      BookCard(
+                        bookModel: data,
+                      )
+                    ],
                   );
                 }
               },

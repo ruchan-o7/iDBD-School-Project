@@ -30,4 +30,14 @@ class Validator {
     }
     return null;
   }
+
+  bool validateString(String? val) {
+    if (val == null) {
+      return false;
+    } else if (val == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/border_radius.dart';
 import 'package:school_project_ibdb/feature/publisher_view/publisher_view.dart';
 import 'package:school_project_ibdb/feature/statistic_view/statistic_view.dart';
+import 'package:school_project_ibdb/product/book_card/book_card.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import '../about_view/about_view.dart';
 import '../profile_view/profile_view.dart';
@@ -71,13 +72,16 @@ class HomeView extends StatelessWidget {
             },
           ),
           const Divider(),
-          CustomDrawerItem(
-              leadingIcon: Icons.book,
-              text: "Publisher Page",
-              onTapFunc: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PublisherView()));
-              }),
-          const Divider(),
+          context.read<HomeViewCubit>().isUserPublisher
+              ? CustomDrawerItem(
+                  leadingIcon: Icons.book,
+                  text: "Publisher Page",
+                  onTapFunc: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => const PublisherView()));
+                  })
+              : const SizedBox(),
+          context.read<HomeViewCubit>().isUserPublisher ? const Divider() : const SizedBox(),
           CustomDrawerItem(
               leadingIcon: Icons.sd_card,
               text: "About",
@@ -99,8 +103,9 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  SingleChildScrollView body(BuildContext context) {
+  Widget body(BuildContext context) {
     return SingleChildScrollView(
+      controller: context.read<HomeViewCubit>().scrollController,
       child: Padding(
         padding: context.paddingNormal,
         child: Column(
@@ -128,10 +133,12 @@ class HomeView extends StatelessWidget {
               },
             ),
             SizedBox(
-              height: context.dynamicHeight(0.4),
-              child: ListView.builder(
+              height: context.dynamicHeight(0.28),
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const VerticalDivider(thickness: 2),
                 scrollDirection: Axis.horizontal,
-                itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
+                itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length ?? 0,
+                // itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final _tempModel = context.read<HomeViewCubit>().categorieBooks?.items?[index];
                   if (context.read<HomeViewCubit>().loadState == IsLoading.yes) {
@@ -140,9 +147,7 @@ class HomeView extends StatelessWidget {
                         child: const Center(child: CircularProgressIndicator()));
                   }
                   return InkWell(
-                    onTap: () {
-                      context.read<HomeViewCubit>().goToBook(context, _tempModel);
-                    },
+                    onTap: () => context.read<HomeViewCubit>().goToBook(context, _tempModel),
                     child: HomeBookCard(
                       model: _tempModel?.volumeInfo,
                       context: context,
@@ -152,7 +157,7 @@ class HomeView extends StatelessWidget {
               ),
             ),
             Text("New Arrivals", style: Theme.of(context).textTheme.headline5),
-            bookShelf(context),
+            newBookShelf(context),
           ],
         ),
       ),
@@ -179,41 +184,27 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  SizedBox bookShelf(BuildContext context) {
-    return SizedBox(
-      height: context.dynamicHeight(0.4),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return SizedBox(
-            height: context.dynamicHeight(0.3),
-            child: Padding(
-              padding: context.paddingLow,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  ClipRRect(
-                    borderRadius: BorderRadiusConst.normal,
-                    child: Image.network(
-                      "https://picsum.photos/150/200",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  SizedBox(height: context.dynamicHeight(0.015)),
-                  const Text("Kitap Adı"),
-                  Text(
-                    "Yazar",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-        itemCount: 5,
-        scrollDirection: Axis.horizontal,
+  Widget newBookShelf(BuildContext context) {
+    return GridView(
+      controller: context.read<HomeViewCubit>().scrollController,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 9 / 11,
       ),
+      shrinkWrap: true,
+      children: context
+              .read<HomeViewCubit>()
+              .categorieBooks
+              ?.items
+              ?.map((e) => InkWell(
+                    onTap: () => context.read<HomeViewCubit>().goToBook(context, e),
+                    child: HomeBookCard(
+                      context: context,
+                      model: e.volumeInfo,
+                    ),
+                  ))
+              .toList() ??
+          [],
     );
   }
 }

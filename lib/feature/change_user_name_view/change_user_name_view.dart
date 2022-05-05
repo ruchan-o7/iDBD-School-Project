@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/product/utils/validator/validator.dart';
 
 import '../../core/constants/border_radius.dart';
 
@@ -44,12 +45,11 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                 TextFormField(
                   controller: _controller,
                   validator: (s) {
-                    if (s == "") {
-                      return "Please type something";
-                    } else if (s == null) {
-                      return "Please type something";
+                    if (Validator().validateString(s)) {
+                      return null;
+                    } else {
+                      return "Please type anything";
                     }
-                    return null;
                   },
                   decoration:
                       InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadiusConst.low)),
