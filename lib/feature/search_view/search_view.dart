@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:kartal/kartal.dart';
-
-import '../../core/constants/logo_path.dart';
 import 'search_view_model.dart';
 import '../../product/book_card/book_card.dart';
-import '../../product/base_model/book_response_mode.dart';
 import 'service/search_book_service.dart';
 
 class SearchView extends StatelessWidget {
@@ -64,7 +60,7 @@ class SearchView extends StatelessWidget {
 
   TextField searchBar(BuildContext context) {
     return TextField(
-      decoration: InputDecoration(hintText: "Harry Potter"),
+      decoration: const InputDecoration(hintText: "Harry Potter"),
       focusNode: context.read<SearchViewCubit>().searchNode,
       controller: context.read<SearchViewCubit>().searchController,
       onSubmitted: (v) {
@@ -75,7 +71,7 @@ class SearchView extends StatelessWidget {
 
   Widget searchedFromGoogle(BuildContext context) {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, index) {
         final _tempModel = context.read<SearchViewCubit>().results?.items?[index];
         return InkWell(

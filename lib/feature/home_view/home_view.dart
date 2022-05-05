@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/help_view/help_view.dart';
 import 'package:school_project_ibdb/feature/publisher_view/publisher_view.dart';
 import 'package:school_project_ibdb/feature/statistic_view/statistic_view.dart';
 import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
@@ -87,7 +88,12 @@ class HomeView extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutView()));
               }),
           const Divider(),
-          CustomDrawerItem(leadingIcon: Icons.help, text: "Help", onTapFunc: () async {}),
+          CustomDrawerItem(
+              leadingIcon: Icons.help,
+              text: "Help",
+              onTapFunc: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpView()));
+              }),
           const Divider(),
           CustomDrawerItem(
             leadingIcon: Icons.logout,
@@ -122,7 +128,7 @@ class HomeView extends StatelessWidget {
             TabBar(
               tabs: Categories.instance.toTab() ?? [],
               isScrollable: true,
-              indicatorColor: Colors.red,
+              indicatorColor: Theme.of(context).indicatorColor,
               indicatorWeight: 3,
               onTap: (categorieName) {
                 context

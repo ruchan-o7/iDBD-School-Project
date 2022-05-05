@@ -23,20 +23,14 @@ class LightTextTheme implements ITextTheme {
   AppColors getAppColors = AppColors();
 
   LightTextTheme() {
-    headline2 = const TextStyle(fontSize: 65, fontWeight: FontWeight.w300);
-    headline3 = const TextStyle(fontWeight: FontWeight.bold);
-    headline4 = const TextStyle(fontSize: 30, fontWeight: FontWeight.w200);
-    headline5 = const TextStyle(fontWeight: FontWeight.w100);
-    headline6 = const TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w100,
-    );
-    body1 = const TextStyle(fontSize: 15, fontWeight: FontWeight.w400);
-    body2 = const TextStyle(fontSize: 18, fontWeight: FontWeight.w800);
-    button = const TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-    );
+    headline2 = const TextStyle(fontSize: 60, fontWeight: FontWeight.w300);
+    headline3 = const TextStyle(fontWeight: FontWeight.w400, fontSize: 48);
+    headline4 = const TextStyle(fontSize: 34, fontWeight: FontWeight.w400);
+    headline5 = const TextStyle(fontSize: 24, fontWeight: FontWeight.w400);
+    headline6 = const TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
+    body1 = const TextStyle(fontSize: 16, fontWeight: FontWeight.w400);
+    body2 = const TextStyle(fontSize: 14, fontWeight: FontWeight.w400);
+    button = const TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
   }
 
   @override

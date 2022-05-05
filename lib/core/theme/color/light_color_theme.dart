@@ -7,38 +7,67 @@ class LightColorTheme implements IColorTheme {
   late final Color? appBarColor;
 
   @override
-  late final Color? backgroundColor;
-
-  @override
   late final Brightness? brightness;
 
   @override
   late final ColorScheme? colorScheme;
 
   @override
-  late final Color? floatingButtonColor;
-  @override
   late final Color? textfield;
-  @override
-  Color? colorRed;
 
   @override
   AppColors colors = AppColors();
 
   LightColorTheme() {
     appBarColor = colors.scaffoldColor;
-    colorRed = colors.red;
-    backgroundColor = colors.scaffoldColor;
-    floatingButtonColor = colors.white;
+    iconColor = colors.moreDarkerColor;
+    moreDarkerColor = colors.moreDarkerColor;
+    primaryColor = colors.primaryColor;
+    secondaryColor = colors.secondaryColor;
+    thirdColor = colors.thirdColor;
+    cardColor = colors.secondaryColor;
+
+    scaffoldBackgroundColor = colors.scaffoldColor;
+    // backgroundColor = colors.scaffoldColor;
     textfield = colors.textfieldColor;
     brightness = Brightness.light;
+
+    iconThemeData = ThemeData.light().iconTheme.copyWith(
+          // color: colors.moreDarkerColor,
+          color: colors.thirdColor,
+        );
     colorScheme = const ColorScheme.light().copyWith(
-      onPrimary: colors.green,
-      onSurface: colors.prussianPlum,
-      primary: colors.green,
+      onPrimary: colors.primaryColor,
+      primary: colors.primaryColor,
+      background: colors.scaffoldColor,
+      secondary: colors.secondaryColor,
+      tertiary: colors.thirdColor,
+      surface: colors.moreDarkerColor, //--> navbardaki iconların rengibi belirliyo
+      shadow: colors.primaryColor,
     );
   }
 
   @override
-  Color? cardColor;
+  late final Color? cardColor;
+
+  @override
+  late final Color? iconColor;
+
+  @override
+  late final Color? scaffoldBackgroundColor;
+
+  @override
+  late final Color? moreDarkerColor;
+
+  @override
+  late final Color? primaryColor;
+
+  @override
+  late final Color? secondaryColor;
+
+  @override
+  late final Color? thirdColor;
+
+  @override
+  IconThemeData? iconThemeData;
 }

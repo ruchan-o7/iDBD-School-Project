@@ -5,8 +5,6 @@ import 'package:school_project_ibdb/core/theme/app_theme.dart';
 import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
 import 'package:school_project_ibdb/feature/nav_bar/nav_bar_view.dart';
 
-import 'feature/publisher_view/publisher_view.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

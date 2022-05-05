@@ -66,7 +66,10 @@ class ProfileView extends StatelessWidget {
                             );
                           });
                     },
-                    child: const Text("Edit profile")),
+                    child: Text(
+                      "Edit profile",
+                      style: Theme.of(context).textTheme.button,
+                    )),
               )),
             ],
           ),
@@ -100,10 +103,7 @@ class ProfileView extends StatelessWidget {
                 onPressed: () {
                   context.read<EditProfileCubit>().selectImageFromGallery(context);
                 },
-                child: Text(
-                  "Change Profile Photo",
-                  style: Theme.of(context).textTheme.button?.copyWith(color: Colors.white),
-                )),
+                child: const Text("Change Profile Photo")),
             const Divider(),
             ListTile(
               leading: const Text("User name: "),
@@ -119,20 +119,24 @@ class ProfileView extends StatelessWidget {
             SizedBox(
               width: context.dynamicWidth(0.6),
               child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return alertForDeleteAccount(context);
-                        });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.delete),
-                      Text("Delete my account"),
-                    ],
-                  )),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return alertForDeleteAccount(context);
+                      });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.delete,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    Text("Delete my account", style: Theme.of(context).textTheme.button),
+                  ],
+                ),
+              ),
             )
           ],
         ),

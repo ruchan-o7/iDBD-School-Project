@@ -179,15 +179,7 @@ class BookDetail extends StatelessWidget {
             shape: RoundedRectangleBorder(borderRadius: BorderRadiusConst.normal),
             child: SizedBox(
               height: context.dynamicHeight(0.4),
-              child: ClipRRect(
-                borderRadius: BorderRadiusConst.normal,
-                child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
-                    ? Container(
-                        constraints: BoxConstraints(minHeight: context.dynamicHeight(0.3)),
-                        child: Image.asset(LogoPaths.dummyBook),
-                      )
-                    : Image.network(bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "", fit: BoxFit.contain),
-              ),
+              child: bookThumbnail(context),
             ),
           ),
           SizedBox(height: context.dynamicHeight(0.02)),
@@ -245,6 +237,18 @@ class BookDetail extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  ClipRRect bookThumbnail(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadiusConst.normal,
+      child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
+          ? Container(
+              constraints: BoxConstraints(minHeight: context.dynamicHeight(0.3)),
+              child: Image.asset(LogoPaths.dummyBook),
+            )
+          : Image.network(bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "", fit: BoxFit.contain),
     );
   }
 

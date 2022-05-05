@@ -16,7 +16,7 @@ class PublisherCubit extends Cubit<PublisherState> {
   getUserData() async {
     final currentUser = await _functions.getPublisherUser(FirebaseAuth.instance.currentUser?.uid);
     if (currentUser?.userName == null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Failed")));
     }
     emit(DataFetched(currentUser: currentUser));
   }
