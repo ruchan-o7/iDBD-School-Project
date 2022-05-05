@@ -158,15 +158,16 @@ class FirestoreFunctions {
     });
   }
 
-  Future<Map<String, dynamic>> getStatistics() async {
+  Future<Map<String, int>> getStatistics() async {
     final _dateTime = DateTime.now();
     final _rawData = await _ref.child("categories/${_dateTime.year}/${_dateTime.month}").get();
     Map<String, int> _statistics = {};
     if (_rawData.exists) {
       final Map<String, dynamic> _data = jsonDecode(jsonEncode(_rawData.value));
-      final list = List.from(_data.keys);
-      for (int i = 0; i < _data.values.length; i++) {
-        _statistics[list[i]] = _data.values.length;
+      final _list = List.from(_data.keys);
+
+      for (int i = 0; i < _data.keys.length; i++) {
+        _statistics[_list[i]] = _data.values.elementAt(i).length;
       }
       return _statistics;
     }
