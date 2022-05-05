@@ -18,7 +18,7 @@ class StatisticCubit extends Cubit<StatisticState> {
   getData() async {
     emit(StatsLoading());
     stats = await _functions.getStatistics();
-    spreadCateNames(stats);
+    await spreadCateNames(stats);
     emit(StatsLoaded(stats: stats, picUrlList: picUrlList));
   }
 

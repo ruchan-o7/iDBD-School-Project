@@ -11,23 +11,8 @@ import 'package:kartal/kartal.dart';
 
 class ProfileView extends StatelessWidget {
   ProfileView({Key? key}) : super(key: key);
-  final userNameController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileviewCubit(),
-      child: BlocConsumer<ProfileviewCubit, ProfileviewState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            appBar: appBar(context),
-            body: body(context, state),
-          );
-        },
-      ),
-    );
-  }
+  final userNameController = TextEditingController();
 
   DefaultTabController body(BuildContext context, ProfileviewState state) {
     return DefaultTabController(
@@ -123,7 +108,7 @@ class ProfileView extends StatelessWidget {
             ListTile(
               leading: const Text("User name: "),
               title: TextFormField(
-                initialValue: FirebaseAuth.instance.currentUser?.photoURL,
+                initialValue: FirebaseAuth.instance.currentUser?.displayName,
               ),
             ),
             ListTile(
@@ -233,6 +218,22 @@ class ProfileView extends StatelessWidget {
       elevation: 0,
       title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
           style: Theme.of(context).textTheme.headline5),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ProfileviewCubit(),
+      child: BlocConsumer<ProfileviewCubit, ProfileviewState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: appBar(context),
+            body: body(context, state),
+          );
+        },
+      ),
     );
   }
 }

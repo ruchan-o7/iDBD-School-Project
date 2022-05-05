@@ -6,20 +6,23 @@ class AboutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: "about",
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Hakkımızda"),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: PaddingValues.min.rawValues(context),
-          child: Text(
-            "asdddasdasdasdasd" * 5,
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("About"),
+        centerTitle: true,
       ),
+      body: Padding(
+          padding: PaddingValues.min.rawValues(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "About",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              Text("It's about drive, it's about power", style: Theme.of(context).textTheme.bodyText1),
+            ],
+          )),
     );
   }
 }

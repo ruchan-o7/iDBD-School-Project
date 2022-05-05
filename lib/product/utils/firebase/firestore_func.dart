@@ -35,12 +35,14 @@ class FirestoreFunctions {
   ///Likedbooks and Ownedbooks are [<"String">]
   ///Current updates only photo
   Future updateUserPhotoUrl(UserSignUpModel model, String collectionId) async {
-    CollectionReference _user = _firestore.collection("users");
-    await _user
-        .doc(collectionId)
-        .update({"imageUrl": model.imageUrl})
-        .then((value) => log("user updated"))
-        .catchError((error) => log("Failed to update user =>$error"));
+    final _temp = _firestore.collection("users").doc(collectionId);
+    await _temp.update({"imageUrl": model.imageUrl});
+    // CollectionReference _user = _firestore.collection("users").doc(collectionId).update({"imageUrl":model.imageUrl});
+    // await _user
+    //     .doc(collectionId)
+    //     .update({"imageUrl": model.imageUrl})
+    //     .then((value) => log("user updated"))
+    //     .catchError((error) => log("Failed to update user =>$error"));
   }
 
   ///Uploads image to firebase and applies to profile url
@@ -242,14 +244,13 @@ class FirestoreFunctions {
   Future<void> writeCategoriesData(Items? items, User? currentUser) async {
     final _date = DateTime.now();
 
-    final _comment = _ref.child(
-        "categories/${_date.year}/${_date.month}/${items?.volumeInfo?.categories?.first}"); //this will come from categories
-    if (await checkUserLikedAlready(items?.id ?? "") != false) {
+    final _comment =
+        _ref.child("categories/${_date.year}/${_date.month}/${items?.volumeInfo?.categories?.first}");
+    final _isLiked = await checkUserLikedAlready(items?.id ?? "");
+    if (_isLiked == false) {
       await _comment.push().set({
         "likedBy": currentUser?.uid,
         "bookId": items?.id,
-        // "time": "${_date.year}/${_date.month}",
-        "likedTime": {"year": _date.year, "month": _date.month}
       });
     }
   }

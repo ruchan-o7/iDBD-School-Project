@@ -69,7 +69,7 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   }
 
   void likeBook() async {
-    _firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
+    await _firestoreFunctions.likeBook(bookModel, FirebaseAuth.instance.currentUser);
     isBookLiked = true;
     await _firestoreFunctions.writeCategoriesData(bookModel, FirebaseAuth.instance.currentUser);
     emit(ClickedToButton());
