@@ -21,7 +21,7 @@ class SearchBookService extends ISearchBookService {
 
   @override
   Future<SearchBookModel?> searchByName(String nameofBook) async {
-    final response = await manager.dio.get("volumes?q=intitle:$nameofBook}");
+    final response = await manager.dio.get("volumes?q=intitle:${nameofBook.replaceAll(RegExp(r' '), '+')}");
 
     if (response.statusCode == 200) {
       return SearchBookModel.fromJson(response.data);

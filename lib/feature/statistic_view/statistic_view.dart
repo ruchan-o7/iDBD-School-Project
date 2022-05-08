@@ -57,19 +57,6 @@ class StatisticView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        // child: ListTile(
-                        //   leading: Image.network(
-                        //     "https://picsum.photos/200",
-                        //     scale: 1.5,
-                        //   ),
-                        //   title: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Text(state.stats.keys.elementAt(index)),
-                        //       Text(state.stats.values.elementAt(index).toString())
-                        //     ],
-                        //   ),
-                        // ),
                       ),
                       itemCount: state.stats.length,
                     ),

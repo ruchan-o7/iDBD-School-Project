@@ -16,18 +16,27 @@ class HomeBookCard extends SizedBox {
               children: [
                 SizedBox(height: context.dynamicHeight(0.015)),
                 Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blueGrey), borderRadius: BorderRadiusConst.normal),
+                  decoration: BoxDecoration(borderRadius: BorderRadiusConst.normal),
                   height: context.dynamicHeight(0.25),
-                  child: ClipRRect(
-                      borderRadius: BorderRadiusConst.normal,
-                      child: Validator().validateString(model?.imageLinks?.thumbnail)
-                          ? Image.network(
-                              model?.imageLinks?.thumbnail ?? "",
-                              fit: BoxFit.cover,
-                              width: context.dynamicWidth(0.35),
-                            )
-                          : Image.asset(LogoPaths.dummyBook)),
+                  child: Validator().validateString(model?.imageLinks?.thumbnail)
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadiusConst.normal,
+                          ),
+                          child: Container(
+                            margin: context.paddingLow,
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusConst.normal,
+                              child: Image.network(
+                                model?.imageLinks?.thumbnail ?? "",
+                                fit: BoxFit.cover,
+                                width: context.dynamicWidth(0.35),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Image.asset(LogoPaths.dummyBook),
                 ),
               ],
             ));

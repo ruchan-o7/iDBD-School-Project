@@ -32,9 +32,9 @@ class FirestoreFunctions {
   ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
   ///Likedbooks and Ownedbooks are [<"String">]
   ///Current updates only photo
-  Future updateUserPhotoUrl(UserSignUpModel model, String collectionId) async {
+  Future updateUserPhotoUrl(String imageUrl, String collectionId) async {
     final _temp = _firestore.collection("users").doc(collectionId);
-    await _temp.update({"imageUrl": model.imageUrl});
+    await _temp.update({"imageUrl": imageUrl});
     // CollectionReference _user = _firestore.collection("users").doc(collectionId).update({"imageUrl":model.imageUrl});
     // await _user
     //     .doc(collectionId)
@@ -51,9 +51,10 @@ class FirestoreFunctions {
       File _imageFile = File(_selectedImage.path);
       final _uploadTask =
           await _storage.ref("/${user?.uid}->${user?.displayName}/userImage").putFile(_imageFile);
-      await user?.updatePhotoURL(await _uploadTask.ref.getDownloadURL());
+      final _downloadUrl = await _uploadTask.ref.getDownloadURL();
+      await user?.updatePhotoURL(_downloadUrl);
       final String? _uid = await getCollectionId(user?.uid);
-      await updateUserPhotoUrl(UserSignUpModel(imageUrl: user?.photoURL), _uid ?? "");
+      await updateUserPhotoUrl(_downloadUrl, _uid ?? "");
     } else {
       return ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("failed to upload photo")));

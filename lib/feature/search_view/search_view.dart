@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_view_model.dart';
 import '../../product/book_card/book_card.dart';
 import 'service/search_book_service.dart';
+import '../../core/extension/string_extension.dart';
 
 class SearchView extends StatelessWidget {
   SearchView({
@@ -11,6 +12,7 @@ class SearchView extends StatelessWidget {
   }) : super(key: key);
 
   late ISearchBookService service;
+  final String searchText = "search something";
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +22,21 @@ class SearchView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-              appBar: appBar(context),
-              body: state is SearchViewInitial
-                  ? const Center(
-                      child: Text("search something"),
-                    )
-                  : state is SearchDone
-                      // ignore: prefer_is_empty
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Divider(),
-                            Expanded(
-                              child: searchedFromGoogle(context),
-                            ),
-                          ],
-                        )
-                      : searchedFromGoogle(context));
+            appBar: appBar(context),
+            body: state is SearchViewInitial
+                ? Center(
+                    child: Text(searchText.toTitleCase()),
+                  )
+                : state is SearchingState
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : state is SearchDone
+                        ? Column(
+                            children: [const Divider(), Expanded(child: searchedFromGoogle(context, state))],
+                          )
+                        : const SizedBox(),
+          );
         },
       ),
     );
@@ -55,12 +55,12 @@ class SearchView extends StatelessWidget {
         onPressed: () {
           context.read<SearchViewCubit>().searchBooks(context.read<SearchViewCubit>().searchController.text);
         },
-        icon: const Icon(Icons.search));
+        icon: Icon(Icons.search, color: Theme.of(context).primaryColorDark));
   }
 
   TextField searchBar(BuildContext context) {
     return TextField(
-      decoration: const InputDecoration(hintText: "Harry Potter"),
+      decoration: const InputDecoration(hintText: "Harry Potter", filled: true, fillColor: Colors.white38),
       focusNode: context.read<SearchViewCubit>().searchNode,
       controller: context.read<SearchViewCubit>().searchController,
       onSubmitted: (v) {
@@ -69,36 +69,23 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  Widget searchedFromGoogle(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-      itemBuilder: (context, index) {
-        final _tempModel = context.read<SearchViewCubit>().results?.items?[index];
-        return InkWell(
-            onTap: () {
-              context
-                  .read<SearchViewCubit>()
-                  .goToBook(context.read<SearchViewCubit>().results?.items?[index], context);
+  Widget searchedFromGoogle(BuildContext context, SearchDone state) {
+    return state.results?.items != null
+        ? GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              final _tempModel = state.results;
+              return InkWell(
+                  onTap: () {
+                    context.read<SearchViewCubit>().goToBook(_tempModel?.items?[index], context);
+                  },
+                  child: BookCard(bookModel: _tempModel?.items?[index]));
             },
-            child: BookCard(bookModel: _tempModel)
-            // Column(
-            //   children: [
-            //     tempModel?.imageLinks == null
-            //         ? Container(
-            //             constraints: BoxConstraints(minHeight: context.dynamicHeight(0.2)),
-            //             child: Image.asset(LogoPaths.dummyBook),
-            //           )
-            //         : Container(
-            //             constraints: BoxConstraints(maxHeight: context.dynamicHeight(0.2)),
-            //             child: Image.network(tempModel?.imageLinks?.thumbnail ?? "")),
-            //     Text(tempModel?.title ?? "unknown title", style: Theme.of(context).textTheme.bodyLarge),
-            //     Text(tempModel?.authors?.first ?? "", style: Theme.of(context).textTheme.bodySmall)
-            //   ],
-            // ),
-            );
-      },
-      itemCount: context.read<SearchViewCubit>().results?.items?.length,
-    );
+            itemCount: state.results?.items?.length,
+          )
+        : const Center(
+            child: Text("Couldn't find"),
+          );
   }
 
   Center centerProgress() => const Center(child: CircularProgressIndicator());

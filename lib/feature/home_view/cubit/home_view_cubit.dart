@@ -21,11 +21,12 @@ class HomeViewCubit extends Cubit<HomeViewState> {
   final GlobalKey<ScaffoldState> drawerKey = GlobalKey();
   final Authentication _auth = Authentication();
   final ISearchBookService _service = SearchBookService(NetworkManager.instance);
-  BookResponseModel? categorieBooks;
   final FirestoreFunctions _functions = FirestoreFunctions();
   final ScrollController scrollController = ScrollController();
 
   IsLoading loadState = IsLoading.no;
+  BookResponseModel? categorieBooks;
+  BookResponseModel? recommendedBooks;
 
   bool isUserPublisher = false;
 
@@ -43,6 +44,7 @@ class HomeViewCubit extends Cubit<HomeViewState> {
   init() async {
     await _auth.initializeFirebase();
     checkUserIsPublisher();
+    getRecommendedBooks();
     getBooksFromCategories(Categories.instance.getCategorieList?.first ?? "History");
   }
 
@@ -52,6 +54,29 @@ class HomeViewCubit extends Cubit<HomeViewState> {
         MaterialPageRoute(
           builder: (context) => destination,
         ));
+  }
+
+  getRecommendedBooks() async {
+    final _cateData = sortCategories(await _functions.getStatistics());
+    if (_cateData?.keys.first != null) {
+      recommendedBooks = await _service.randomSearchWithCategories(_cateData?.keys.first ?? "");
+    }
+  }
+
+  Map<String, int>? sortCategories(Map<String, int> map) {
+    var _sortedEntries = map.entries.toList()
+      ..sort((e1, e2) {
+        var diff = e2.value.compareTo(e1.value);
+        if (diff == 0) {
+          diff = e2.key.compareTo(e1.key);
+        }
+        return diff;
+      });
+    Map<String, int> _temp = {};
+    for (var item in _sortedEntries) {
+      _temp[item.key] = item.value;
+    }
+    return _temp;
   }
 
   getBooksFromCategories(String categorie) async {

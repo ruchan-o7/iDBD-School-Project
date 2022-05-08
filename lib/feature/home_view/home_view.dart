@@ -160,8 +160,13 @@ class HomeView extends StatelessWidget {
                 },
               ),
             ),
-            Text("New Arrivals", style: Theme.of(context).textTheme.headline5),
-            newBookShelf(context),
+            Text("Recommended", style: Theme.of(context).textTheme.headline5),
+            ElevatedButton(
+                onPressed: () {
+                  context.read<HomeViewCubit>().getRecommendedBooks();
+                },
+                child: Text("Get recommended")),
+            recommendedShelf(context),
           ],
         ),
       ),
@@ -188,17 +193,15 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget newBookShelf(BuildContext context) {
+  Widget recommendedShelf(BuildContext context) {
     return GridView(
       controller: context.read<HomeViewCubit>().scrollController,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 9 / 11,
-      ),
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 9 / 11),
       shrinkWrap: true,
       children: context
               .read<HomeViewCubit>()
-              .categorieBooks
+              .recommendedBooks
               ?.items
               ?.map((e) => InkWell(
                     onTap: () => context.read<HomeViewCubit>().goToBook(context, e),
