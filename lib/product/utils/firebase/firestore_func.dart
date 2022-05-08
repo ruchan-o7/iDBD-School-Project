@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:school_project_ibdb/feature/add_book_view/model.dart';
 import 'package:school_project_ibdb/product/publisher_user_model/publisher_user.dart';
 
 import '../../base_model/book_response_mode.dart';
@@ -26,7 +27,12 @@ class FirestoreFunctions {
   }
 
   Future<void> addBook(Items model) async {
+    //! generic type a çevirilmesi gerekiyor
     await _firestore.collection("books").doc().set(model.toJson());
+  }
+
+  Future<void> addBookRequest(BookRequestModel model) async {
+    await _firestore.collection("books").doc().set(model.toMap());
   }
 
   ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
@@ -61,6 +67,16 @@ class FirestoreFunctions {
     }
 
     return user?.photoURL;
+  }
+
+  Future<String?> uploadImage(XFile? bookimage, String bookId) async {
+    if (bookimage != null) {
+      final _uploadTask =
+          await _storage.ref("/books/$bookId/${bookimage.name}").putFile(File(bookimage.path));
+      final _downloadUrl = await _uploadTask.ref.getDownloadURL();
+      return _downloadUrl;
+    }
+    return null;
   }
 
   ///Finds user in firestore by user uid
