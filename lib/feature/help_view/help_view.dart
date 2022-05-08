@@ -13,10 +13,7 @@ class HelpView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text("IBDb Yardım",
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                ?.copyWith(fontWeight: FontWeight.bold)),
+            style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Padding(
@@ -27,33 +24,15 @@ class HelpView extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().howCanISignUp)),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().forgetPassword)),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().changeEMail)),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Text("Beğendiğim kitaplara nasıl bakarım?")),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: const Text("Hesap kapatmak istiyorum")),
+                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().howCanISignUp)),
+                  const Divider(),
+                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().forgetPassword)),
+                  const Divider(),
+                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().changeEMail)),
+                  const Divider(),
+                  ElevatedButton(onPressed: () {}, child: const Text("Beğendiğim kitaplara nasıl bakarım?")),
+                  const Divider(),
+                  ElevatedButton(onPressed: () {}, child: const Text("Hesap kapatmak istiyorum")),
                 ],
               ),
               Hero(

@@ -40,7 +40,7 @@ class Categories {
 
   Categories._init();
   List<String>? get getCategorieList => _categories;
-  List<Text>? toWidget() {
+  List<Text>? toTextWidget() {
     return _categories?.map((e) => Text(e)).toList();
   }
 

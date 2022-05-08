@@ -79,7 +79,7 @@ class LoginCardView extends StatelessWidget {
                       passTextField(context),
                       forgetPassBTN(context),
                       logInBTN(context),
-                      const Divider(thickness: 2),
+                      const Divider(),
                       signUpBTN(context),
                       SizedBox(
                         height: context.dynamicHeight(0.02),

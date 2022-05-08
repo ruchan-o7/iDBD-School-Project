@@ -23,7 +23,8 @@ class AppColors {
   final secondaryColor = const Color(0xffB6D96A);
   final thirdColor = const Color(0xff9CD918);
   final moreDarkerColor = const Color(0xff707365);
-  final textfieldColor = const Color(0xfff4f2f4);
+  final textfieldColor = Colors.white60;
+  // final textfieldColor = const Color(0xfff4f2f4);
 
   // final lightGreen = Colors.lightGreen[200]!;
   // final moreLigtGreen = Colors.green[100];

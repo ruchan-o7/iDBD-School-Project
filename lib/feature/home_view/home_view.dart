@@ -161,11 +161,6 @@ class HomeView extends StatelessWidget {
               ),
             ),
             Text("Recommended", style: Theme.of(context).textTheme.headline5),
-            ElevatedButton(
-                onPressed: () {
-                  context.read<HomeViewCubit>().getRecommendedBooks();
-                },
-                child: Text("Get recommended")),
             recommendedShelf(context),
           ],
         ),

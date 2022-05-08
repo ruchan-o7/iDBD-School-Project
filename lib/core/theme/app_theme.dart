@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/core/constants/border_radius.dart';
 
 import 'color/i_color_theme.dart';
 import 'color/light_color_theme.dart';
@@ -22,6 +23,13 @@ abstract class ThemeManager {
   static ThemeData createThemeData(ITheme theme) {
     return ThemeData(
       indicatorColor: theme.colorTheme.primaryColor,
+      dividerTheme: ThemeData.light().dividerTheme.copyWith(thickness: 1),
+      inputDecorationTheme: ThemeData.light().inputDecorationTheme.copyWith(
+          filled: true,
+          fillColor: theme.colorTheme.textfield,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadiusConst.normal,
+          )),
       primaryColor: theme.colorTheme.primaryColor,
       scaffoldBackgroundColor: theme.colorTheme.scaffoldBackgroundColor,
       buttonTheme: ThemeData.light().buttonTheme.copyWith(

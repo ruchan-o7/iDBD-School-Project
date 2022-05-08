@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/add_book_view/add_book.dart';
 import 'package:school_project_ibdb/feature/publisher_view/cubit/publisher_cubit.dart';
 
 import '../../product/circle_avatar/custom_circle_avatar.dart';
@@ -39,9 +40,11 @@ class PublisherView extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Heyyooo"),
-                  ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddBookView(),
+                      ));
                 },
                 child: const Card(
                   child: ListTile(
@@ -57,7 +60,7 @@ class PublisherView extends StatelessWidget {
                 child: const Card(
                   child: ListTile(
                     leading: Icon(Icons.delete),
-                    title: Text("Book delete request"),
+                    title: Text("Delete book request"),
                   ),
                 ),
               ),
