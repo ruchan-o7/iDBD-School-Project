@@ -22,7 +22,7 @@ class NavbarCubit extends Cubit<NavbarState> {
   }
 
   List<Widget> pages = [
-    HomeView(goToProfilePageFunc: () {}),
+    const HomeView(),
     const ExploreView(),
     SearchView(),
     ProfileView(),

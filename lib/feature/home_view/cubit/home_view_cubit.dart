@@ -61,6 +61,7 @@ class HomeViewCubit extends Cubit<HomeViewState> {
     if (_cateData?.keys.first != null) {
       recommendedBooks = await _service.randomSearchWithCategories(_cateData?.keys.first ?? "");
     }
+    emit(BooksLoaded());
   }
 
   Map<String, int>? sortCategories(Map<String, int> map) {

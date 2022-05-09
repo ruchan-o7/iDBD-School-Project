@@ -15,8 +15,7 @@ import '../../product/home_book_card/home_book_card.dart';
 import 'cubit/home_view_cubit.dart';
 
 class HomeView extends StatelessWidget {
-  HomeView({Key? key, required this.goToProfilePageFunc}) : super(key: key);
-  VoidCallback goToProfilePageFunc;
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +80,6 @@ class HomeView extends StatelessWidget {
                   })
               : const SizedBox(),
           context.read<HomeViewCubit>().isUserPublisher ? const Divider() : const SizedBox(),
-          CustomDrawerItem(
-              leadingIcon: Icons.sd_card,
-              text: "About",
-              onTapFunc: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AboutView()));
-              }),
-          const Divider(),
           CustomDrawerItem(
               leadingIcon: Icons.help,
               text: "Help",

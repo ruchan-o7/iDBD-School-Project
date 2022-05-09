@@ -24,26 +24,27 @@ class HelpView extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().howCanISignUp)),
+                  ElevatedButton(
+                      onPressed: () {},
+                      child: Text(StringConstants().changeEMail, style: Theme.of(context).textTheme.button)),
                   const Divider(),
-                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().forgetPassword)),
+                  ElevatedButton(
+                      onPressed: () {},
+                      child:
+                          Text("How cand look my liked books?", style: Theme.of(context).textTheme.button)),
                   const Divider(),
-                  ElevatedButton(onPressed: () {}, child: Text(StringConstants().changeEMail)),
-                  const Divider(),
-                  ElevatedButton(onPressed: () {}, child: const Text("Beğendiğim kitaplara nasıl bakarım?")),
-                  const Divider(),
-                  ElevatedButton(onPressed: () {}, child: const Text("Hesap kapatmak istiyorum")),
+                  ElevatedButton(
+                      onPressed: () {},
+                      child: Text("I want to delete my account", style: Theme.of(context).textTheme.button)),
                 ],
               ),
-              Hero(
-                  tag: "about",
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (context) => const AboutView(),
-                        ));
-                      },
-                      child: const Text("Hakkımızda")))
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                      builder: (context) => const AboutView(),
+                    ));
+                  },
+                  child: Text("About", style: Theme.of(context).textTheme.button))
             ],
           ),
         ),

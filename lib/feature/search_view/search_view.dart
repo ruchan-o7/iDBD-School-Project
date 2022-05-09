@@ -7,9 +7,7 @@ import 'service/search_book_service.dart';
 import '../../core/extension/string_extension.dart';
 
 class SearchView extends StatelessWidget {
-  SearchView({
-    Key? key,
-  }) : super(key: key);
+  SearchView({Key? key}) : super(key: key);
 
   late ISearchBookService service;
   final String searchText = "search something";
@@ -60,7 +58,7 @@ class SearchView extends StatelessWidget {
 
   TextField searchBar(BuildContext context) {
     return TextField(
-      decoration: const InputDecoration(hintText: "Harry Potter", filled: true, fillColor: Colors.white38),
+      decoration: const InputDecoration(hintText: "Harry Potter", border: UnderlineInputBorder()),
       focusNode: context.read<SearchViewCubit>().searchNode,
       controller: context.read<SearchViewCubit>().searchController,
       onSubmitted: (v) {

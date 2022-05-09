@@ -9,6 +9,7 @@ class BottomNavBarItemModel {
 
 class BottomNavBarListModel {
   late final List<BottomNavBarItemModel> _items;
+
   BottomNavBarListModel() {
     _items = [
       BottomNavBarItemModel(Icons.home, "Home"),
@@ -19,8 +20,6 @@ class BottomNavBarListModel {
   }
 
   List<BottomNavigationBarItem> toWidget() {
-    return _items
-        .map((e) => BottomNavigationBarItem(icon: Icon(e.icon), label: e.label))
-        .toList();
+    return _items.map((e) => BottomNavigationBarItem(icon: Icon(e.icon), label: e.label)).toList();
   }
 }
