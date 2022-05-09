@@ -3,12 +3,10 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:school_project_ibdb/feature/add_book_view/model.dart';
-import 'package:school_project_ibdb/feature/profile_view/cubit/profileview_cubit.dart';
 import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
 import 'package:school_project_ibdb/product/book_categories/categories.dart';
 import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
-
+import '../model.dart';
 part 'addbook_state.dart';
 
 class AddbookCubit extends Cubit<AddbookState> {

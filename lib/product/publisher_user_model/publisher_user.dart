@@ -1,17 +1,21 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class PublisherUser {
   bool? isPublisher;
   String? userId;
   String? userName;
   String? userTitle;
   String? photo;
+  List<String>? onGoingRequests;
   PublisherUser({
     this.isPublisher,
     this.userId,
     this.userName,
     this.userTitle,
     this.photo,
+    this.onGoingRequests,
   });
 
   PublisherUser copyWith({
@@ -20,6 +24,7 @@ class PublisherUser {
     String? userName,
     String? userTitle,
     String? photo,
+    List<String>? onGoingRequests,
   }) {
     return PublisherUser(
       isPublisher: isPublisher ?? this.isPublisher,
@@ -27,6 +32,7 @@ class PublisherUser {
       userName: userName ?? this.userName,
       userTitle: userTitle ?? this.userTitle,
       photo: photo ?? this.photo,
+      onGoingRequests: onGoingRequests ?? this.onGoingRequests,
     );
   }
 
@@ -37,6 +43,7 @@ class PublisherUser {
       'userName': userName,
       'userTitle': userTitle,
       'photo': photo,
+      'onGoingRequest': onGoingRequests,
     };
   }
 
@@ -47,6 +54,7 @@ class PublisherUser {
       userName: map['userName'],
       userTitle: map['userTitle'],
       photo: map['photo'],
+      onGoingRequests: List<String>.from(map['onGoingRequests']),
     );
   }
 
@@ -56,7 +64,7 @@ class PublisherUser {
 
   @override
   String toString() {
-    return 'PublisherUser(isPublisher: $isPublisher, userId: $userId, userName: $userName, userTitle: $userTitle, photo: $photo)';
+    return 'PublisherUser(isPublisher: $isPublisher, userId: $userId, userName: $userName, userTitle: $userTitle, photo: $photo, onGoingRequests: $onGoingRequests)';
   }
 
   @override
@@ -68,11 +76,17 @@ class PublisherUser {
         other.userId == userId &&
         other.userName == userName &&
         other.userTitle == userTitle &&
-        other.photo == photo;
+        other.photo == photo &&
+        listEquals(other.onGoingRequests, onGoingRequests);
   }
 
   @override
   int get hashCode {
-    return isPublisher.hashCode ^ userId.hashCode ^ userName.hashCode ^ userTitle.hashCode ^ photo.hashCode;
+    return isPublisher.hashCode ^
+        userId.hashCode ^
+        userName.hashCode ^
+        userTitle.hashCode ^
+        photo.hashCode ^
+        onGoingRequests.hashCode;
   }
 }

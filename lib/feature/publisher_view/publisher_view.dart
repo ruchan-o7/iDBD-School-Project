@@ -2,10 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/add_book_view/add_book.dart';
 import 'package:school_project_ibdb/feature/publisher_view/cubit/publisher_cubit.dart';
 
 import '../../product/circle_avatar/custom_circle_avatar.dart';
+import 'add_book_view/add_book.dart';
+import 'publisher_reports/publisher_reports_view.dart';
 
 class PublisherView extends StatelessWidget {
   const PublisherView({Key? key}) : super(key: key);
@@ -65,9 +66,8 @@ class PublisherView extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Heyyooo"),
-                )),
+                onTap: () =>
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PublisherReports())),
                 child: const Card(
                   child: ListTile(
                     leading: Icon(Icons.search),

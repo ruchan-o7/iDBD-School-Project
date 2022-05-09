@@ -6,9 +6,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:school_project_ibdb/feature/add_book_view/model.dart';
 import 'package:school_project_ibdb/product/publisher_user_model/publisher_user.dart';
 
+import '../../../feature/publisher_view/add_book_view/model.dart';
 import '../../base_model/book_response_mode.dart';
 import '../../categories_liked_model/categor_liked_model.dart';
 import '../../comment_model/comment_model.dart';
@@ -120,6 +120,26 @@ class FirestoreFunctions {
       _data = element.data();
     }
     return Items.fromJson(_data);
+  }
+
+  Future<BookRequestModel?> getBookByIdRequested(String id) async {
+    final _docSnap = (await _firestore.collection("books").where("id", isEqualTo: id).get()).docs;
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
+      _data = element.data();
+    }
+    return BookRequestModel.fromMap(_data);
+  }
+
+  ///Finds books from databases by id
+  Future<PublisherUser?> getBookByIdPublisherRequest(String userId) async {
+    final _docSnap =
+        (await _firestore.collection("publisher_user").where("userId", isEqualTo: userId).get()).docs;
+    Map<String, dynamic> _data = {};
+    for (var element in _docSnap) {
+      _data = element.data();
+    }
+    return PublisherUser.fromMap(_data);
   }
 
   ///Searchs From FireStore not Google books api.
