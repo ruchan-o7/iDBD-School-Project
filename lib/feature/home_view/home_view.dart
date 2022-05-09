@@ -184,7 +184,7 @@ class HomeView extends StatelessWidget {
     return GridView(
       controller: context.read<HomeViewCubit>().scrollController,
       gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 9 / 11),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 9 / 12),
       shrinkWrap: true,
       children: context
               .read<HomeViewCubit>()

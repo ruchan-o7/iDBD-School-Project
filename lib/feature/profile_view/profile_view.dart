@@ -154,7 +154,10 @@ class ProfileView extends StatelessWidget {
             title: const Text("Delete my account"),
             content: const Text("Are you sure to delete account?"),
             actions: [
-              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Cancel")),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Cancel"),
+              ),
               ElevatedButton(
                   onPressed: () async {
                     showDialog(
@@ -175,7 +178,7 @@ class ProfileView extends StatelessWidget {
                           builder: (context) => const LoginCardView(),
                         ));
                   },
-                  child: const Text("Apply"))
+                  child: Text("Apply", style: Theme.of(context).textTheme.button))
             ],
           );
         },
@@ -190,14 +193,16 @@ class ProfileView extends StatelessWidget {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  return BookCard(
-                    bookModel: context.read<ProfileviewCubit>().likedBooks?.reversed.elementAt(index),
-                  );
-                },
-                itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
+            : context.read<ProfileviewCubit>().ownedBooks?.length != 0
+                ? const Center(child: Text("There is no owned books"))
+                : GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      return BookCard(
+                        bookModel: context.read<ProfileviewCubit>().likedBooks?.reversed.elementAt(index),
+                      );
+                    },
+                    itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
         state is Loading
             ? const Center(
                 child: CircularProgressIndicator(),

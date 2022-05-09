@@ -50,7 +50,7 @@ class AboutView extends StatelessWidget {
                         avatarUrl:
                             "https://previews.123rf.com/images/blauananas/blauananas1504/blauananas150400006/38995330-polygonal-illustration-of-deer.jpg?fj=1"),
                     title: const Text("Ibrahim geyik"),
-                    subtitle: const Text("Boş gezenin boş kalfası"),
+                    subtitle: const Text("iOS developer"),
                   ),
                 ),
               ),

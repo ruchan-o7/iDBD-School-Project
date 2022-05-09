@@ -58,6 +58,7 @@ class SearchView extends StatelessWidget {
 
   TextField searchBar(BuildContext context) {
     return TextField(
+      keyboardType: TextInputType.text,
       decoration: const InputDecoration(hintText: "Harry Potter", border: UnderlineInputBorder()),
       focusNode: context.read<SearchViewCubit>().searchNode,
       controller: context.read<SearchViewCubit>().searchController,

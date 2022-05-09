@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/core/constants/border_radius.dart';
@@ -179,6 +180,7 @@ class AddBookView extends StatelessWidget {
         child: ListTile(
       leading: const Text("Page Count"),
       title: TextFormField(
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         validator: (value) => Validator().validateName(name: value),
         focusNode: context.read<AddbookCubit>().pageCountNode,
         controller: context.read<AddbookCubit>().pageCountController,
