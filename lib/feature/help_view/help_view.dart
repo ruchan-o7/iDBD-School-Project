@@ -12,6 +12,7 @@ class HelpView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
         title: Text("IBDb Help",
             style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
@@ -41,7 +42,7 @@ class HelpView extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HelpSection(
+                                builder: (context) => const HelpSection(
                                     appbarText: "How cand look my liked books?",
                                     content: "Go to profile page and you can see liked books")));
                       },
@@ -53,7 +54,7 @@ class HelpView extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HelpSection(
+                                builder: (context) => const HelpSection(
                                     appbarText: "I want to delete my account",
                                     content:
                                         "Go to profile page and then click edit profile. You can see delete my account button")));
