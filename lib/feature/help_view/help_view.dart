@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_project_ibdb/feature/help_view/help_options.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/enum/padding_values.dart';
 
@@ -12,7 +13,7 @@ class HelpView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("IBDb Yardım",
+        title: Text("IBDb Help",
             style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
       ),
       body: Center(
@@ -25,16 +26,38 @@ class HelpView extends StatelessWidget {
               Column(
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HelpSection(
+                                    appbarText: StringConstants().changeEMail,
+                                    content: "Go to profile page and then click edit profile")));
+                      },
                       child: Text(StringConstants().changeEMail, style: Theme.of(context).textTheme.button)),
                   const Divider(),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HelpSection(
+                                    appbarText: "How cand look my liked books?",
+                                    content: "Go to profile page and you can see liked books")));
+                      },
                       child:
                           Text("How cand look my liked books?", style: Theme.of(context).textTheme.button)),
                   const Divider(),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HelpSection(
+                                    appbarText: "I want to delete my account",
+                                    content:
+                                        "Go to profile page and then click edit profile. You can see delete my account button")));
+                      },
                       child: Text("I want to delete my account", style: Theme.of(context).textTheme.button)),
                 ],
               ),
