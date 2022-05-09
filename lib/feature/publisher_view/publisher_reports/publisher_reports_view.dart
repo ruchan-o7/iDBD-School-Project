@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import '../../../product/publisher_user_model/publisher_user.dart';
 import 'cubit/publisherreports_cubit.dart';
 
 class PublisherReports extends StatelessWidget {
-  const PublisherReports({Key? key}) : super(key: key);
+  PublisherReports({Key? key, required this.currentUser}) : super(key: key);
+  final PublisherUser? currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Publisher Reports")),
       body: BlocProvider(
-        create: (context) => PublisherReportsCubit(),
+        create: (context) => PublisherReportsCubit(currentUser: currentUser),
         child: BlocConsumer<PublisherReportsCubit, PublisherReportsState>(
           listener: (context, state) {},
           builder: (context, state) {
             return Padding(
               padding: context.paddingNormal,
               child: Column(
-                mainAxisAlignment: context.read<PublisherReportsCubit>().books != null
+                mainAxisAlignment: context.read<PublisherReportsCubit>().books?.length != 0
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
-                children: context.read<PublisherReportsCubit>().books != null
+                children: context.read<PublisherReportsCubit>().books?.length != 0
                     ? context
                         .read<PublisherReportsCubit>()
                         .books!
@@ -45,7 +47,13 @@ class PublisherReports extends StatelessWidget {
                               ),
                             ))
                         .toList()
-                    : const [Center(child: Text("There is no request yet"))],
+                    : [
+                        Center(
+                            child: Text(
+                          "There is no request yet",
+                          style: Theme.of(context).textTheme.headline5,
+                        ))
+                      ],
               ),
             );
           },

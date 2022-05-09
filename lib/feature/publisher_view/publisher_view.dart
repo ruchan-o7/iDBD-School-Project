@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
 import 'package:school_project_ibdb/feature/publisher_view/cubit/publisher_cubit.dart';
+import 'package:school_project_ibdb/feature/publisher_view/delete_request/delete_req_view.dart';
 
 import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'add_book_view/add_book.dart';
@@ -55,9 +56,11 @@ class PublisherView extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Heyyooo"),
-                )),
+                onTap: () {
+                  final _user = context.read<PublisherCubit>().currentUser;
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => DeleteReqView(currentUser: _user)));
+                },
                 child: const Card(
                   child: ListTile(
                     leading: Icon(Icons.delete),
@@ -66,8 +69,11 @@ class PublisherView extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () =>
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PublisherReports())),
+                onTap: () {
+                  final _user = context.read<PublisherCubit>().currentUser;
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => PublisherReports(currentUser: _user)));
+                },
                 child: const Card(
                   child: ListTile(
                     leading: Icon(Icons.search),

@@ -169,6 +169,18 @@ class FirestoreFunctions {
     return id;
   }
 
+  Future<String?> getCollectionIdPublisher(String? uid) async {
+    if (uid == "") return null;
+
+    final _docSnap =
+        (await _firestore.collection("publisher_user").where("userId", isEqualTo: uid).get()).docs;
+    String id = "";
+    for (var item in _docSnap) {
+      id = item.id;
+    }
+    return id;
+  }
+
   Future<void> likeBook(Items? book, User? currentUser) async {
     final id = await getCollectionId(currentUser?.uid);
     await _firestore.collection("users").doc(id).update({
@@ -190,6 +202,13 @@ class FirestoreFunctions {
     final _id = await getCollectionId(user?.uid);
     await _firestore.collection("users").doc(_id).update({
       "likedBooks": FieldValue.arrayRemove([book?.id ?? "null"])
+    });
+  }
+
+  Future<void> removeReq(String? book, String? userid) async {
+    final _id = await getCollectionIdPublisher(userid);
+    await _firestore.collection("publisher_user").doc(_id).update({
+      "onGoingRequests": FieldValue.arrayRemove([book ?? "null"])
     });
   }
 
