@@ -20,11 +20,6 @@ class _CustomCircleAvatarState extends State<CustomCircleAvatar> {
   @override
   void initState() {
     super.initState();
-    getUriFromCache();
-  }
-
-  getUriFromCache() async {
-    widget.avatarUri = await GenerateRandomProfilePic().generateRandomPic();
   }
 
   @override
