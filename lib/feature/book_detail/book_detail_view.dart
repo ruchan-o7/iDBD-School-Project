@@ -43,6 +43,7 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
+            heroTag: null,
             tooltip: "Up vote",
             backgroundColor:
                 context.read<BookDetailCubit>().isDownVoted ? Colors.grey : Theme.of(context).primaryColor,
@@ -62,6 +63,7 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
+            heroTag: null,
             backgroundColor:
                 context.read<BookDetailCubit>().isUpVoted ? Colors.grey : Theme.of(context).primaryColor,
             tooltip: "Down vote",
@@ -79,6 +81,7 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
+              heroTag: null,
               tooltip: "Like",
               onPressed: () {
                 if (context.read<BookDetailCubit>().isBookLiked == true) {
@@ -95,6 +98,7 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
+              heroTag: null,
               tooltip: "comment",
               onPressed: () {
                 context.read<BookDetailCubit>().getComments();
