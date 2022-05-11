@@ -268,17 +268,19 @@ class FirestoreFunctions {
 
   ///Reads user data from realtime database only once
   Future readCommentData(String? bookID) async {
+    //!vote data çekiyor
     //! null check yap
-    final snapshot = await _ref.child("comments/$bookID").get();
+    final snapshot = await _ref.child("comments/$bookID/comment").get();
 
     List<CommentModelFromRTD> _list = [];
     if (snapshot.exists) {
       final _data = jsonDecode(jsonEncode(snapshot.value));
 
       for (Map<String, dynamic> item in _data.values) {
-        for (Map<String, dynamic> listofMaps in item.values) {
-          _list.add(CommentModelFromRTD.fromMap(listofMaps));
-        }
+        // for (Map<String, dynamic> listofMaps in item.values) {
+        //   _list.add(CommentModelFromRTD.fromMap(listofMaps));
+        // }
+        _list.add(CommentModelFromRTD.fromMap(item));
       }
       return _list;
     } else {
@@ -298,7 +300,7 @@ class FirestoreFunctions {
 
   Future<void> giveVote(String? bookId, bool isUp, bool isVotedAlready) async {
     final vote = _ref.child("comments/$bookId/votes");
-    // final newVote = vote.push(); //newVote sayı olmalı
+
     final _checkData = await getVoteData(bookId);
     // await _ref.child("comments/$bookId/votes").push().set({"up": 0, "down": 0});
     if (_checkData != null) {
@@ -332,7 +334,6 @@ class FirestoreFunctions {
   }
 
   Future<Map<String, dynamic>?> getVoteData(String? bookID) async {
-    //! not implemented yet
     final snapshot = await _ref.child("comments/$bookID/votes").get();
     if (snapshot.exists) {
       final _data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
@@ -340,21 +341,21 @@ class FirestoreFunctions {
     } else {
       return null;
     }
-
-    // List<CommentModelFromRTD> _list = [];
-    // if (snapshot.exists) {
-    //   final _data = jsonDecode(jsonEncode(snapshot.value));
-
-    //   for (Map<String, dynamic> item in _data.values) {
-    //     for (Map<String, dynamic> listofMaps in item.values) {
-    //       _list.add(CommentModelFromRTD.fromMap(listofMaps));
-    //     }
-    //   }
-    //   return _list;
-    // } else {
-    //   return _list;
-    // }
   }
+
+  // List<CommentModelFromRTD> _list = [];
+  // if (snapshot.exists) {
+  //   final _data = jsonDecode(jsonEncode(snapshot.value));
+
+  //   for (Map<String, dynamic> item in _data.values) {
+  //     for (Map<String, dynamic> listofMaps in item.values) {
+  //       _list.add(CommentModelFromRTD.fromMap(listofMaps));
+  //     }
+  //   }
+  //   return _list;
+  // } else {
+  //   return _list;
+  // }
 
   ///Write data to categories section
   Future<void> writeCategoriesData(Items? items, User? currentUser) async {

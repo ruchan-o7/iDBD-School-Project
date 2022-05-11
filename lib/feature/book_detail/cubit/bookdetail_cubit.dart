@@ -10,23 +10,31 @@ import '../../../product/comment_model/comment_model.dart';
 part 'bookdetail_state.dart';
 
 class BookDetailCubit extends Cubit<BookDetailState> {
-  BookDetailCubit({this.bookModel}) : super(BookdetailInitial()) {
-    getComments();
+  BookDetailCubit({required this.bookModel, this.isSheet = false}) : super(BookdetailInitial()) {
+    if (isSheet == true) {
+      getComments(bookModel?.id ?? "");
+    }
     checkBookLiked();
+    getVoteData();
   }
 
   Items? bookModel;
   final FirestoreFunctions _firestoreFunctions = FirestoreFunctions();
   List<CommentModelFromRTD>? comments;
   List<UserSignUpModel>? commenters = [];
+
   final scaffoldState = GlobalKey<ScaffoldState>();
   final bottomSheetController = DraggableScrollableController();
   final draggableScrollBont = ScrollController();
   bool isUpVoted = false;
+  final bool isSheet;
   bool isDownVoted = false;
   bool isVoted = false;
   bool isBookLiked = false;
   bool? isUpArrow;
+
+  Map<String, dynamic>? votes;
+  Map<String, dynamic>? votesStream;
 
   Future<void> checkBookLiked() async {
     final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
@@ -43,14 +51,17 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     }
   }
 
-  Future<void> getComments() async {
-    comments = await _firestoreFunctions.readCommentData(bookModel?.id);
+  Future<void> getComments(String bookId) async {
+    emit(Loading());
+    comments = await _firestoreFunctions.readCommentData(bookId);
 
     if (comments != null) {
       for (CommentModelFromRTD item in comments!) {
         commenters?.add(await getUserPhoto(item.commenterId));
       }
-      emit(CommentLoaded());
+      if (commenters?.length == comments?.length) {
+        emit(CommentLoaded());
+      }
     }
   }
 
@@ -66,7 +77,8 @@ class BookDetailCubit extends Cubit<BookDetailState> {
       return ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fail")));
     } else {
       await _firestoreFunctions.writeCommentData(book?.id, FirebaseAuth.instance.currentUser, text);
-      getComments();
+      getComments(book?.id ?? "");
+
       emit(CommentLoaded());
     }
   }
@@ -94,29 +106,33 @@ class BookDetailCubit extends Cubit<BookDetailState> {
     isVoted = false;
   }
 
+  Future<void> getVoteData() async {
+    votes = await _firestoreFunctions.getVoteData(bookModel?.id);
+    emit(CommentLoaded());
+  }
+
   Future<void> giveVote(bool isUpward, String? bookId) async {
-    if (bookId == null) return;
     if (isVoted == false) {
       if (isUpward) {
         isUpVoted = true;
         isDownVoted = false;
-        emit(ClickedToButton());
         await _firestoreFunctions.giveVote(bookId, true, isVoted);
         isVoted = true;
+        getVoteData();
+        emit(ClickedToButton());
       } else {
         isUpVoted = false;
         isDownVoted = true;
-        emit(ClickedToButton());
         await _firestoreFunctions.giveVote(bookId, false, isVoted);
         isVoted = true;
+        getVoteData();
+        emit(ClickedToButton());
       }
-
-      // giveColor(isUpward);
-      // await _firestoreFunctions.giveVote(bookId, isUpward, false);
     } else {
       clearVotes();
-      emit(ClickedToButton());
       await _firestoreFunctions.giveVote(bookId, isUpward, true);
+      getVoteData();
+      emit(ClickedToButton());
     }
   }
 }

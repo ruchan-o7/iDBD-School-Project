@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:school_project_ibdb/core/network/network_manager.dart';
+import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
+import 'package:school_project_ibdb/product/random_pic_generator/random_pict_generator.dart';
 
 import '../../product/utils/firebase/firebase_auth.dart';
 import '../../product/utils/firebase/firestore_func.dart';
@@ -25,8 +28,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   XFile? imagePath;
   XFile? selectedImage;
   String? imageName;
-  String? uploadPath;
-  Uint8List? image;
+
   bool isPressed = false;
 
   void looseFocus() {
@@ -43,10 +45,11 @@ class SignUpCubit extends Cubit<SignUpState> {
           .showSnackBar(const SnackBar(content: Text("passwords are not same")));
     }
     isPressed = !isPressed;
+    final photo = await GenerateRandomProfilePic().generateRandomPic();
     final _tempModel = UserSignUpModel(
       likedBooks: [],
       ownedBooks: [],
-      imageUrl: uploadPath ?? "",
+      imageUrl: photo,
       signDate: DateTime.now().toIso8601String(),
       userMail: mailController.text,
       userName: userNameController.text,

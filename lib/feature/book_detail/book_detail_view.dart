@@ -62,6 +62,10 @@ class BookDetail extends StatelessWidget {
         ),
         Padding(
           padding: context.verticalPaddingLow,
+          child: Text(context.read<BookDetailCubit>().votes?["up"].toString() ?? "0"),
+        ),
+        Padding(
+          padding: context.verticalPaddingLow,
           child: FloatingActionButton(
             heroTag: null,
             backgroundColor:
@@ -77,6 +81,10 @@ class BookDetail extends StatelessWidget {
             child: Icon(Icons.arrow_downward,
                 color: context.read<BookDetailCubit>().isDownVoted ? Colors.red : Colors.black),
           ),
+        ),
+        Padding(
+          padding: context.verticalPaddingLow,
+          child: Text(context.read<BookDetailCubit>().votes?["down"].toString() ?? "0"),
         ),
         Padding(
           padding: context.verticalPaddingLow,
@@ -101,22 +109,106 @@ class BookDetail extends StatelessWidget {
               heroTag: null,
               tooltip: "comment",
               onPressed: () {
-                context.read<BookDetailCubit>().getComments();
-                final _commenters = context.read<BookDetailCubit>().commenters;
-                final _comments = context.read<BookDetailCubit>().comments;
+                context.read<BookDetailCubit>().getComments(bookModel?.id ?? "");
+                // final _commenters = context.read<BookDetailCubit>().commenters;
+                // final _comments = context.read<BookDetailCubit>().comments;
                 final _book = context.read<BookDetailCubit>().bookModel;
 
                 showModalBottomSheet(
+                  enableDrag: true,
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => BlocProvider(
-                    create: (context) => BookDetailCubit(),
+                    create: (context) => BookDetailCubit(bookModel: _book, isSheet: true),
                     child: BlocConsumer<BookDetailCubit, BookDetailState>(
                       listener: (context, state) {},
                       builder: (context, state) {
-                        return buildSheet(_book, context, _commenters, _comments);
+                        final _commenters = context.read<BookDetailCubit>().commenters;
+                        final _comments = context.read<BookDetailCubit>().comments;
+                        bool isListEmpty() {
+                          if (_comments == null && _commenters == null) {
+                            return true;
+                          }
+                          return false;
+                        }
+
+                        return SizedBox(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(height: context.dynamicHeight(0.02)),
+                                  CustomDivider(context: context),
+                                  SizedBox(
+                                    height: context.dynamicHeight(0.42),
+                                    // ignore: prefer_is_empty
+                                    child: state is Loading
+                                        ? const Center(child: Text("No comments yet"))
+                                        : isListEmpty()
+                                            ? const Center(
+                                                child: CircularProgressIndicator(),
+                                              )
+                                            : _commenters?.length == _comments?.length
+                                                ? ListView.separated(
+                                                    shrinkWrap: true,
+                                                    separatorBuilder: (context, index) =>
+                                                        const Divider(thickness: 1),
+                                                    itemCount: _comments?.length ?? 0,
+                                                    itemBuilder: (context, index) {
+                                                      return ListTile(
+                                                        leading: CustomCircleAvatar(
+                                                          size: 10,
+                                                          avatarUrl: _commenters?[index].imageUrl,
+                                                        ),
+                                                        title: Text(
+                                                            "${_commenters?[index].userName ?? "null username"} : ${_comments?[index].comment ?? "null comment"}"),
+                                                      );
+                                                    })
+                                                : SizedBox(
+                                                    height: context.dynamicHeight(0.42),
+                                                    child: const Center(child: CircularProgressIndicator())),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  CustomDivider(context: context),
+                                  Padding(
+                                    padding: context.paddingLow,
+                                    child: Row(
+                                      children: [
+                                        CustomCircleAvatar(
+                                          avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
+                                          size: context.dynamicWidth(0.05),
+                                        ),
+                                        SizedBox(
+                                          width: context.dynamicWidth(0.05),
+                                        ),
+                                        Expanded(
+                                            child: TextField(
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                            borderRadius: BorderRadiusConst.normal,
+                                            gapPadding: 20,
+                                          )),
+                                          controller: commentController,
+                                          onSubmitted: (v) {
+                                            context.read<BookDetailCubit>().writeComment(v, context, _book);
+                                            commentController.clear();
+                                          },
+                                        )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -126,85 +218,6 @@ class BookDetail extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget buildSheet(
-    Items? book,
-    BuildContext context,
-    List<UserSignUpModel>? commenters,
-    List<CommentModelFromRTD>? comments,
-  ) {
-    return DraggableScrollableSheet(
-        initialChildSize: 0.62,
-        maxChildSize: 0.9,
-        expand: false,
-        minChildSize: 0.5,
-        controller: context.read<BookDetailCubit>().bottomSheetController,
-        builder: (context, controller) {
-          return SizedBox(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(height: context.dynamicHeight(0.02)),
-                    CustomDivider(context: context),
-                    SizedBox(
-                      height: context.dynamicHeight(0.42),
-                      // ignore: prefer_is_empty
-                      child: comments == null || comments.length == 0
-                          ? const Center(child: Text("No comments yet"))
-                          : ListView.builder(
-                              itemCount: comments.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  leading: CustomCircleAvatar(
-                                    size: 10,
-                                    avatarUrl: commenters?[index].imageUrl,
-                                  ),
-                                  title: Text(
-                                      "${commenters?[index].userName ?? "null username"} : ${comments[index].comment ?? "null comment"}"),
-                                );
-                              }),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CustomDivider(context: context),
-                    Padding(
-                      padding: context.paddingLow,
-                      child: Row(
-                        children: [
-                          CustomCircleAvatar(
-                            avatarUrl: FirebaseAuth.instance.currentUser?.photoURL,
-                            size: context.dynamicWidth(0.05),
-                          ),
-                          SizedBox(
-                            width: context.dynamicWidth(0.05),
-                          ),
-                          Expanded(
-                              child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                              borderRadius: BorderRadiusConst.normal,
-                              gapPadding: 20,
-                            )),
-                            controller: commentController,
-                            onSubmitted: (v) {
-                              context.read<BookDetailCubit>().writeComment(v, context, book);
-                              commentController.clear();
-                            },
-                          )),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   SingleChildScrollView body(BuildContext context) {

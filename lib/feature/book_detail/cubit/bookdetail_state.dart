@@ -8,3 +8,5 @@ class BookdetailInitial extends BookDetailState {}
 class ClickedToButton extends BookDetailState {}
 
 class CommentLoaded extends BookDetailState {}
+
+class Loading extends BookDetailState {}
