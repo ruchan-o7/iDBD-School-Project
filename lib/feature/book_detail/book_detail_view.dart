@@ -43,7 +43,42 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
-              heroTag: null,
+            tooltip: "Up vote",
+            backgroundColor:
+                context.read<BookDetailCubit>().isDownVoted ? Colors.grey : Theme.of(context).primaryColor,
+            onPressed: context.read<BookDetailCubit>().isDownVoted
+                ? null
+                : () {
+                    if (context.read<BookDetailCubit>().isBookLiked) {
+                      context.read<BookDetailCubit>().giveVote(true, bookModel?.id);
+                    }
+                  },
+            child: Icon(
+              Icons.arrow_upward,
+              color: context.read<BookDetailCubit>().isUpVoted ? Colors.red : Colors.black,
+            ),
+          ),
+        ),
+        Padding(
+          padding: context.verticalPaddingLow,
+          child: FloatingActionButton(
+            backgroundColor:
+                context.read<BookDetailCubit>().isUpVoted ? Colors.grey : Theme.of(context).primaryColor,
+            tooltip: "Down vote",
+            onPressed: context.read<BookDetailCubit>().isUpVoted
+                ? null
+                : () {
+                    if (context.read<BookDetailCubit>().isBookLiked) {
+                      context.read<BookDetailCubit>().giveVote(false, bookModel?.id);
+                    }
+                  },
+            child: Icon(Icons.arrow_downward,
+                color: context.read<BookDetailCubit>().isDownVoted ? Colors.red : Colors.black),
+          ),
+        ),
+        Padding(
+          padding: context.verticalPaddingLow,
+          child: FloatingActionButton(
               tooltip: "Like",
               onPressed: () {
                 if (context.read<BookDetailCubit>().isBookLiked == true) {
@@ -60,7 +95,6 @@ class BookDetail extends StatelessWidget {
         Padding(
           padding: context.verticalPaddingLow,
           child: FloatingActionButton(
-              heroTag: null,
               tooltip: "comment",
               onPressed: () {
                 context.read<BookDetailCubit>().getComments();

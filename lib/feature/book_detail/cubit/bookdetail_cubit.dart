@@ -22,8 +22,11 @@ class BookDetailCubit extends Cubit<BookDetailState> {
   final scaffoldState = GlobalKey<ScaffoldState>();
   final bottomSheetController = DraggableScrollableController();
   final draggableScrollBont = ScrollController();
-
+  bool isUpVoted = false;
+  bool isDownVoted = false;
+  bool isVoted = false;
   bool isBookLiked = false;
+  bool? isUpArrow;
 
   Future<void> checkBookLiked() async {
     final _temp = await _firestoreFunctions.getUser(FirebaseAuth.instance.currentUser?.uid);
@@ -82,6 +85,38 @@ class BookDetailCubit extends Cubit<BookDetailState> {
       _firestoreFunctions.unLikeBook(bookModel, FirebaseAuth.instance.currentUser);
       isBookLiked = false;
       emit(ClickedToButton());
+    }
+  }
+
+  clearVotes() {
+    isUpVoted = false;
+    isDownVoted = false;
+    isVoted = false;
+  }
+
+  Future<void> giveVote(bool isUpward, String? bookId) async {
+    if (bookId == null) return;
+    if (isVoted == false) {
+      if (isUpward) {
+        isUpVoted = true;
+        isDownVoted = false;
+        emit(ClickedToButton());
+        await _firestoreFunctions.giveVote(bookId, true, isVoted);
+        isVoted = true;
+      } else {
+        isUpVoted = false;
+        isDownVoted = true;
+        emit(ClickedToButton());
+        await _firestoreFunctions.giveVote(bookId, false, isVoted);
+        isVoted = true;
+      }
+
+      // giveColor(isUpward);
+      // await _firestoreFunctions.giveVote(bookId, isUpward, false);
+    } else {
+      clearVotes();
+      emit(ClickedToButton());
+      await _firestoreFunctions.giveVote(bookId, isUpward, true);
     }
   }
 }
