@@ -22,7 +22,9 @@ This app uses several apis whic is listed:
   - Random robot figure creator api
   
   To do:
-  - forget password functionality
+  - forget password functionality,
+
+Note: Currently working under publisher-view bracnh
 
 # Ui overview
 Screenshots
