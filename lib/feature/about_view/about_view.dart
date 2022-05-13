@@ -62,7 +62,7 @@ class AboutView extends StatelessWidget {
                       avatarUrl: null,
                     ),
                     title: const Text("Ferhat"),
-                    subtitle: const Text("don't know"),
+                    subtitle: const Text(""),
                   ),
                 ),
               ),
@@ -74,7 +74,7 @@ class AboutView extends StatelessWidget {
                       avatarUrl: null,
                     ),
                     title: const Text("aybars "),
-                    subtitle: const Text("don't know"),
+                    subtitle: const Text(""),
                   ),
                 ),
               )
