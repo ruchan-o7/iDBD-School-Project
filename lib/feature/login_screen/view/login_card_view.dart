@@ -97,7 +97,7 @@ class _LoginCardViewState extends State<LoginCardView> with TickerProviderStateM
                 filter: ImageFilter.blur(sigmaX: _innerBlur, sigmaY: _innerBlur),
                 child: Card(
                   elevation: 0,
-                  color: context.read<LoginCardCubit>().isLibrary ? Colors.transparent : Colors.green[100],
+                  color: context.read<LoginCardCubit>().isLibrary ? Colors.transparent : Colors.grey[300],
                   shape:
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
                   child: Padding(
@@ -207,7 +207,7 @@ class _LoginCardViewState extends State<LoginCardView> with TickerProviderStateM
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgetPassView())),
           child: Text(
             "Forget password",
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
+            style: Theme.of(context).textTheme.button,
           ),
         )
       ],

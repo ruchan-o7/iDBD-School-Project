@@ -14,7 +14,10 @@ class StatisticView extends StatelessWidget {
       create: (context) => StatisticCubit(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Statistics'),
+          title: Text(
+            'Statistics',
+            style: Theme.of(context).textTheme.headline5,
+          ),
         ),
         body: BlocConsumer<StatisticCubit, StatisticState>(
           listener: (context, state) {},
@@ -24,7 +27,7 @@ class StatisticView extends StatelessWidget {
             } else if (state is StatsLoaded) {
               return Column(
                 children: [
-                  const Text("Most liked books this month"),
+                  Text("Most liked books this month", style: Theme.of(context).textTheme.headline6),
                   Expanded(
                     child: ListView.separated(
                       separatorBuilder: (context, index) => const Divider(thickness: 1),
