@@ -44,28 +44,33 @@ class _LoginCardViewState extends State<LoginCardView> with TickerProviderStateM
 
   Scaffold logInStruct(BuildContext context) {
     return Scaffold(
-      body: ClipRRect(
-        child: Stack(fit: StackFit.expand, children: [
-          AnimatedSwitcher(
-              duration: const Duration(milliseconds: 500),
-              transitionBuilder: (child, animation) => FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  ),
-              child: context.read<LoginCardCubit>().changeBackground(context)),
-          dataStruct(context),
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: context.paddingNormal,
-              child: Switch.adaptive(
-                  value: context.read<LoginCardCubit>().isLibrary,
-                  onChanged: (v) {
-                    context.read<LoginCardCubit>().changeApperance(v);
-                  }),
-            ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: context.dynamicHeight(1),
+          child: Stack(
+            children: [
+              AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                  child: context.read<LoginCardCubit>().changeBackground(context)),
+              dataStruct(context),
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: context.paddingNormal,
+                  child: Switch.adaptive(
+                      value: context.read<LoginCardCubit>().isLibrary,
+                      onChanged: (v) {
+                        context.read<LoginCardCubit>().changeApperance(v);
+                      }),
+                ),
+              ),
+            ],
           ),
-        ]),
+        ),
       ),
     );
   }

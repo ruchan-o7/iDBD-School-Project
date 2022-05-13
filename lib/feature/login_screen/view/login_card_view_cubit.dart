@@ -92,7 +92,7 @@ class LoginCardCubit extends Cubit<LoginCardState> {
           height: context.dynamicHeight(1),
           child: Image.asset(
             LogoPaths.kutuphaneCumhur,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
           ));
     } else {
       return Stack(
