@@ -41,6 +41,49 @@ class Authentication {
     }
   }
 
+  Future<bool> resetPassword(String email, BuildContext context) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "auth/invalid-email") {
+        _showSnackbar("Invalid e-mail", context);
+        return false;
+      } else if (e.code == "auth/user-not-found") {
+        _showSnackbar("User not found", context);
+        return false;
+      } else {
+        _showSnackbar("Onknown failure", context);
+        log(e.message ?? "null message");
+        return false;
+      }
+    }
+  }
+
+  Future<bool> confirmResetPass(context, {required String code, required String newPassword}) async {
+    try {
+      await _auth.confirmPasswordReset(code: code, newPassword: newPassword);
+      return true;
+    } on FirebaseAuthException catch (e, stack) {
+      if (e.code == "expired-action-code") {
+        _showSnackbar("Code is expired", context);
+        return false;
+      } else if (e.code == "invalid-action-code") {
+        _showSnackbar("Invalid action code", context);
+        return false;
+      } else if (e.code == "user-not-found") {
+        _showSnackbar("User not found", context);
+        return false;
+      } else if (e.code == "weak-password") {
+        _showSnackbar("Password is too weak", context);
+      } else {
+        _showSnackbar("Unknown failure", context);
+        return false;
+      }
+    }
+    return false;
+  }
+
   Future<void> signOut() async {
     try {
       await _auth.signOut();

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/feature/forget-pass-view/forget_pass_view.dart';
 
 import '../../../core/custom/circle_color_widget.dart';
 import '../../sign_up/sign_up_view.dart';
@@ -148,7 +149,8 @@ class LoginCardView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () =>
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgetPassView())),
           child: Text(
             "Forget password",
             style: Theme.of(context).textTheme.bodySmall,
