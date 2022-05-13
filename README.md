@@ -30,6 +30,7 @@ Screenshots
 # Authentication 
 <p> User fills requried area and login to the app. If user does wrong action app will warns about fail with snackbar </p>
 !!New: User can change background with switch button that aligned to top right
+
 | Login Screen  | Login Screen with Filled Area | Sign up |
 | ------------- | ------------- | ------------- |
 | <img src ="https://user-images.githubusercontent.com/44341663/168098050-adb01e5a-5b81-4f03-85fd-ce959a7de7c8.png" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168098249-3c7822d9-a396-4945-850d-a9662fd0131c.png" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168098753-fccbbc7e-9efa-4ae7-b319-46179e0c0b3f.png" width=200>  |
