@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
+
+import '../../../core/constants/border_radius.dart';
+import '../../../core/constants/logo_path.dart';
 import '../../../core/constants/string_constants.dart';
 import '../../../core/custom/custom_btn.dart';
 import '../../../core/custom/custom_sized_box.dart';
+import '../../../core/custom/input_dec_custom.dart';
 import '../../../core/enum/padding_values.dart';
+import '../../../product/utils/validator/validator.dart';
 import '../../search_view/search_view.dart';
 import '../../sign_up/sign_up_view.dart';
-import '../../../product/utils/validator/validator.dart';
-import '../../../core/custom/input_dec_custom.dart';
-
 import '../view_model/sign_in_screen_view_model.dart';
 
-class SignInView extends StatelessWidget {
-  SignInView({Key? key}) : super(key: key);
+@Deprecated("This widget deprecated. Use insted of LoginCardView")
+class SignInViewold extends StatelessWidget {
+  SignInViewold({Key? key}) : super(key: key);
   bool isChecked = false;
   final formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -33,7 +35,7 @@ class SignInView extends StatelessWidget {
       child: BlocConsumer<SignInScreenCubit, SignInScreenState>(
         listener: (context, state) {
           if (state is SignInLoadingState) {
-            AlertDialog(
+            const AlertDialog(
               title: Center(
                 child: CircularProgressIndicator(),
               ),
@@ -48,7 +50,7 @@ class SignInView extends StatelessWidget {
           } else if (state is SignInSucces) {
             return SearchView();
           } else {
-            return Scaffold();
+            return const Scaffold();
           }
         },
       ),
@@ -83,9 +85,9 @@ class SignInView extends StatelessWidget {
   Column structBuilder(BuildContext context) {
     return Column(
       children: [
-        customSizedBox(context, 10),
+        CustomSizedBox(context, 10),
         logoBuilder(context),
-        customSizedBox(context, 2),
+        CustomSizedBox(context, 2),
         formBuilder(context),
         forgetPassText(context),
         signInBtn(context), //await silindi belki lazım olabilir
@@ -95,7 +97,7 @@ class SignInView extends StatelessWidget {
 
   ClipRRect logoBuilder(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadiusConst.veryLow,
       child: Image.asset(
         LogoPaths.normal,
         height: MediaQuery.of(context).size.height * 0.3,
@@ -109,7 +111,7 @@ class SignInView extends StatelessWidget {
       child: Column(
         children: [
           mailTextField(),
-          customSizedBox(context, percentageConstants().small),
+          CustomSizedBox(context, PercentageConstants().small),
           passwordTextfield(),
         ],
       ),
@@ -122,15 +124,15 @@ class SignInView extends StatelessWidget {
 
   Padding signInBtn(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: percentageConstants().medium),
+      padding: EdgeInsets.symmetric(vertical: PercentageConstants().medium),
       child: CustomBtn(StringConstants().signIn, () async {
         context.read<SignInScreenCubit>().looseFocus();
         if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Alanlar boş bırakılamaz")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fields can not empty")));
         } else {
-          context.read<SignInScreenCubit>().sendRequest(
-              emailController.text, passwordController.text, context);
+          context
+              .read<SignInScreenCubit>()
+              .sendRequest(emailController.text, passwordController.text, context);
         }
       }, context),
     );
@@ -139,10 +141,7 @@ class SignInView extends StatelessWidget {
   Row forgetPassText(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        TextButton(
-            onPressed: () {}, child: Text(StringConstants().forgetPassword))
-      ],
+      children: [TextButton(onPressed: () {}, child: Text(StringConstants().forgetPassword))],
     );
   }
 
@@ -152,7 +151,7 @@ class SignInView extends StatelessWidget {
       controller: emailController,
       focusNode: focusEmail,
       validator: (v) => Validator().validateEmail(email: v),
-      decoration: InputDecCustom(StringConstants().eMailHint),
+      decoration: InputDecCustom(StringConstants().eMailHint, isMail: true),
     );
   }
 
@@ -166,7 +165,7 @@ class SignInView extends StatelessWidget {
     );
   }
 
-  customSizedBox spacerWidget(BuildContext context) {
-    return customSizedBox(context, percentageConstants().medium);
+  CustomSizedBox spacerWidget(BuildContext context) {
+    return CustomSizedBox(context, PercentageConstants().medium);
   }
 }

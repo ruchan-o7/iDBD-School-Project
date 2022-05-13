@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../product/utils/firebase/firebase_auth.dart';
 
 class SignInScreenCubit extends Cubit<SignInScreenState> {
@@ -23,6 +24,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
   final FocusNode focusEmail;
   final FocusNode focusPassword;
   bool _isCircular = false;
+  Authentication authentication = Authentication();
 
   void changeIsCircular() {
     _isCircular = !_isCircular;
@@ -30,16 +32,14 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
 
   Future<void> init() async {
     emit(LoadingFirebaseState());
-    FirebaseApp firebaseApp = await Authentication().initializeFirebase();
+    FirebaseApp firebaseApp = await authentication.initializeFirebase();
     emit(LoadedFirebaseState(firebaseApp));
   }
 
-  Future<User?> sendRequest(
-      String eMail, String password, BuildContext context) async {
+  Future<User?> sendRequest(String eMail, String password, BuildContext context) async {
     looseFocus();
     emit(SignInLoadingState());
-    User? user = await Authentication()
-        .eMailSignIn(eMail: eMail, password: password, context: context);
+    User? user = await authentication.eMailSignIn(eMail: eMail, password: password, context: context);
     if (user != null) {
       emit(SignInSucces(user));
 
@@ -47,6 +47,7 @@ class SignInScreenCubit extends Cubit<SignInScreenState> {
     } else {
       init();
     }
+    return null;
   }
 
   void goToPage(BuildContext context, Widget destination) {

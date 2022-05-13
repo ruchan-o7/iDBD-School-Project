@@ -12,10 +12,11 @@ class StringConstants {
   String get enterProperMail => "Please enter proper mail";
   String get joinUs => "Don't you have account. Let's join us";
   String get howCanISignUp => "Nasıl kayıt olabilirim";
-  String get changeEMail => "E-postamı değiştirmek istiyorum";
+  String get changeEMail => "I want to change e-mail?";
+  String get notFound => "Couldn't find any information";
 }
 
-class percentageConstants {
+class PercentageConstants {
   double get small => 2;
   double get medium => 5;
   double get large => 10;

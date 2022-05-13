@@ -1,95 +1,91 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../login_screen/view/sign_in_view.dart';
-import '../../core/network/NetworkManager.dart';
-import 'model/searched_book_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/product/home_book_card/home_book_card.dart';
+
+import '../../core/extension/string_extension.dart';
+import '../../product/book_card/book_card.dart';
+import 'search_view_model.dart';
 import 'service/search_book_service.dart';
 
-class SearchView extends StatefulWidget {
-  const SearchView({
-    Key? key,
-  }) : super(key: key);
+class SearchView extends StatelessWidget {
+  SearchView({Key? key}) : super(key: key);
 
-  @override
-  State<SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<SearchView> {
-  SearchBookModel? model2;
   late ISearchBookService service;
-  var controller = TextEditingController();
-  @override
-  void initState() {
-    service = SearchBookService(NetworkManager.instance);
-    super.initState();
-  }
-
-  void init(String val) async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (val.isEmpty) {
-      model2 = null;
-    } else {
-      model2 = await service.searchByName(val);
-    }
-
-    setState(() {});
-  }
+  final String searchText = "search something";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                print("${FirebaseAuth.instance.currentUser}");
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignInView()));
-              },
-              child: Text(
-                "Sign out",
-                style: TextStyle(color: Colors.white),
-              )),
-        ],
-      ),
-      body: Column(
-        children: [
-          TextFormField(
-            controller: controller,
-            onFieldSubmitted: (val) async {
-              init(val);
-            },
-          ),
-          Expanded(
-            child: Center(
-              child: model2 == null
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemBuilder: (context, index) {
-                        VolumeInfo? tempModel =
-                            model2?.items?[index].volumeInfo;
-                        return Card(
-                          child: ListTile(
-                            title: Text(tempModel?.title ?? "null"),
-                            subtitle: Text("${tempModel?.authors}"),
-                            leading: tempModel?.imageLinks == null
-                                ? null
-                                : Image.network(
-                                    tempModel?.imageLinks?.thumbnail ?? "",
-                                  ),
-                            trailing: Text("${tempModel?.categories}"),
-                          ),
-                        );
-                      },
-                      itemCount: model2?.items?.length,
-                    ),
-            ),
-          ),
-        ],
+    return BlocProvider(
+      create: (context) => SearchViewCubit(),
+      child: BlocConsumer<SearchViewCubit, SearchViewState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: appBar(context),
+            body: state is SearchViewInitial
+                ? Center(
+                    child: Text(searchText.toTitleCase()),
+                  )
+                : state is SearchingState
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : state is SearchDone
+                        ? Column(
+                            children: [const Divider(), Expanded(child: searchedFromGoogle(context, state))],
+                          )
+                        : const SizedBox(),
+          );
+        },
       ),
     );
   }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      actions: [searchIcon(context)],
+      title: searchBar(context),
+    );
+  }
+
+  IconButton searchIcon(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          context.read<SearchViewCubit>().searchBooks(context.read<SearchViewCubit>().searchController.text);
+        },
+        icon: Icon(Icons.search, color: Theme.of(context).primaryColorDark));
+  }
+
+  TextField searchBar(BuildContext context) {
+    return TextField(
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(hintText: "Harry Potter", border: UnderlineInputBorder()),
+      focusNode: context.read<SearchViewCubit>().searchNode,
+      controller: context.read<SearchViewCubit>().searchController,
+      onSubmitted: (v) {
+        context.read<SearchViewCubit>().searchBooks(v);
+      },
+    );
+  }
+
+  Widget searchedFromGoogle(BuildContext context, SearchDone state) {
+    return state.results?.items != null
+        ? ListView.builder(
+            itemBuilder: (context, index) {
+              final _tempModel = state.results;
+              return InkWell(
+                  onTap: () {
+                    context.read<SearchViewCubit>().goToBook(_tempModel?.items?[index], context);
+                  },
+                  child: ListBookCard(context: context, model: _tempModel?.items?[index].volumeInfo));
+            },
+            itemCount: state.results?.items?.length,
+          )
+        : const Center(
+            child: Text("Couldn't find"),
+          );
+  }
+
+  Center centerProgress() => const Center(child: CircularProgressIndicator());
 }

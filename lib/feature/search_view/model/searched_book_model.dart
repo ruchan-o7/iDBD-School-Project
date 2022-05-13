@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../../product/base_model/book_response_mode.dart';
+
 part 'searched_book_model.g.dart';
 
 @JsonSerializable()
@@ -15,90 +18,6 @@ class SearchBookModel {
 
   Map<String, dynamic> toJson() {
     return _$SearchBookModelToJson(this);
-  }
-}
-
-@JsonSerializable()
-class Items {
-  String? kind;
-  String? id;
-  String? etag;
-  String? selfLink;
-  VolumeInfo? volumeInfo;
-  SaleInfo? saleInfo;
-  AccessInfo? accessInfo;
-  SearchInfo? searchInfo;
-
-  Items(
-      {this.kind,
-      this.id,
-      this.etag,
-      this.selfLink,
-      this.volumeInfo,
-      this.saleInfo,
-      this.accessInfo,
-      this.searchInfo});
-
-  factory Items.fromJson(Map<String, dynamic> json) {
-    return _$ItemsFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$ItemsToJson(this);
-  }
-}
-
-@JsonSerializable()
-class VolumeInfo {
-  String? title;
-  List<String>? authors;
-  String? publishedDate;
-  List<IndustryIdentifiers>? industryIdentifiers;
-  ReadingModes? readingModes;
-  int? pageCount;
-  String? printType;
-  List<String?>? categories;
-  String? maturityRating;
-  bool? allowAnonLogging;
-  String? contentVersion;
-  String? language;
-  String? previewLink;
-  String? infoLink;
-  String? canonicalVolumeLink;
-  ImageLinks? imageLinks;
-  PanelizationSummary? panelizationSummary;
-  String? publisher;
-  String? description;
-  String? subtitle;
-
-  VolumeInfo(
-      {this.title,
-      this.authors,
-      this.publishedDate,
-      this.industryIdentifiers,
-      this.readingModes,
-      this.pageCount,
-      this.printType,
-      this.categories,
-      this.maturityRating,
-      this.allowAnonLogging,
-      this.contentVersion,
-      this.language,
-      this.previewLink,
-      this.infoLink,
-      this.canonicalVolumeLink,
-      this.imageLinks,
-      this.panelizationSummary,
-      this.publisher,
-      this.description,
-      this.subtitle});
-
-  factory VolumeInfo.fromJson(Map<String, dynamic> json) {
-    return _$VolumeInfoFromJson(json);
-  }
-
-  Map<String, dynamic> toJson() {
-    return _$VolumeInfoToJson(this);
   }
 }
 

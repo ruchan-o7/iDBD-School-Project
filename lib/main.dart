@@ -1,17 +1,15 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:random_color_scheme/random_color_scheme.dart';
-import 'package:school_project_ibdb/core/theme/app_theme.dart';
-import 'package:school_project_ibdb/core/theme/theme_blue.dart';
-import 'package:school_project_ibdb/feature/search_view/search_view.dart';
-import 'package:school_project_ibdb/feature/sign_up/sign_up_view.dart';
+import 'core/theme/app_theme.dart';
+import 'feature/login_screen/view/login_card_view.dart';
+import 'feature/nav_bar/nav_bar_view.dart';
 
-import 'feature/help_view/help_view.dart';
-import 'feature/login_screen/view/sign_in_view.dart';
-import 'feature/menu_view/menu_veiw.dart';
-
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -20,9 +18,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorScheme: randomColorSchemeLight(seed: 12345123)),
+      theme: ThemeManager.createThemeData(AppThemeLight()),
       title: 'Ibdb',
-      home: SearchView(),
+      home: isUserLoggedBefore() ? const NavBar() : const LoginCardView(),
     );
   }
+}
+
+// Future<bool> init() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   return true;
+// }
+
+bool isUserLoggedBefore() {
+  if (FirebaseAuth.instance.currentUser?.uid == null) {
+    return false;
+  }
+  return true;
 }

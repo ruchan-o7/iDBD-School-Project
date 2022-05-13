@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/string_constants.dart';
-import 'package:school_project_ibdb/core/enum/padding_values.dart';
+import 'help_options.dart';
+import '../../core/constants/string_constants.dart';
+import '../../core/enum/padding_values.dart';
 
 import '../about_view/about_view.dart';
 
@@ -11,12 +12,10 @@ class HelpView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
-        title: Text("IBDb Yardım",
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                ?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text("IBDb Help",
+            style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Padding(
@@ -28,43 +27,48 @@ class HelpView extends StatelessWidget {
               Column(
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().howCanISignUp)),
-                  const Divider(
-                    thickness: 2,
-                  ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HelpSection(
+                                    appbarText: StringConstants().changeEMail,
+                                    content: "Go to profile page and then click edit profile")));
+                      },
+                      child: Text(StringConstants().changeEMail, style: Theme.of(context).textTheme.button)),
+                  const Divider(),
                   ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().forgetPassword)),
-                  const Divider(
-                    thickness: 2,
-                  ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HelpSection(
+                                    appbarText: "How cand look my liked books?",
+                                    content: "Go to profile page and you can see liked books")));
+                      },
+                      child:
+                          Text("How cand look my liked books?", style: Theme.of(context).textTheme.button)),
+                  const Divider(),
                   ElevatedButton(
-                      onPressed: () {},
-                      child: Text(StringConstants().changeEMail)),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Beğendiğim kitaplara nasıl bakarım?")),
-                  const Divider(
-                    thickness: 2,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {},
-                      child: Text("Hesap kapatmak istiyorum")),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HelpSection(
+                                    appbarText: "I want to delete my account",
+                                    content:
+                                        "Go to profile page and then click edit profile. You can see delete my account button")));
+                      },
+                      child: Text("I want to delete my account", style: Theme.of(context).textTheme.button)),
                 ],
               ),
-              Hero(
-                  tag: "about",
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (context) => const AboutView(),
-                        ));
-                      },
-                      child: const Text("Hakkımızda")))
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute<void>(
+                      builder: (context) => const AboutView(),
+                    ));
+                  },
+                  child: Text("About", style: Theme.of(context).textTheme.button))
             ],
           ),
         ),

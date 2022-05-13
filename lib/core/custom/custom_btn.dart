@@ -15,10 +15,6 @@ class CustomBtn extends ElevatedButton {
   }) : super(
             key: key,
             onPressed: onTap,
-            child: Text(text,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: Colors.white)),
+            child: Text(text, style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white)),
             style: LoginBtnCustomStyle(context));
 }
