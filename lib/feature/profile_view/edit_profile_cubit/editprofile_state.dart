@@ -9,3 +9,5 @@ class RefreshPage extends EditProfileState {}
 class ImageUploaded extends EditProfileState {}
 
 class ImageUploading extends EditProfileState {}
+
+class Processing extends EditProfileState {}

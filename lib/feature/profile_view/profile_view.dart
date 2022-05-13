@@ -13,6 +13,21 @@ class ProfileView extends StatelessWidget {
   ProfileView({Key? key}) : super(key: key);
 
   final userNameController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => ProfileviewCubit(),
+      child: BlocConsumer<ProfileviewCubit, ProfileviewState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return Scaffold(
+            appBar: appBar(context),
+            body: body(context, state),
+          );
+        },
+      ),
+    );
+  }
 
   DefaultTabController body(BuildContext context, ProfileviewState state) {
     return DefaultTabController(
@@ -25,7 +40,7 @@ class ProfileView extends StatelessWidget {
               Column(
                 children: [
                   CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
-                  Text(FirebaseAuth.instance.currentUser?.displayName ?? "coultn't fetch user name")
+                  Text(FirebaseAuth.instance.currentUser?.displayName ?? "couldn't fetch user name")
                 ],
               ),
               Column(
@@ -58,7 +73,21 @@ class ProfileView extends StatelessWidget {
                             return BlocProvider(
                               create: (context) => EditProfileCubit(userNameController: userNameController),
                               child: BlocConsumer<EditProfileCubit, EditProfileState>(
-                                listener: (context, state) {},
+                                listener: (context, state) {
+                                  if (state is Processing) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (c) => AlertDialog(
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () => Navigator.pop(context),
+                                                    child: const Text("Ok"))
+                                              ],
+                                              title: const Text(
+                                                  "Please reset your password from received e-mail"),
+                                            ));
+                                  }
+                                },
                                 builder: (context, state) {
                                   return buildSheet(context, state);
                                 },
@@ -111,10 +140,11 @@ class ProfileView extends StatelessWidget {
                 initialValue: FirebaseAuth.instance.currentUser?.displayName,
               ),
             ),
-            ListTile(
-              leading: const Text("Password: "),
-              title: TextFormField(),
-            ),
+            TextButton(
+                onPressed: () {
+                  context.read<EditProfileCubit>().resetPassword(context);
+                },
+                child: const Text("Reset password")),
             CustomDivider(context: context),
             SizedBox(
               width: context.dynamicWidth(0.6),
@@ -229,22 +259,6 @@ class ProfileView extends StatelessWidget {
       elevation: 0,
       title: Text("📕 ${FirebaseAuth.instance.currentUser?.displayName}",
           style: Theme.of(context).textTheme.headline5),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProfileviewCubit(),
-      child: BlocConsumer<ProfileviewCubit, ProfileviewState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Scaffold(
-            appBar: appBar(context),
-            body: body(context, state),
-          );
-        },
-      ),
     );
   }
 }
