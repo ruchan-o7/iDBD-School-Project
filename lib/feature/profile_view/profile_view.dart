@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/core/custom/custom_divider.dart';
-import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
-import 'package:school_project_ibdb/feature/profile_view/edit_profile_cubit/editprofile_cubit.dart';
+import '../../core/custom/custom_divider.dart';
+import '../login_screen/view/login_card_view.dart';
+import 'edit_profile_cubit/editprofile_cubit.dart';
 import 'cubit/profileview_cubit.dart';
 import '../../product/book_card/book_card.dart';
 import '../../product/circle_avatar/custom_circle_avatar.dart';

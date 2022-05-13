@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/border_radius.dart';
-import 'package:school_project_ibdb/core/constants/logo_path.dart';
-import 'package:school_project_ibdb/feature/statistic_view/cubit/statistic_cubit.dart';
+import '../../core/constants/border_radius.dart';
+import '../../core/constants/logo_path.dart';
+import 'cubit/statistic_cubit.dart';
 
 class StatisticView extends StatelessWidget {
   const StatisticView({Key? key}) : super(key: key);

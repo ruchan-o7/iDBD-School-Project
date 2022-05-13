@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../nav_bar/nav_bar_view.dart';
 
 import '../../../product/utils/firebase/firebase_auth.dart';
+import '../../nav_bar/nav_bar_view.dart';
 
 class LoginCardCubit extends Cubit<LoginCardState> {
   LoginCardCubit() : super(LoginCardInitial()) {

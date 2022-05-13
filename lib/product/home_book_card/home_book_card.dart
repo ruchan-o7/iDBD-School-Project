@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
+import '../utils/validator/validator.dart';
 import '../../core/constants/border_radius.dart';
 import '../../core/constants/logo_path.dart';
 import '../base_model/book_response_mode.dart';

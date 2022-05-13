@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/border_radius.dart';
+
+import '../../core/constants/border_radius.dart';
 
 class ChangePassView extends StatelessWidget {
   ChangePassView({Key? key}) : super(key: key);

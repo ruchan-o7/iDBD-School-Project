@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/product/circle_avatar/custom_circle_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../core/enum/padding_values.dart';
+import '../../product/circle_avatar/custom_circle_avatar.dart';
 
 class AboutView extends StatelessWidget {
   const AboutView({Key? key}) : super(key: key);

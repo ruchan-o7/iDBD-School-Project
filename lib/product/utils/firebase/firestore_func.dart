@@ -6,7 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:school_project_ibdb/product/publisher_user_model/publisher_user.dart';
+import '../../publisher_user_model/publisher_user.dart';
 
 import '../../../feature/publisher_view/add_book_view/model.dart';
 import '../../base_model/book_response_mode.dart';

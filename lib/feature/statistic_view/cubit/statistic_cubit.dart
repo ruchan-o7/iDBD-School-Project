@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:school_project_ibdb/core/network/network_manager.dart';
-import 'package:school_project_ibdb/feature/search_view/service/search_book_service.dart';
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../../../core/network/network_manager.dart';
+import '../../search_view/service/search_book_service.dart';
+import '../../../product/base_model/book_response_mode.dart';
+import '../../../product/utils/firebase/firestore_func.dart';
 
 part 'statistic_state.dart';
 

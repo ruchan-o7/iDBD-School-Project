@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+
 import '../../../core/custom/circle_color_widget.dart';
-import 'login_card_view_cubit.dart';
 import '../../sign_up/sign_up_view.dart';
+import 'login_card_view_cubit.dart';
 
 class LoginCardView extends StatelessWidget {
   const LoginCardView({Key? key}) : super(key: key);

@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/publisher_view/cubit/publisher_cubit.dart';
-import 'package:school_project_ibdb/feature/publisher_view/delete_request/delete_req_view.dart';
+import 'cubit/publisher_cubit.dart';
+import 'delete_request/delete_req_view.dart';
 
 import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'add_book_view/add_book.dart';

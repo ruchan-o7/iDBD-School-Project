@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:school_project_ibdb/product/base_model/book_response_mode.dart';
+import '../../../product/base_model/book_response_mode.dart';
 
 class BookRequestModel {
   String id;

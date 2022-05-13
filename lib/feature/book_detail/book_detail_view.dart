@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/border_radius.dart';
+import '../../core/constants/border_radius.dart';
 import '../../core/constants/logo_path.dart';
 import '../../core/constants/string_constants.dart';
 import '../sign_up/model/signup_model.dart';

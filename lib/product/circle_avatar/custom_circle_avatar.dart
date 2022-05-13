@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:school_project_ibdb/product/random_pic_generator/random_pict_generator.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
+import '../random_pic_generator/random_pict_generator.dart';
+import '../utils/validator/validator.dart';
 import '../../core/constants/logo_path.dart';
 
 class CustomCircleAvatar extends StatefulWidget {

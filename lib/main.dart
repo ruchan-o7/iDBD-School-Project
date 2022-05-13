@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/theme/app_theme.dart';
-import 'package:school_project_ibdb/feature/login_screen/view/login_card_view.dart';
-import 'package:school_project_ibdb/feature/nav_bar/nav_bar_view.dart';
+import 'core/theme/app_theme.dart';
+import 'feature/login_screen/view/login_card_view.dart';
+import 'feature/nav_bar/nav_bar_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

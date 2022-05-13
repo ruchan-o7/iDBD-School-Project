@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/core/constants/border_radius.dart';
 
+import '../constants/border_radius.dart';
 import 'color/i_color_theme.dart';
 import 'color/light_color_theme.dart';
 import 'text/i_text_theme.dart';

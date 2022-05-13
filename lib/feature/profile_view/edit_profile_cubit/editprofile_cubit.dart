@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../../../product/utils/firebase/firestore_func.dart';
 part 'editprofile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {

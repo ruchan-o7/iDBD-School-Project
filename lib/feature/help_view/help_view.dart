@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/feature/help_view/help_options.dart';
+import 'help_options.dart';
 import '../../core/constants/string_constants.dart';
 import '../../core/enum/padding_values.dart';
 

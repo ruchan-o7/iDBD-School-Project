@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../../book_detail/book_detail_view.dart';
+import '../../../product/utils/firebase/firestore_func.dart';
 
 import '../../../core/network/network_manager.dart';
 import '../../../product/base_model/book_response_mode.dart';

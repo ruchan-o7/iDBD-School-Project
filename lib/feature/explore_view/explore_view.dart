@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/explore_cubit.dart';
-import '../../product/book_card/book_card.dart';
 import 'package:kartal/kartal.dart';
+
+import '../../product/book_card/book_card.dart';
+import 'cubit/explore_cubit.dart';
 
 class ExploreView extends StatelessWidget {
   const ExploreView({Key? key}) : super(key: key);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
-import '../../core/constants/logo_path.dart';
 
+import '../../core/constants/logo_path.dart';
 import '../../feature/book_detail/book_detail_view.dart';
 import '../base_model/book_response_mode.dart';
+import '../utils/validator/validator.dart';
 
 class BookCard extends StatelessWidget {
   BookCard({Key? key, required this.bookModel}) : super(key: key);

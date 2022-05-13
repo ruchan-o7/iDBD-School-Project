@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:school_project_ibdb/product/publisher_user_model/publisher_user.dart';
-import 'package:school_project_ibdb/product/utils/firebase/firestore_func.dart';
+import '../../../product/publisher_user_model/publisher_user.dart';
+import '../../../product/utils/firebase/firestore_func.dart';
 
 part 'publisher_state.dart';
 

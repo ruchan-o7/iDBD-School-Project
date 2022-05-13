@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/feature/publisher_view/delete_request/cubit/deletereq_cubit.dart';
+import 'cubit/deletereq_cubit.dart';
 
 import '../../../product/publisher_user_model/publisher_user.dart';
 

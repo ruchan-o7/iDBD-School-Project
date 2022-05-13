@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/core/constants/border_radius.dart';
-import 'package:school_project_ibdb/product/book_categories/categories.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
+import '../../../core/constants/border_radius.dart';
+import '../../../product/book_categories/categories.dart';
+import '../../../product/utils/validator/validator.dart';
 
 import 'cubit/addbook_cubit.dart';
 

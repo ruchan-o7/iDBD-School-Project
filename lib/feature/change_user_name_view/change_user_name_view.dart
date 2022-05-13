@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
-import 'package:school_project_ibdb/product/utils/validator/validator.dart';
+import '../../product/utils/validator/validator.dart';
 
 import '../../core/constants/border_radius.dart';
 
