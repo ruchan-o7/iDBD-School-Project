@@ -33,7 +33,7 @@ Screenshots
 
 | Login Screen  | Login Screen with Filled Area | Sign up |
 | ------------- | ------------- | ------------- |
-| <img src ="https://user-images.githubusercontent.com/44341663/168319664-75153565-23ac-4c93-abfb-bc1bee0fa7a3.gif" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168098249-3c7822d9-a396-4945-850d-a9662fd0131c.png" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168319797-b19415e4-5733-43fd-8b0e-f472d77f547d.png" width=200>  |
+| <img src ="https://user-images.githubusercontent.com/44341663/168319664-75153565-23ac-4c93-abfb-bc1bee0fa7a3.gif" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168319797-b19415e4-5733-43fd-8b0e-f472d77f547d.png" width=200>  | <img src ="https://user-images.githubusercontent.com/44341663/168321822-b4c602cb-fe81-464a-a815-7c097359488e.png" width=200>  |
 
 
 # Home
