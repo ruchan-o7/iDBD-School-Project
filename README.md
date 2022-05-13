@@ -21,9 +21,7 @@ This app uses several apis whic is listed:
   - Google book api
   - Random robot figure creator api
   
-
-# Ui overview
-Screenshots
+# Screenshots
 
 # Authentication 
 <p> User fills requried area and login to the app. If user does wrong action app will warns about fail with snackbar </p>
