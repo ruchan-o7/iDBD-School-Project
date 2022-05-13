@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kartal/kartal.dart';
 
+import '../../../core/constants/logo_path.dart';
+import '../../../core/custom/circle_color_widget.dart';
 import '../../../product/utils/firebase/firebase_auth.dart';
 import '../../nav_bar/nav_bar_view.dart';
 
@@ -18,10 +21,16 @@ class LoginCardCubit extends Cubit<LoginCardState> {
   final FocusNode focusEmail = FocusNode();
   final FocusNode focusPassword = FocusNode();
   bool _isCircular = false;
+  bool isLibrary = false;
   Authentication authentication = Authentication();
 
   void changeIsCircular() {
     _isCircular = !_isCircular;
+  }
+
+  void changeApperance(bool v) {
+    isLibrary = v;
+    emit(SignUpViewState());
   }
 
   void goToSignUpPage(BuildContext context) {
@@ -75,6 +84,33 @@ class LoginCardCubit extends Cubit<LoginCardState> {
   void changeObsecure() {
     isObsecure = !isObsecure;
     emit(LoginCardInitial());
+  }
+
+  Widget changeBackground(BuildContext context) {
+    if (isLibrary) {
+      return SizedBox(
+          height: context.dynamicHeight(1),
+          child: Image.asset(
+            LogoPaths.kutuphaneCumhur,
+            fit: BoxFit.fitHeight,
+          ));
+    } else {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+              child: const CircleShape(
+                shapeColor: Colors.teal,
+              ),
+              bottom: context.dynamicHeight(0.69)),
+          Positioned(
+            bottom: context.dynamicHeight(0.15),
+            child: const CircleShape(shapeColor: Colors.green),
+          ),
+          Positioned(child: const CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.5)),
+        ],
+      );
+    }
   }
 }
 

@@ -3,14 +3,28 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kartal/kartal.dart';
+import 'package:school_project_ibdb/core/constants/logo_path.dart';
 import 'package:school_project_ibdb/feature/forget-pass-view/forget_pass_view.dart';
 
 import '../../../core/custom/circle_color_widget.dart';
 import '../../sign_up/sign_up_view.dart';
 import 'login_card_view_cubit.dart';
 
-class LoginCardView extends StatelessWidget {
+class LoginCardView extends StatefulWidget {
   const LoginCardView({Key? key}) : super(key: key);
+
+  @override
+  State<LoginCardView> createState() => _LoginCardViewState();
+}
+
+class _LoginCardViewState extends State<LoginCardView> with TickerProviderStateMixin {
+  late final AnimationController _animationController =
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,61 +46,93 @@ class LoginCardView extends StatelessWidget {
     return Scaffold(
       body: ClipRRect(
         child: Stack(fit: StackFit.expand, children: [
-          Positioned(
-              child: const CircleShape(
-                shapeColor: Colors.teal,
-              ),
-              bottom: context.dynamicHeight(0.69)),
-          Positioned(
-            bottom: context.dynamicHeight(0.15),
-            child: const CircleShape(shapeColor: Colors.green),
-          ),
-          Positioned(child: const CircleShape(shapeColor: Colors.blue), left: context.dynamicWidth(0.5)),
+          AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+              child: context.read<LoginCardCubit>().changeBackground(context)),
           dataStruct(context),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: context.paddingNormal,
+              child: Switch.adaptive(
+                  value: context.read<LoginCardCubit>().isLibrary,
+                  onChanged: (v) {
+                    context.read<LoginCardCubit>().changeApperance(v);
+                  }),
+            ),
+          ),
         ]),
       ),
     );
   }
 
   Widget dataStruct(BuildContext context) {
+    double _outerBlur = 0;
+    double _innerBlur = 0;
+    if (context.read<LoginCardCubit>().isLibrary) {
+      _outerBlur = 2;
+      _innerBlur = 15;
+    } else {
+      _outerBlur = 10;
+      _innerBlur = 0;
+    }
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      filter: ImageFilter.blur(sigmaX: _outerBlur, sigmaY: _outerBlur),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: context.horizontalPaddingMedium,
-            child: Card(
-              color: Colors.green[100],
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
-              child: Padding(
-                padding: context.horizontalPaddingNormal,
-                child: Form(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: context.dynamicHeight(0.02),
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: _innerBlur, sigmaY: _innerBlur),
+                child: Card(
+                  elevation: 0,
+                  color: context.read<LoginCardCubit>().isLibrary ? Colors.transparent : Colors.green[100],
+                  shape:
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(context.dynamicWidth(0.05))),
+                  child: Padding(
+                    padding: context.horizontalPaddingNormal,
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: context.dynamicHeight(0.02),
+                          ),
+                          Text("Log in",
+                              style: Theme.of(context).textTheme.headline2?.copyWith(
+                                  color: context.read<LoginCardCubit>().isLibrary
+                                      ? Colors.white
+                                      : Colors.black)),
+                          Text("Welcome",
+                              style: Theme.of(context).textTheme.headline5?.copyWith(
+                                  color: context.read<LoginCardCubit>().isLibrary
+                                      ? Colors.white
+                                      : Colors.black)),
+                          SizedBox(
+                            height: context.dynamicHeight(0.04),
+                          ),
+                          mailTextField(context),
+                          SizedBox(
+                            height: context.dynamicHeight(0.02),
+                          ),
+                          passTextField(context),
+                          forgetPassBTN(context),
+                          logInBTN(context),
+                          const Divider(),
+                          signUpBTN(context),
+                          SizedBox(
+                            height: context.dynamicHeight(0.02),
+                          ),
+                        ],
                       ),
-                      Text("Log in", style: Theme.of(context).textTheme.headline3),
-                      Text("Welcome", style: Theme.of(context).textTheme.headline5),
-                      SizedBox(
-                        height: context.dynamicHeight(0.04),
-                      ),
-                      mailTextField(context),
-                      SizedBox(
-                        height: context.dynamicHeight(0.02),
-                      ),
-                      passTextField(context),
-                      forgetPassBTN(context),
-                      logInBTN(context),
-                      const Divider(),
-                      signUpBTN(context),
-                      SizedBox(
-                        height: context.dynamicHeight(0.02),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -153,7 +199,7 @@ class LoginCardView extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgetPassView())),
           child: Text(
             "Forget password",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70),
           ),
         )
       ],
