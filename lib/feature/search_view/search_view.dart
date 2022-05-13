@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/product/home_book_card/home_book_card.dart';
 
 import '../../core/extension/string_extension.dart';
 import '../../product/book_card/book_card.dart';
@@ -70,15 +71,14 @@ class SearchView extends StatelessWidget {
 
   Widget searchedFromGoogle(BuildContext context, SearchDone state) {
     return state.results?.items != null
-        ? GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        ? ListView.builder(
             itemBuilder: (context, index) {
               final _tempModel = state.results;
               return InkWell(
                   onTap: () {
                     context.read<SearchViewCubit>().goToBook(_tempModel?.items?[index], context);
                   },
-                  child: BookCard(bookModel: _tempModel?.items?[index]));
+                  child: ListBookCard(context: context, model: _tempModel?.items?[index].volumeInfo));
             },
             itemCount: state.results?.items?.length,
           )

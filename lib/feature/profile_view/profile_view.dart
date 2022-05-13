@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
 import '../../core/custom/custom_divider.dart';
+import '../../product/home_book_card/home_book_card.dart';
 import '../login_screen/view/login_card_view.dart';
 import 'edit_profile_cubit/editprofile_cubit.dart';
 import 'cubit/profileview_cubit.dart';
@@ -29,87 +31,95 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  DefaultTabController body(BuildContext context, ProfileviewState state) {
-    return DefaultTabController(
-      length: 1,
+  Widget body(BuildContext context, ProfileviewState state) {
+    return SizedBox(
+      height: context.dynamicHeight(1),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
-                  Text(FirebaseAuth.instance.currentUser?.displayName ?? "couldn't fetch user name")
-                ],
-              ),
-              Column(
-                children: [
-                  Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ?? "0"),
-                  Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
-                ],
-              ),
-              Column(
-                children: [
-                  Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ?? "0"),
-                  Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
-                ],
-              ),
-            ],
-          ),
+          tabbarItems(context),
           const Divider(),
-          Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: context.horizontalPaddingHigh,
-                child: ElevatedButton(
-                    onPressed: () {
-                      showBottomSheet(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-                          context: context,
-                          builder: (context) {
-                            return BlocProvider(
-                              create: (context) => EditProfileCubit(userNameController: userNameController),
-                              child: BlocConsumer<EditProfileCubit, EditProfileState>(
-                                listener: (context, state) {
-                                  if (state is Processing) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (c) => AlertDialog(
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () => Navigator.pop(context),
-                                                    child: const Text("Ok"))
-                                              ],
-                                              title: const Text(
-                                                  "Please reset your password from received e-mail"),
-                                            ));
-                                  }
-                                },
-                                builder: (context, state) {
-                                  return buildSheet(context, state);
-                                },
-                              ),
-                            );
-                          });
-                    },
-                    child: Text(
-                      "Edit profile",
-                      style: Theme.of(context).textTheme.button,
-                    )),
-              )),
-            ],
-          ),
+          editProfileBTN(context),
           const Divider(),
-          const TabBar(tabs: [
-            Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
-            // Tab(child: Icon(Icons.book, color: Colors.black))
-          ]),
+          // const TabBar(tabs: [
+          //   Tab(child: Icon(Icons.thumb_up_alt, color: Colors.black)),
+          //   // Tab(child: Icon(Icons.book, color: Colors.black))
+          // ]),
           bookContent(context, state)
         ],
       ),
+    );
+  }
+
+  Row editProfileBTN(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+            child: Padding(
+          padding: context.horizontalPaddingHigh,
+          child: ElevatedButton(
+              onPressed: () {
+                showBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+                    context: context,
+                    builder: (context) {
+                      return BlocProvider(
+                        create: (context) => EditProfileCubit(userNameController: userNameController),
+                        child: BlocConsumer<EditProfileCubit, EditProfileState>(
+                          listener: (context, state) {
+                            if (state is Processing) {
+                              showDialog(
+                                  context: context,
+                                  builder: (c) => AlertDialog(
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: const Text("Ok"))
+                                        ],
+                                        title: const Text("Please reset your password from received e-mail"),
+                                      ));
+                            }
+                          },
+                          builder: (context, state) {
+                            return buildSheet(context, state);
+                          },
+                        ),
+                      );
+                    });
+              },
+              child: Text(
+                "Edit profile",
+                style: Theme.of(context).textTheme.button,
+              )),
+        )),
+      ],
+    );
+  }
+
+  Row tabbarItems(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          children: [
+            CustomCircleAvatar(avatarUrl: FirebaseAuth.instance.currentUser?.photoURL),
+            Text(FirebaseAuth.instance.currentUser?.displayName ?? "couldn't fetch user name")
+          ],
+        ),
+        Column(
+          children: [
+            Text(context.read<ProfileviewCubit>().currUser?.likedBooks?.length.toString() ?? "0"),
+            Text("Liked", style: Theme.of(context).textTheme.bodyLarge)
+          ],
+        ),
+        Column(
+          children: [
+            Text(context.read<ProfileviewCubit>().currUser?.ownedBooks?.length.toString() ?? "0"),
+            Text("Owned", style: Theme.of(context).textTheme.bodyLarge)
+          ],
+        ),
+      ],
     );
   }
 
@@ -218,39 +228,29 @@ class ProfileView extends StatelessWidget {
 
   Expanded bookContent(BuildContext context, ProfileviewState state) {
     return Expanded(
-      child: TabBarView(
-        children: [
-          state is Loading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : context.read<ProfileviewCubit>().likedBooks?.length == 0
-                  ? const Center(child: Text("There is no owned books"))
-                  : GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        return BookCard(
-                          bookModel: context.read<ProfileviewCubit>().likedBooks?.reversed.elementAt(index),
-                        );
-                      },
-                      itemCount: context.read<ProfileviewCubit>().likedBooks?.length),
-          // state is Loading
-          //     ? const Center(
-          //         child: CircularProgressIndicator(),
-          //       )
-          //     // ignore: prefer_is_empty
-          //     : context.read<ProfileviewCubit>().ownedBooks?.length == 0
-          //         ? const Center(child: Text("There is no owned books"))
-          //         : GridView.builder(
-          //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          //             itemBuilder: (context, index) {
-          //               return BookCard(
-          //                 bookModel: context.read<ProfileviewCubit>().ownedBooks?[index],
-          //               );
-          //             },
-          //             itemCount: context.read<ProfileviewCubit>().ownedBooks?.length),
-        ],
-      ),
+      child: state is Loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : context.read<ProfileviewCubit>().likedBooks?.length == 0
+              ? const Center(child: Text("There is no owned books"))
+              : GridView.builder(
+                  reverse: true,
+                  itemCount: context.read<ProfileviewCubit>().likedBooks?.length,
+                  controller: context.read<ProfileviewCubit>().scrollController,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                  itemBuilder: (c, i) {
+                    var _model = context.read<ProfileviewCubit>().likedBooks?[i];
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BookDetail(bookModel: _model),
+                      )),
+                      child: CustomCard(
+                        context: context,
+                        model: context.read<ProfileviewCubit>().likedBooks?[i].volumeInfo,
+                      ),
+                    );
+                  }),
     );
   }
 

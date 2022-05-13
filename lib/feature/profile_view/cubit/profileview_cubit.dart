@@ -20,7 +20,7 @@ class ProfileviewCubit extends Cubit<ProfileviewState> {
   RTUserModel? rtUserModel;
   List<Items>? likedBooks = [];
   List<Items>? ownedBooks = [];
-
+  final ScrollController scrollController = ScrollController();
   Future<void> getLikedBookNumber() async {
     var _temp = await _functions.getDocumentData(FirebaseAuth.instance.currentUser);
     currUser = _temp;

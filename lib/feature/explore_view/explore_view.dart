@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kartal/kartal.dart';
-
-import '../../product/book_card/book_card.dart';
+import 'package:school_project_ibdb/feature/book_detail/book_detail_view.dart';
+import '../../product/home_book_card/home_book_card.dart';
 import 'cubit/explore_cubit.dart';
 
 class ExploreView extends StatelessWidget {
@@ -16,34 +15,25 @@ class ExploreView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-            body: GridView.builder(
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 9 / 10,
-              ),
-              itemBuilder: (context, index) {
-                if (state is BooksDownloading) {
-                  return const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else {
-                  final data = context.read<ExploreCubit>().exploreBooks?.items?[index];
-                  return Column(
-                    children: [
-                      SizedBox(height: context.dynamicHeight(0.03)),
-                      BookCard(
-                        bookModel: data,
-                      )
-                    ],
-                  );
-                }
-              },
-              itemCount: context.read<ExploreCubit>().exploreBooks?.items?.length,
-            ),
-          );
+              body: ListView.builder(
+            itemBuilder: (context, index) {
+              var _model = context.read<ExploreCubit>().exploreBooks?.items?[index];
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookDetail(bookModel: _model),
+                      ));
+                },
+                child: ListBookCard(
+                  context: context,
+                  model: _model?.volumeInfo,
+                ),
+              );
+            },
+            itemCount: context.read<ExploreCubit>().exploreBooks?.items?.length,
+          ));
         },
       ),
     );

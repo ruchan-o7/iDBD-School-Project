@@ -130,36 +130,39 @@ class HomeView extends StatelessWidget {
             ),
             SizedBox(
               height: context.dynamicHeight(0.28),
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const VerticalDivider(thickness: 2),
-                scrollDirection: Axis.horizontal,
-                itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length ?? 0,
-                // itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final _tempModel = context.read<HomeViewCubit>().categorieBooks?.items?[index];
-                  if (context.read<HomeViewCubit>().loadState == IsLoading.yes) {
-                    return SizedBox(
-                        width: context.dynamicWidth(0.4),
-                        child: const Center(child: CircularProgressIndicator()));
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () => context.read<HomeViewCubit>().goToBook(context, _tempModel),
-                      child: CustomCard(
-                        model: _tempModel?.volumeInfo,
-                        context: context,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              child: categories(context),
             ),
             Text("Recommended", style: Theme.of(context).textTheme.headline5),
             recommendedShelf(context),
           ],
         ),
       ),
+    );
+  }
+
+  ListView categories(BuildContext context) {
+    return ListView.separated(
+      separatorBuilder: (context, index) => const VerticalDivider(thickness: 2),
+      scrollDirection: Axis.horizontal,
+      itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length ?? 0,
+      // itemCount: context.read<HomeViewCubit>().categorieBooks?.items?.length,
+      itemBuilder: (BuildContext context, int index) {
+        final _tempModel = context.read<HomeViewCubit>().categorieBooks?.items?[index];
+        if (context.read<HomeViewCubit>().loadState == IsLoading.yes) {
+          return SizedBox(
+              width: context.dynamicWidth(0.4), child: const Center(child: CircularProgressIndicator()));
+        }
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () => context.read<HomeViewCubit>().goToBook(context, _tempModel),
+            child: CustomCard(
+              model: _tempModel?.volumeInfo,
+              context: context,
+            ),
+          ),
+        );
+      },
     );
   }
 
