@@ -22,8 +22,6 @@ This app uses several apis whic is listed:
   - Random robot figure creator api
   
 
-Note: Currently working on OtherDetail branch
-
 # Ui overview
 Screenshots
 
