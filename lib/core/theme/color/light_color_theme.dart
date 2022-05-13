@@ -19,30 +19,30 @@ class LightColorTheme implements IColorTheme {
   AppColors colors = AppColors();
 
   LightColorTheme() {
-    appBarColor = colors.scaffoldColor;
-    iconColor = colors.moreDarkerColor;
-    moreDarkerColor = colors.moreDarkerColor;
-    primaryColor = colors.primaryColor;
-    secondaryColor = colors.secondaryColor;
-    thirdColor = colors.thirdColor;
-    cardColor = colors.secondaryColor;
+    appBarColor = colors.backgroundAndScaffoldColor;
+    iconColor = colors.black;
+    moreDarkerColor = colors.black;
+    primaryColor = colors.primary;
+    secondaryColor = colors.secondary;
+    thirdColor = colors.secondary;
+    cardColor = colors.backgroundAndScaffoldColor;
 
-    scaffoldBackgroundColor = colors.scaffoldColor;
+    scaffoldBackgroundColor = colors.backgroundAndScaffoldColor;
     // backgroundColor = colors.scaffoldColor;
     textfield = colors.textfieldColor;
     brightness = Brightness.light;
 
     iconThemeData = ThemeData.light().iconTheme.copyWith(
           // color: colors.moreDarkerColor,
-          color: colors.thirdColor,
+          color: colors.black,
         );
     colorScheme = const ColorScheme.light().copyWith(
       onPrimary: colors.primaryColor,
-      primary: colors.primaryColor,
-      background: colors.scaffoldColor,
+      primary: colors.primary,
+      background: colors.primary,
       secondary: colors.secondaryColor,
       tertiary: colors.thirdColor,
-      surface: colors.moreDarkerColor, //--> navbardaki iconların rengibi belirliyo
+      surface: colors.black, //--> navbardaki iconların rengibi belirliyo
       shadow: colors.primaryColor,
     );
   }

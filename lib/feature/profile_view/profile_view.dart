@@ -235,19 +235,18 @@ class ProfileView extends StatelessWidget {
           : context.read<ProfileviewCubit>().likedBooks?.length == 0
               ? const Center(child: Text("There is no owned books"))
               : GridView.builder(
-                  reverse: true,
                   itemCount: context.read<ProfileviewCubit>().likedBooks?.length,
                   controller: context.read<ProfileviewCubit>().scrollController,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                   itemBuilder: (c, i) {
-                    var _model = context.read<ProfileviewCubit>().likedBooks?[i];
+                    var _model = context.read<ProfileviewCubit>().likedBooks?.reversed.toList()[i];
                     return InkWell(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BookDetail(bookModel: _model),
                       )),
                       child: CustomCard(
                         context: context,
-                        model: context.read<ProfileviewCubit>().likedBooks?[i].volumeInfo,
+                        model: _model?.volumeInfo,
                       ),
                     );
                   }),

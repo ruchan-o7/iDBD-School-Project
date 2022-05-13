@@ -201,8 +201,6 @@ class BookDetail extends StatelessWidget {
               tooltip: "comment",
               onPressed: () {
                 context.read<BookDetailCubit>().getComments(bookModel?.id ?? "");
-                // final _commenters = context.read<BookDetailCubit>().commenters;
-                // final _comments = context.read<BookDetailCubit>().comments;
                 final _book = context.read<BookDetailCubit>().bookModel;
 
                 showModalBottomSheet(
@@ -310,89 +308,4 @@ class BookDetail extends StatelessWidget {
       ],
     );
   }
-
-  // SingleChildScrollView body(BuildContext context) {
-  //   return SingleChildScrollView(
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         Card(
-  //           elevation: 10,
-  //           shape: RoundedRectangleBorder(borderRadius: BorderRadiusConst.normal),
-  //           child: SizedBox(
-  //             height: context.dynamicHeight(0.4),
-  //             child: bookThumbnail(context),
-  //           ),
-  //         ),
-  //         SizedBox(height: context.dynamicHeight(0.02)),
-  //         Text(bookModel?.volumeInfo?.title ?? StringConstants().notFound),
-  //         Text(bookModel?.volumeInfo?.authors?.first ?? StringConstants().notFound,
-  //             style: Theme.of(context).textTheme.bodyText1),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Text(bookModel?.volumeInfo?.ratingsCount?.toString() ?? ""),
-  //             if (bookModel?.volumeInfo?.ratingsCount != null &&
-  //                 bookModel?.volumeInfo?.ratingsCount.toString() != "")
-  //               const Icon(Icons.star)
-  //           ],
-  //         ),
-  //         const Divider(thickness: 1),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //           children: [
-  //             Column(
-  //               children: [
-  //                 bookModel?.volumeInfo?.pageCount != null ? const Text("Page number:") : const SizedBox(),
-  //                 bookModel?.volumeInfo?.language != null ? const Text("Language:") : const SizedBox(),
-  //                 bookModel?.volumeInfo?.publishedDate != null
-  //                     ? const Text("Publish Date:")
-  //                     : const SizedBox(),
-  //                 bookModel?.volumeInfo?.categories?.first != null
-  //                     ? const Text("Categories")
-  //                     : const SizedBox()
-  //               ],
-  //             ),
-  //             Column(
-  //               children: [
-  //                 bookModel?.volumeInfo?.pageCount != null
-  //                     ? Text(bookModel?.volumeInfo?.pageCount?.toString() ?? "Unknown")
-  //                     : const SizedBox(),
-  //                 bookModel?.volumeInfo?.language != null
-  //                     ? Text(bookModel?.volumeInfo?.language ?? "")
-  //                     : const SizedBox(),
-  //                 bookModel?.volumeInfo?.publishedDate != null
-  //                     ? Text(bookModel?.volumeInfo?.publishedDate ?? "")
-  //                     : const SizedBox(),
-  //                 bookModel?.volumeInfo?.categories != null
-  //                     ? Text(bookModel?.volumeInfo?.categories?.first ?? "null")
-  //                     : const SizedBox()
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //         const Divider(),
-  //         Padding(
-  //           padding: context.horizontalPaddingNormal,
-  //           child: Text(bookModel?.volumeInfo?.description?.toString() ?? StringConstants().notFound,
-  //               style: Theme.of(context).textTheme.bodyLarge),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // ClipRRect bookThumbnail(BuildContext context) {
-  //   return ClipRRect(
-  //     borderRadius: BorderRadiusConst.normal,
-  //     child: bookModel?.volumeInfo?.imageLinks?.thumbnail == null
-  //         ? Container(
-  //             constraints: BoxConstraints(minHeight: context.dynamicHeight(0.3)),
-  //             child: Image.asset(LogoPaths.dummyBook),
-  //           )
-  //         : Image.network(bookModel?.volumeInfo?.imageLinks?.thumbnail ?? "", fit: BoxFit.contain),
-  //   );
-  // }
-
-  // AppBar appBar() => AppBar(elevation: 0)
 }

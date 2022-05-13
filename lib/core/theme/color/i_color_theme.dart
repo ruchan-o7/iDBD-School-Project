@@ -24,23 +24,16 @@ class AppColors {
   final thirdColor = const Color(0xff9CD918);
   final moreDarkerColor = const Color(0xff707365);
   final textfieldColor = Colors.white60;
-  // final textfieldColor = const Color(0xfff4f2f4);
-
-  // final lightGreen = Colors.lightGreen[200]!;
-  // final moreLigtGreen = Colors.green[100];
-  // final green = (Colors.green[900]);
-  // final turqoz = const Color(0xff4ad2b8);
-  /*----------------------------------------*/
-  // final white = Colors.white;
-  // final appleBlossom = const Color(0xffDEBA9D);
-  // final neapolitan = const Color(0xff9E7777);
-  // final prussianPlum = const Color(0xff6F4C5B);
-  // final black = const Color(0xff000000);
-  // final lightRed = const Color(0xffD45555);
-  // final red = const Color.fromARGB(255, 255, 0, 0);
-  // final scaffoldColor = const Color(0xffFDFDFD);
-  // final darkScaffoldColor = const Color(0xff19191B);
-  // final darkThemeTextColor = const Color(0xffFFFFFF);
-  // final lightThemeTextColor = const Color(0xff19191B);
-  // final headline6Color = const Color(0xff9D9D9D);
+//-------------------------------------
+  // final backgroundAndScaffoldColor = const Color(0xffF2F2F2);
+  // final secondary = Color.fromARGB(255, 203, 203, 203);
+  // final primary = const Color(0xffF2CB05);
+  // final black = const Color(0xff0D0D0D);
+  // final navBarItem = const Color(0xffF24738);
+//-------------------------------------
+  final backgroundAndScaffoldColor = const Color(0xffEBF0F2);
+  final secondary = Color(0xffD9D9D9);
+  final primary = const Color(0xff5A6E73);
+  final black = const Color(0xff313E40);
+  final navBarItem = const Color(0xff8FA1A6);
 }
