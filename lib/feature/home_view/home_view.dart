@@ -142,11 +142,14 @@ class HomeView extends StatelessWidget {
                         width: context.dynamicWidth(0.4),
                         child: const Center(child: CircularProgressIndicator()));
                   }
-                  return InkWell(
-                    onTap: () => context.read<HomeViewCubit>().goToBook(context, _tempModel),
-                    child: HomeBookCard(
-                      model: _tempModel?.volumeInfo,
-                      context: context,
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () => context.read<HomeViewCubit>().goToBook(context, _tempModel),
+                      child: CustomCard(
+                        model: _tempModel?.volumeInfo,
+                        context: context,
+                      ),
                     ),
                   );
                 },
@@ -181,10 +184,8 @@ class HomeView extends StatelessWidget {
   }
 
   Widget recommendedShelf(BuildContext context) {
-    return GridView(
+    return ListView(
       controller: context.read<HomeViewCubit>().scrollController,
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 9 / 12),
       shrinkWrap: true,
       children: context
               .read<HomeViewCubit>()
@@ -192,7 +193,7 @@ class HomeView extends StatelessWidget {
               ?.items
               ?.map((e) => InkWell(
                     onTap: () => context.read<HomeViewCubit>().goToBook(context, e),
-                    child: HomeBookCard(
+                    child: ListBookCard(
                       context: context,
                       model: e.volumeInfo,
                     ),

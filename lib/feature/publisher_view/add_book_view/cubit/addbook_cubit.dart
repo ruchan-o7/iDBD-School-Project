@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../product/base_model/book_response_mode.dart';
 import '../../../../product/book_categories/categories.dart';
 import '../../../../product/utils/firebase/firestore_func.dart';
+import '../../../search_view/model/searched_book_model.dart';
 import '../model.dart';
 part 'addbook_state.dart';
 
@@ -83,7 +84,7 @@ class AddbookCubit extends Cubit<AddbookState> {
 
   void checkValidate(BuildContext context) {
     if (!checkTexts()) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please fill empty areas")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill empty areas")));
     } else {
       _functions.addBookRequest(BookRequestModel(
           id: bookId,

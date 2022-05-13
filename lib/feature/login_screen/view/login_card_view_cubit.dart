@@ -40,7 +40,6 @@ class LoginCardCubit extends Cubit<LoginCardState> {
   Future<void> init() async {
     emit(LoadedFirebaseState());
     await authentication.initializeFirebase();
-    // FirebaseApp firebaseApp = await authentication.initializeFirebase();
     emit(LoadedFirebaseState());
   }
 

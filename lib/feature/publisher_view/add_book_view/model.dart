@@ -1,8 +1,12 @@
 import 'dart:convert';
 
-import '../../../product/base_model/book_response_mode.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class BookRequestModel {
+import '../../../product/base_model/book_response_mode.dart';
+part 'model.g.dart';
+
+@JsonSerializable()
+class BookRequestModel extends BaseDataModel {
   String id;
   bool isApproved;
   VolumeInfo volumeInfo;
@@ -24,13 +28,8 @@ class BookRequestModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'isApproved': isApproved,
-      'volumeInfo': volumeInfo.toJson(),
-    };
-  }
+  @override
+  Map<String, dynamic> toJson() => _$BookRequestModelToJson(this);
 
   factory BookRequestModel.fromMap(Map<String, dynamic> map) {
     return BookRequestModel(
@@ -39,10 +38,6 @@ class BookRequestModel {
       volumeInfo: VolumeInfo.fromJson(map['volumeInfo']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory BookRequestModel.fromJson(String source) => BookRequestModel.fromMap(json.decode(source));
 
   @override
   String toString() => 'BookRequestModel(id: $id, isApproved: $isApproved, volumeInfo: $volumeInfo)';

@@ -26,13 +26,13 @@ class FirestoreFunctions {
     await _firestore.collection("users").doc(model.userUid).set(model.toJson());
   }
 
-  Future<void> addBook(Items model) async {
+  Future<void> addBook<T extends BaseDataModel>(T model) async {
     //! generic type a çevirilmesi gerekiyor
-    await _firestore.collection("books").doc().set(model.toJson());
+    await _firestore.collection("books").doc().set((T as BaseDataModel).toJson());
   }
 
   Future<void> addBookRequest(BookRequestModel model) async {
-    await _firestore.collection("books").doc().set(model.toMap());
+    await _firestore.collection("books").doc().set(model.toJson());
   }
 
   ///field name can be: "imageUrl","likedBooks","ownedBook","userMail","userName","userPassword",
@@ -41,12 +41,6 @@ class FirestoreFunctions {
   Future updateUserPhotoUrl(String imageUrl, String collectionId) async {
     final _temp = _firestore.collection("users").doc(collectionId);
     await _temp.update({"imageUrl": imageUrl});
-    // CollectionReference _user = _firestore.collection("users").doc(collectionId).update({"imageUrl":model.imageUrl});
-    // await _user
-    //     .doc(collectionId)
-    //     .update({"imageUrl": model.imageUrl})
-    //     .then((value) => log("user updated"))
-    //     .catchError((error) => log("Failed to update user =>$error"));
   }
 
   ///Uploads image to firebase and applies to profile url
