@@ -21,8 +21,6 @@ This app uses several apis whic is listed:
   - Google book api
   - Random robot figure creator api
   
-  To do:
-  - forget password functionality,
 
 Note: Currently working under publisher-view bracnh
 
