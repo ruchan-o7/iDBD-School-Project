@@ -162,7 +162,10 @@ class _LoginCardViewState extends State<LoginCardView> with TickerProviderStateM
               context.read<LoginCardCubit>().passwordController.clear();
               context.read<LoginCardCubit>().goToPage(context, SignUpView());
             },
-            child: const Text("Sign Up"),
+            child: Text(
+              "Sign Up",
+              style: Theme.of(context).textTheme.button,
+            ),
           ),
         ),
       ],

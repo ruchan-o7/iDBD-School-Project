@@ -15,25 +15,28 @@ class ExploreView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
-              body: ListView.builder(
-            itemBuilder: (context, index) {
-              var _model = context.read<ExploreCubit>().exploreBooks?.items?[index];
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookDetail(bookModel: _model),
-                      ));
-                },
-                child: ListBookCard(
-                  context: context,
-                  model: _model?.volumeInfo,
-                ),
-              );
-            },
-            itemCount: context.read<ExploreCubit>().exploreBooks?.items?.length,
-          ));
+              body: state is BooksDownloading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemBuilder: (context, index) {
+                        var _model = context.read<ExploreCubit>().exploreBooks?.items?[index];
+
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetail(bookModel: _model),
+                                ));
+                          },
+                          child: ListBookCard(
+                            context: context,
+                            model: _model?.volumeInfo,
+                          ),
+                        );
+                      },
+                      itemCount: context.read<ExploreCubit>().exploreBooks?.items?.length,
+                    ));
         },
       ),
     );

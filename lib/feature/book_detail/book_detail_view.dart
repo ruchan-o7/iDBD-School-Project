@@ -64,7 +64,12 @@ class BookDetail extends StatelessWidget {
                             Text(bookModel?.volumeInfo?.ratingsCount?.toString() ?? ""),
                             if (bookModel?.volumeInfo?.ratingsCount != null &&
                                 bookModel?.volumeInfo?.ratingsCount.toString() != "")
-                              const Icon(Icons.star)
+                              const Icon(Icons.star),
+                            SizedBox(width: 10),
+                            Text(context.read<BookDetailCubit>().votes?["down"].toString() ?? "0"),
+                            Icon(Icons.arrow_downward_rounded),
+                            Text(context.read<BookDetailCubit>().votes?["up"].toString() ?? "0"),
+                            Icon(Icons.arrow_upward),
                           ],
                         ),
                         const Divider(thickness: 1),
@@ -153,10 +158,6 @@ class BookDetail extends StatelessWidget {
         ),
         Padding(
           padding: context.verticalPaddingLow,
-          child: Text(context.read<BookDetailCubit>().votes?["up"].toString() ?? "0"),
-        ),
-        Padding(
-          padding: context.verticalPaddingLow,
           child: FloatingActionButton(
             heroTag: null,
             backgroundColor:
@@ -172,10 +173,6 @@ class BookDetail extends StatelessWidget {
             child: Icon(Icons.arrow_downward,
                 color: context.read<BookDetailCubit>().isDownVoted ? Colors.red : Colors.black),
           ),
-        ),
-        Padding(
-          padding: context.verticalPaddingLow,
-          child: Text(context.read<BookDetailCubit>().votes?["down"].toString() ?? "0"),
         ),
         Padding(
           padding: context.verticalPaddingLow,
