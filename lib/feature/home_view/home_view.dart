@@ -132,7 +132,10 @@ class HomeView extends StatelessWidget {
               height: context.dynamicHeight(0.28),
               child: categories(context),
             ),
-            Text("Recommended", style: Theme.of(context).textTheme.headline5),
+            Padding(
+              padding: context.verticalPaddingLow,
+              child: Text("Recommended", style: Theme.of(context).textTheme.headline5),
+            ),
             recommendedShelf(context),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +15,6 @@ class AddBookView extends StatelessWidget {
   AddBookView({Key? key}) : super(key: key);
 
   String publishDate = "";
-  //Todo: generate book id 12 letter,
-  //Todo:
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,8 @@ class AddBookView extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
-              title: const Text("Add book"),
+              title: Text(FirebaseAuth.instance.currentUser?.emailVerified.toString() ?? "",
+                  style: Theme.of(context).textTheme.headline5),
             ),
             body: GestureDetector(
               onTap: context.read<AddbookCubit>().looseFocus,
@@ -217,28 +217,22 @@ class AddBookView extends StatelessWidget {
       width: context.dynamicWidth(0.9),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              // isCamera = true;
-              Navigator.pop(context, true);
-            },
-            child: Card(
-              child: ListTile(
-                leading: Icon(Icons.camera),
-                title: Text("Pick from camera", style: Theme.of(context).textTheme.headline5),
-              ),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.pop(context, true);
+              },
+              leading: const Icon(Icons.camera),
+              title: Text("Pick from camera", style: Theme.of(context).textTheme.headline5),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context, false);
-              // isCamera = false;
-            },
-            child: Card(
-              child: ListTile(
-                leading: Icon(Icons.image),
-                title: Text("Pick from gallery", style: Theme.of(context).textTheme.headline5),
-              ),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.pop(context, false);
+              },
+              leading: const Icon(Icons.image),
+              title: Text("Pick from gallery", style: Theme.of(context).textTheme.headline5),
             ),
           ),
           Card(

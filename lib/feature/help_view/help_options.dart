@@ -8,7 +8,11 @@ class HelpSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(appbarText)),
+      appBar: AppBar(
+          title: Text(
+        appbarText,
+        style: Theme.of(context).textTheme.headline5,
+      )),
       body: Padding(
         padding: context.paddingNormal,
         child: Text(content),

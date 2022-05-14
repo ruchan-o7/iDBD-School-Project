@@ -7,6 +7,15 @@ import '../about_view/about_view.dart';
 
 class HelpView extends StatelessWidget {
   const HelpView({Key? key}) : super(key: key);
+  final appText = "IBDb Help";
+  final profileHelp = "Go to profile page and then click edit profile";
+  final String likedHelp = "How can I look my liked books?";
+  final likeText = "Go to profile page and you can see liked books";
+  final wantDelete = "I want to delete my account";
+  final wantDeleteHelp =
+      "Go to profile page and then click edit profile. You can see delete my account button";
+  final wantDeleteAccount = "I want to delete my account";
+  final bout = "about";
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,7 @@ class HelpView extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text("IBDb Help",
+        title: Text(appText,
             style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
       ),
       body: Center(
@@ -32,8 +41,7 @@ class HelpView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => HelpSection(
-                                    appbarText: StringConstants().changeEMail,
-                                    content: "Go to profile page and then click edit profile")));
+                                    appbarText: StringConstants().changeEMail, content: profileHelp)));
                       },
                       child: Text(StringConstants().changeEMail, style: Theme.of(context).textTheme.button)),
                   const Divider(),
@@ -42,24 +50,19 @@ class HelpView extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HelpSection(
-                                    appbarText: "How cand look my liked books?",
-                                    content: "Go to profile page and you can see liked books")));
+                                builder: (context) => HelpSection(appbarText: likedHelp, content: likeText)));
                       },
-                      child:
-                          Text("How cand look my liked books?", style: Theme.of(context).textTheme.button)),
+                      child: Text(likedHelp, style: Theme.of(context).textTheme.button)),
                   const Divider(),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HelpSection(
-                                    appbarText: "I want to delete my account",
-                                    content:
-                                        "Go to profile page and then click edit profile. You can see delete my account button")));
+                                builder: (context) =>
+                                    HelpSection(appbarText: wantDelete, content: wantDeleteHelp)));
                       },
-                      child: Text("I want to delete my account", style: Theme.of(context).textTheme.button)),
+                      child: Text(wantDeleteAccount, style: Theme.of(context).textTheme.button)),
                 ],
               ),
               ElevatedButton(
@@ -68,7 +71,7 @@ class HelpView extends StatelessWidget {
                       builder: (context) => const AboutView(),
                     ));
                   },
-                  child: Text("About", style: Theme.of(context).textTheme.button))
+                  child: Text(bout, style: Theme.of(context).textTheme.button))
             ],
           ),
         ),

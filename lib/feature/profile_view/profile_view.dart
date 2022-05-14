@@ -7,7 +7,6 @@ import '../../product/home_book_card/home_book_card.dart';
 import '../login_screen/view/login_card_view.dart';
 import 'edit_profile_cubit/editprofile_cubit.dart';
 import 'cubit/profileview_cubit.dart';
-import '../../product/book_card/book_card.dart';
 import '../../product/circle_avatar/custom_circle_avatar.dart';
 import 'package:kartal/kartal.dart';
 
