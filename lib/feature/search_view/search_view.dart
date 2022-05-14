@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school_project_ibdb/product/home_book_card/home_book_card.dart';
 
 import '../../core/extension/string_extension.dart';
-import '../../product/book_card/book_card.dart';
 import 'search_view_model.dart';
 import 'service/search_book_service.dart';
 

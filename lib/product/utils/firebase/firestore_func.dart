@@ -241,25 +241,6 @@ class FirestoreFunctions {
   //REALTIME DATABASE
   final DatabaseReference _ref = FirebaseDatabase.instance.ref();
 
-  // void readDataContinously() {
-  //   _ref.onValue.listen((event) {
-  //     final data = event.snapshot.value;
-  //   });
-  // }
-
-  ///Reads user data from realtime database only once
-  // Future readUserDataOnce(BuildContext context) async {
-  //   List<RTUserModel> list;
-  //   final snapshot = await _ref.child("/users/0").get();
-
-  //   if (snapshot.exists) {
-  //     final data = jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
-  //     return RTUserModel.fromJson(data);
-  //   } else {
-  //     _showSnackMessage(context, "Couldn't read data");
-  //   }
-  // }
-
   ///Reads user data from realtime database only once
   Future readCommentData(String? bookID) async {
     //!vote data çekiyor
@@ -337,20 +318,6 @@ class FirestoreFunctions {
     }
   }
 
-  // List<CommentModelFromRTD> _list = [];
-  // if (snapshot.exists) {
-  //   final _data = jsonDecode(jsonEncode(snapshot.value));
-
-  //   for (Map<String, dynamic> item in _data.values) {
-  //     for (Map<String, dynamic> listofMaps in item.values) {
-  //       _list.add(CommentModelFromRTD.fromMap(listofMaps));
-  //     }
-  //   }
-  //   return _list;
-  // } else {
-  //   return _list;
-  // }
-
   ///Write data to categories section
   Future<void> writeCategoriesData(Items? items, User? currentUser) async {
     final _date = DateTime.now();
@@ -389,8 +356,4 @@ class FirestoreFunctions {
     }
     return false;
   }
-
-  // _showSnackMessage(BuildContext context, String data) {
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(data)));
-  // }
 }
