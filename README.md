@@ -4,7 +4,7 @@ Hello, this is social media based on Books. This app aims bring together people 
   In this app, used firebase for authentication and database.
 </p>
 
-
+Warning: Firebase rules are closed so some features may be not working
 
 ### Features
 
